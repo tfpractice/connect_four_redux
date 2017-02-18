@@ -1,0 +1,29 @@
+{
+  "presets": [
+    "react",
+    [
+      "latest",
+      {
+        "es2015": {
+          "modules": false
+        }
+      }
+    ]
+  ],
+  "plugins": [
+    "transform-class-properties",
+    "transform-object-rest-spread",
+    [
+      "module-resolver",
+      {
+        "root": [
+          "./src"
+        ],
+        "alias": {
+          "imports": "./imports",
+          "config": "./config"
+        }
+      }
+    ]
+  ]
+}
