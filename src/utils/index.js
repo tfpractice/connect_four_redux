@@ -1,2 +1,4 @@
 import * as AppDB from './firebase';
-export { AppDB, };
+import * as asyncUtils from './request';
+
+export { AppDB, asyncUtils, };
