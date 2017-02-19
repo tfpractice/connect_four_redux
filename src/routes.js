@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component, } from 'react';
 import { connect, } from 'react-redux';
 import { BrowserRouter, Link, Route, Switch, } from 'react-router-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -8,7 +8,13 @@ import FlatButton from 'material-ui/FlatButton';
 import AppBar from 'material-ui/AppBar';
 import { Main, NoMatch, } from './components';
 
-const Routes = () => (
+const mapStateToProps = ({ users, }) => ({ users, });
+
+export class Routes extends Component {
+  
+  render () {
+    console.log(this.props);
+    return (
 <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme, { userAgent: false, })}>
   <BrowserRouter>
     <div className="Game">
@@ -21,10 +27,12 @@ const Routes = () => (
           <Route path="/" component={Main} />
           <Route component={NoMatch}/>
         </Switch>
-        </div>
+      </div>
     </div>
   </BrowserRouter>
 </MuiThemeProvider>
-);
+    );
+  }
+}
 
-export default connect()(Routes);
+export default connect(mapStateToProps)(Routes);

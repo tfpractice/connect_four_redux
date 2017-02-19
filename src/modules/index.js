@@ -1,1 +1,1 @@
-export { users, actions as UserActs, } from './users';
+export { users, actions as userActs, } from './users';
