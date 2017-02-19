@@ -1,10 +1,9 @@
 import createLogger from 'redux-logger';
 import thunk from 'redux-thunk';
-import { applyMiddleware, createStore, } from 'redux';
-
-import { reducer as rootR, } from './modules';
+import { applyMiddleware as applyMid, createStore, } from 'redux';
+import rootR from './reducer';
 
 const collapsed = (getState, action) => action.type;
 const log = createLogger({ collapsed, });
 
-// export default state => applyMiddleware(thunk, log)(createStore)(rootR, state);
+export default state => applyMid(thunk, log)(createStore)(rootR, state);

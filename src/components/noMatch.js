@@ -1,4 +1,5 @@
 import React, { Component, } from 'react';
+
 const NoMatch = ({ location, }) => (
   <div>
     <h2>Whoops</h2>
