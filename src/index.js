@@ -9,14 +9,14 @@ import Routes from './routes';
 import './index.css';
 injectTapEventPlugin();
 
-ReactDOM.render(
-  <Main />,
-  document.getElementById('root')
-);
-
 //
 // ReactDOM.render(
-//   <Provider store={getStore()}>
-//     <Routes />
-//   </Provider>, document.getElementById('root')
+//   <Main />,
+//   document.getElementById('root')
 // );
+
+ReactDOM.render(
+  <Provider store={getStore()}>
+    <Routes />
+  </Provider>, document.getElementById('root')
+);
