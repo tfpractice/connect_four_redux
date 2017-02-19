@@ -1,6 +1,6 @@
 import React, { Component, } from 'react';
 import { Provider, } from 'react-redux';
-import { Router, } from 'react-router';
+import { BrowserRouter, Link, Route, Switch, } from 'react-router-dom';
 import getRoutes from './routes';
 
 export default class AppContainer extends Component {
@@ -9,7 +9,10 @@ export default class AppContainer extends Component {
 
     return (
       <Provider store={store}>
-        <Router routes={getRoutes(store)} history={history} />
+        <BrowserRouter>
+
+          {/* <Router routes={getRoutes(store)} history={history} /> */}
+        </BrowserRouter>
       </Provider>
     );
   }

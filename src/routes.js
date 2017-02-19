@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect, } from 'react-redux';
 import { BrowserRouter, Link, Route, Switch, } from 'react-router-dom';
-
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
