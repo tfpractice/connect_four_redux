@@ -1,11 +1,6 @@
-// import  from '../../utils/firebase';
-import { fireUtils, rqUtils, } from '../../utils';
 import { addUser, } from '../users/actions';
-
-// import { , } from './constants';
+import { fireUtils, rqUtils, } from '../../utils';
 import { LOGIN, SET_CURRENT_USER, } from './constants';
-
-// import { addUser, } from '../users/actions';
 
 const { connRef, fireApp, } = fireUtils;
 const { rqConstants, rqActions, } = rqUtils;
@@ -29,5 +24,3 @@ export const setCurrent = u => (dispatch) => {
     }).then(console.log)
     .catch(err => console.error(err.message));
 };
-
-// export const login=()
