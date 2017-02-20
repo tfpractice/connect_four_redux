@@ -7,11 +7,26 @@ import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import FlatButton from 'material-ui/FlatButton';
 import AppBar from 'material-ui/AppBar';
 import { Main, NoMatch, } from './components';
+import { userActs, } from './modules';
+import { connRef, fireApp, } from './utils/firebase';
 
 const mapStateToProps = ({ users, }) => ({ users, });
 
 export class Routes extends Component {
-  
+  // ComponentDidMount() {
+  //   const { dispatch, } = this.props;
+  //
+  //   console.log(dispatch(userActs.addUser('3')));
+  //   console.log(this.props);
+  //   connRef.on('value', (snapshot) => {
+  //     if (snapshot.val()) {
+  //       console.log('connection val');
+  //       dispatch(userActs.addUser('3'));
+  //       fireApp.auth().signInAnonymously().catch();
+  //     }
+  //   });
+  // }
+
   render () {
     console.log(this.props);
     return (
