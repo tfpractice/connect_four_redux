@@ -15,7 +15,7 @@ export const success = message => state =>
 export const failure = message => state =>
  ({ ...state, status: 'failed', updatedAt: Date.now(), message, });
 
-export const rqStates = prefix =>
+export const rqConstants = prefix =>
   new Set(STATUS_ACTIONS.map(actionString(prefix)));
 
 export const rqActions = prefix => ({

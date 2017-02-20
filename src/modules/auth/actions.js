@@ -1,12 +1,23 @@
-// import * as firebase from 'firebase';
-import { connRef, fireApp, } from '../fire';
-import { SET_CURRENT_USER, } from './constants';
+// import  from '../../utils/firebase';
+import { fireUtils, rqUtils, } from '../../utils';
 import { addUser, } from '../users/actions';
 
-const set = user => prev => ({ ...prev, user, });
+// import { , } from './constants';
+import { LOGIN, SET_CURRENT_USER, } from './constants';
 
-export const setCurrentUser = u =>
-({ type: SET_CURRENT_USER, curry: set(u), });
+// import { addUser, } from '../users/actions';
+
+const { connRef, fireApp, } = fireUtils;
+const { rqConstants, rqActions, } = rqUtils;
+
+const set = user => () => user;
+const unset = () => () => null;
+
+const loginPending = rqActions(LOGIN).pending;
+const loginFailure = rqActions(LOGIN).failure;
+const loginSuccess = rqActions(LOGIN).success;
+
+export const setCurrentUser = u => ({ type: SET_CURRENT_USER, curry: set(u), });
 
 export const setCurrent = u => (dispatch) => {
   console.log('setting current');
@@ -18,14 +29,5 @@ export const setCurrent = u => (dispatch) => {
     }).then(console.log)
     .catch(err => console.error(err.message));
 };
-  
-// fireApp.auth().onAuthStateChanged((user) => {
-//   if (user) {
-//     console.log('before auth state chnaged', user);
-//     setCurrent(user);
-//   } else {
-//     setCurrentUser(null);
-//
-//     // No user is signed in.
-//   }
-// });
+
+// export const login=()
