@@ -3,6 +3,7 @@ module.exports = {
     settings: {
       'import/resolver': {
         'babel-module': {},
+        "babel-module-alias": {}
       }, },
     env: {
       node: true,
