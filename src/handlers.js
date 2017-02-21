@@ -1,29 +1,29 @@
-import { connRef, fireApp, } from './utils/firebase';
-import { setCurrent, } from './modules/auth/actions';
+import { connRef, fireApp, onlineRef, } from './utils/firebase';
+import { login, } from './modules/auth/actions';
+import { addUser, setUsers, } from './modules/users/actions';
 
 export const connHandler = (store) => {
   connRef.on('value', (snapshot) => {
     if (snapshot.val()) {
-      // store.dispatch(addUser('3'));
-      fireApp.auth().signInAnonymously()
-        .then((u) => {
-          // console.log('auth', fireApp.auth().currentUser);
-          console.log('dispatched middle', u);
-          store.dispatch(setCurrent(u));
-        })
-        .catch((error) => {
-          // Handle Errors here.
-          const errorCode = error.code;
-          const errorMessage = error.message;
-
-          if (errorCode === 'auth/operation-not-allowed') {
-            alert('You must enable Anonymous auth in the Firebase Console.');
-          } else {
-            console.error(error);
-          }
-        });
+      store.dispatch(login);
     }
   });
+};
 
-  // return next(action);
+export const onlineHandler = (store) => {
+  onlineRef.limitToLast(10).on('child_added', (snap) => {
+    store.dispatch(addUser(snap.val()));
+  });
+
+  // onlineRef.limitToLast(10).on('child_removed', (snap) => {
+    // store.dispatch(addUser(snap.val()));
+  // });
+  // onlineRef.limitToLast(10).on('value', (snap) => {
+  //   // console.log('adding online', u);
+  //
+  //   snap.forEach(c => console.log('cval', c.val()));
+  //   console.log('child_added', snap.val());
+  //
+  //   // return store.dispatch(setUsers(snap.val()));
+  // });
 };

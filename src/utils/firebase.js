@@ -12,3 +12,5 @@ export const fireApp = firebase.initializeApp(config);
 export const db = fireApp.database();
 export const auth = fireApp.auth();
 export const connRef = db.ref('.info/connected');
+export const onlineRef = db.ref('online');
+export const getOnlineRef = id => onlineRef.child(`${id}`);
