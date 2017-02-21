@@ -6,8 +6,6 @@ import getStore from './store';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import { connRef, fireApp, } from './modules/fire';
 import { connHandler, onlineHandler, } from './handlers';
-import { setCurrent, } from './modules/auth/actions';
-import { addUser, } from './modules/users/actions';
 
 import Routes from './routes';
 import './index.css';
