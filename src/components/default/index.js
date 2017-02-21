@@ -1,8 +1,7 @@
 import React, { Component, } from 'react';
 import logo from './logo.svg';
 import './default.css';
-import { AppDB, } from '../../utils';
-console.log(AppDB);
+
 class App extends Component {
   render() {
     return (

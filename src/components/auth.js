@@ -1,5 +1,4 @@
 import React, { Component, } from 'react';
-import { AppDB, } from '../utils';
 
 const Auth = ({ users, }) => (
       <div className="App">

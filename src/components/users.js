@@ -1,7 +1,6 @@
 import React, { Component, } from 'react';
 import { connect, } from 'react-redux';
 import FlatButton from 'material-ui/FlatButton';
-import { AppDB, } from '../utils';
 import { userActs, } from '../modules';
 
 const mapStateToProps = ({ users, }) => ({ users, });
