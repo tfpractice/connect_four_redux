@@ -7,7 +7,10 @@ const { rqConstants, rqActions, } = rqUtils;
 
 const set = users => () => users;
 const add = user => arr => arr.concat(user);
-const remove = ({ id, }) => arr => removeBin(arr, arr.find(n => n.id === id));
+const remove = ({ id, }) => (arr) => {
+  console.log('removing user', id);
+  return removeBin(arr, arr.find(n => n.id === id));
+};
 
 export const setUsers = u => ({ type: SET_USERS, curry: set(u), });
 export const addUser = u => ({ type: ADD_USER, curry: add(u), });
