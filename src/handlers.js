@@ -3,8 +3,9 @@ import { login, } from './modules/auth/actions';
 import { addUser, removeUser, setUsers, } from './modules/users/actions';
 
 export const connHandler = (store) => {
-  connRef.on('value', (snapshot) => {
-    if (snapshot.val()) {
+  connRef.on('value', (snap) => {
+    if (snap.val()) {
+      console.log('user apperaed', snap.val());
       store.dispatch(login);
     }
   });
@@ -12,13 +13,12 @@ export const connHandler = (store) => {
 
 export const onlineHandler = (store) => {
   onlineRef.limitToLast(10).on('child_added', (snap) => {
-    console.log(snap.val());
     store.dispatch(addUser(snap.val()));
   });
 
-  // onlineRef.limitToLast(10).on('child_removed', (snap) => {
-  //   store.dispatch(removeUser(snap.val()));
-  // });
+  onlineRef.limitToLast(10).on('child_removed', (snap) => {
+    store.dispatch(removeUser(snap.val()));
+  });
 
   // onlineRef.limitToLast(10).on('child_removed', (snap) => {
     // store.dispatch(addUser(snap.val()));
