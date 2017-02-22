@@ -1,5 +1,5 @@
 import { combineReducers, } from 'redux';
 import { reducer as form, } from 'redux-form';
-import { auth, fire, users, } from './modules';
+import { auth, users, } from './modules';
 
-export default combineReducers({ users, form, auth, fire, });
+export default combineReducers({ users, form, auth, });

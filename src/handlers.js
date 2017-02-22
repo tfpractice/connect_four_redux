@@ -2,15 +2,16 @@ import { auth, connRef, onlineRef, } from './utils/firebase';
 import { login, logout, } from './modules/auth/actions';
 import { addUser, removeUser, setUsers, } from './modules/users/actions';
 
-// export const authHandler =(store)=>{
-//   auth.onAuthStateChanged(function(user) {
-//   if (user) {
-//     // User is signed in.
-//   } else {
-//     // No user is signed in.
-//   }
-// });
-// }
+export const authHandler = (store) => {
+  auth.onAuthStateChanged((user) => {
+    if (user) {
+      console.log('User is signed in.', user);
+    } else {
+      console.log('No user is signed in.', user);
+    }
+  });
+};
+
 export const connHandler = (store) => {
   connRef.on('value', (snap) => {
     if (snap.val()) {
