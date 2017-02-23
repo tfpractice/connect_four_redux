@@ -21,7 +21,9 @@ export const setCurrentUser = u => ({ type: SET_CURRENT_USER, curry: set(u), });
 
 export const setCurrent = u => dispatch =>
    Promise.resolve(dispatch(setCurrentUser(u)))
-     .then(arg => u && dispatch(addOnline(u)))
+
+  //  .then(arg => u && dispatch(addOnline(u)))
+     .then(arg => dispatch(addOnline(u)))
      .catch(err => console.error(err.message));
 
 const loginError = (error) => {
@@ -32,16 +34,22 @@ const loginError = (error) => {
   }
 };
 
-export const login = dispatch =>
-  Promise.resolve(dispatch(loginPend()))
-    .then(() => auth.signInAnonymously()
-      .then(u => setID(u.uid)(u))
-      .then((user) => {
-        console.log('user,', JSON.stringify(user));
-        return Promise.all([ loginSucc(user), setCurrent(user), ].map(dispatch));
-      })
-      .catch(loginError)
+export const login = (dispatch) => {
+  console.log('LOGIN:AUTH:CURR', auth.currentUser);
+
+  return Promise.resolve(dispatch(loginPend()))
+    .then(() => {
+      console.log('LOGIN:AUTH:CURR', auth.currentUser);
+      return auth.signInAnonymously()
+        .then(u => setID(u.uid)(u))
+        .then((user) => {
+          console.log('user,', JSON.stringify(user));
+          return Promise.all([ loginSucc(user), setCurrent(user), ].map(dispatch));
+        })
+        .catch(loginError);
+    }
 );
+};
 
 export const logout = dispatch =>
   Promise.resolve(dispatch(logoutPend()))
