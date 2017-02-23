@@ -34,18 +34,19 @@ const loginError = (error) => {
   }
 };
 
-export const login = dispatch => Promise.resolve(dispatch(loginPend()))
-  .then(() => auth.signInAnonymously()
-    .then(u => setID(u.uid)(u))
-    .then(u => setName(u.displayName || u.uid)(u))
-    .then((user) => {
-      console.log('user,', JSON.stringify(user));
-      return Promise.all([ loginSucc(user), setCurrent(user), ].map(dispatch));
-    })
-    .catch(loginError)
+export const login = () => dispatch =>
+  Promise.resolve(dispatch(loginPend()))
+    .then(() => auth.signInAnonymously()
+      .then(u => setID(u.uid)(u))
+      .then(u => setName(u.displayName || u.uid)(u))
+      .then((user) => {
+        console.log('user,', JSON.stringify(user));
+        return Promise.all([ loginSucc(user), setCurrent(user), ].map(dispatch));
+      })
+      .catch(loginError)
 );
 
-export const logout = dispatch =>
+export const logout = () => dispatch =>
   Promise.resolve(dispatch(logoutPend()))
     .then(() => auth.signOut())
     .then(() => Promise.all([ logoutSucc(null), setCurrent(null), ].map(dispatch)))

@@ -1,2 +1,2 @@
-export { users, actions as userActs, } from './users';
-export { auth, actions as authActs, } from './auth';
+export { users, actions as UserActs, } from './users';
+export { auth, actions as AuthActs, } from './auth';

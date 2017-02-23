@@ -7,7 +7,9 @@ import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import FlatButton from 'material-ui/FlatButton';
 import AppBar from 'material-ui/AppBar';
 import { Main, NoMatch, } from './components';
-import { userActs, } from './modules';
+import { AuthActs, } from './modules';
+
+import { LoginForm, } from './components';
 import { connRef, fireApp, } from './utils/firebase';
 
 const mapStateToProps = ({ users, }) => ({ users, });
@@ -16,12 +18,12 @@ export class Routes extends Component {
   // ComponentDidMount() {
   //   const { dispatch, } = this.props;
   //
-  //   console.log(dispatch(userActs.addUser('3')));
+  //   console.log(dispatch(AuthActs.addUser('3')));
   //   console.log(this.props);
   //   connRef.on('value', (snapshot) => {
   //     if (snapshot.val()) {
   //       console.log('connection val');
-  //       dispatch(userActs.addUser('3'));
+  //       dispatch(AuthActs.addUser('3'));
   //       fireApp.auth().signInAnonymously().catch();
   //     }
   //   });
@@ -37,6 +39,7 @@ export class Routes extends Component {
         title={'Connect Four Redux'}
         iconClassNameRight="muidocs-icon-navigation-expand-more"
       />
+      <LoginForm formID={'mainLogin'}/>
       <div className="container">
         <Switch>
           <Route path="/" component={Main} />

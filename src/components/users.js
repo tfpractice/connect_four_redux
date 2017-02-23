@@ -1,7 +1,7 @@
 import React, { Component, } from 'react';
 import { connect, } from 'react-redux';
 import FlatButton from 'material-ui/FlatButton';
-import { userActs, } from '../modules';
+import { UserActs, } from '../modules';
 
 const mapStateToProps = ({ users, }) => ({ users, });
 const Users = ({ users, addUser, }) => (
@@ -18,4 +18,4 @@ const Users = ({ users, addUser, }) => (
       </div>
     );
 
-export default connect(mapStateToProps, userActs)(Users);
+export default connect(mapStateToProps, UserActs)(Users);

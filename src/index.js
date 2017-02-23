@@ -12,7 +12,7 @@ const store = getStore();
 
 //
 // connHandler(store);
-// onlineHandler(store);
+onlineHandler(store);
 
 ReactDOM.render(
   <Provider store={store}>
