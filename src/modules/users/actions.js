@@ -16,19 +16,47 @@ export const addUser = u => ({ type: ADD_USER, curry: add(u), });
 export const removeUser = u => ({ type: REMOVE_USER, curry: remove(u), });
 export const checkConnections = id => getPresRef(id);
 
+// export const catConn = (u) => {
+//   console.log('catConn');
+//   const pushR = onlineRef.child(u.id).child('connections').push();
+//
+//   pushR.onDisconnect().remove();
+//   pushR.set(Date.now);
+//   return u;
+// };
 export const addOnline = u => dispatch =>
+
 Promise.resolve(onlineRef.child(u.id))
+
+// Promise.resolve(onlineRef.push())
   .then((ref) => {
-    ref.onDisconnect().remove();
-    ref.set(u);
+    // ref.onDisconnect().remove();
+    ref.update(u);
 
-    // ref.child('connections').push(Date.now);
+    const pushR = ref.child('connections').push();
+    
+    pushR.onDisconnect().remove();
+    pushR.set(Date.now());
+    console.log(pushR);
 
-    // .set(u).push()
     return u;
+
+    // return ref;
   })
 
-  //  .then(addUser)
-  //  .then(dispatch)
+  // .then((ref) => {
+  //   const pushR = ref.child('connections').push();
+  //
+  //   pushR.onDisconnect().remove();
+  //   pushR.set(Date.now());
+  //   console.log(pushR);
+  //   return u;
+  // })
+
+  // .then(catConn)
+  .then(addUser)
+  .then(dispatch)
   .catch(console.error);
+  
+export const goOffline = u => onlineRef.child(u.id).remove();
    

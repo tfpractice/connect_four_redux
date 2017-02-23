@@ -5,9 +5,11 @@ import { addUser, removeUser, setUsers, } from './modules/users/actions';
 export const authHandler = (store) => {
   auth.onAuthStateChanged((user) => {
     if (user) {
-      console.log('User is signed in.', user);
+      console.log('AUTH:SIGNEDIN.', user);
+
+      // store.dispatch(login());
     } else {
-      console.log('No user is signed in.', user);
+      console.log('AUTH:SIGNEDOUT.');
     }
   });
 };
@@ -15,13 +17,15 @@ export const authHandler = (store) => {
 export const connHandler = (store) => {
   connRef.on('value', (snap) => {
     if (snap.val()) {
-      console.log('NEW connection apperaed', auth.currentUser);
+      // db.ref.connections(auth.currentUser.uid)
+      console.log('CONN:NEW connection apperaed', auth.currentUser.toJSON());
       auth.currentUser && store.dispatch(login());
     } else {
-      console.log('user disconnected', snap.val());
-      console.log('user disconnected currentUser', auth.currentUser);
+      console.log('CONN:user disconnected', snap.val());
 
-      // auth.currentUser && store.dispatch(login());
+      // console.log('CONN:user disconnected currentUser', auth.currentUser);
+
+      auth.currentUser && store.dispatch(logout());
     }
   });
 };
@@ -30,8 +34,18 @@ export const onlineHandler = (store) => {
   onlineRef.limitToLast(10).on('child_added', (snap) => {
     store.dispatch(addUser(snap.val()));
   });
+  
+  onlineRef.limitToLast(10).on('child_changed', (snap) => {
+    console.log('CHILD CHANGED', snap.val());
+    console.log('CHILD CHANGED connections', snap.val().connections);
+
+    // snap.hasChild('connections') || store.dispatch(removeUser(snap.val()));
+    snap.hasChild('connections') || snap.ref.remove();
+  });
 
   onlineRef.limitToLast(10).on('child_removed', (snap) => {
+    console.log('CHILD REMOVED', snap.val());
+
     store.dispatch(removeUser(snap.val()));
   });
 };
