@@ -25,7 +25,7 @@ export const connHandler = (store) => {
 
       // console.log('CONN:user disconnected currentUser', auth.currentUser);
 
-      auth.currentUser && store.dispatch(logout());
+      // auth.currentUser && store.dispatch(logout());
     }
   });
 };

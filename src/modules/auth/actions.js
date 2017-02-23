@@ -1,4 +1,4 @@
-import { addOnline, addUser, } from '../users/actions';
+import { addOnline, addUser, goOffline, } from '../users/actions';
 import { fireUtils, rqUtils, } from '../../utils';
 import { LOGIN, LOGOUT, SET_CURRENT_USER, } from './constants';
 import { Player, } from 'connect_four_functional';
@@ -19,9 +19,6 @@ const logoutSucc = rqActions(LOGOUT).success;
 
 export const setCurrentUser = u => ({ type: SET_CURRENT_USER, curry: set(u), });
 
-// export const connectCurrent=()=>dispatch=>
-// dispatch
-
 export const catConn = ({ id, }) => {
   const pushR = onlineRef.child(`${id}`).child('connections').push();
 
@@ -30,8 +27,6 @@ export const catConn = ({ id, }) => {
 };
 export const setCurrent = u => dispatch =>
    Promise.resolve(dispatch(setCurrentUser(u)))
-
-    //  .then(arg => catConn(u))
      .then(arg => dispatch(addOnline(u)))
      .catch(err => console.error(err.message));
 
@@ -45,16 +40,13 @@ export const login = () => dispatch =>
       .catch(loginFail)
 );
 
-// onlineRef.child(u.id)
-
+// const signOutAndDelete= u=> {u.delete();}
 export const logout = () => dispatch =>
   Promise.resolve(dispatch(logoutPend()))
     .then(() => auth.currentUser)
-    .then((u) => {
-      auth.signOut();
-
-      // return u.delete();
-    })
+    .then(u => auth.signOut()
+      .then(() => goOffline({ id: u.uid, }))
+      .then(() => u.delete()))
     .then(() => Promise.all(
       [ logoutSucc(null), setCurrent(null), ].map(dispatch)))
     .catch(console.error);
