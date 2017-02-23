@@ -10,8 +10,9 @@ import Routes from './routes';
 injectTapEventPlugin();
 const store = getStore();
 
-connHandler(store);
-onlineHandler(store);
+//
+// connHandler(store);
+// onlineHandler(store);
 
 ReactDOM.render(
   <Provider store={store}>
