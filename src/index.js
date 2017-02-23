@@ -11,7 +11,7 @@ injectTapEventPlugin();
 const store = getStore();
 
 //
-// connHandler(store);
+connHandler(store);
 onlineHandler(store);
 
 ReactDOM.render(
