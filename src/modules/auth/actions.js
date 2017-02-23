@@ -21,8 +21,6 @@ export const setCurrentUser = u => ({ type: SET_CURRENT_USER, curry: set(u), });
 
 export const setCurrent = u => dispatch =>
    Promise.resolve(dispatch(setCurrentUser(u)))
-
-  //  .then(arg => u && dispatch(addOnline(u)))
      .then(arg => dispatch(addOnline(u)))
      .catch(err => console.error(err.message));
 
