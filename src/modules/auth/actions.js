@@ -27,7 +27,10 @@ export const catConn = ({ id, }) => {
 };
 export const setCurrent = u => dispatch =>
    Promise.resolve(dispatch(setCurrentUser(u)))
-     .then(arg => dispatch(addOnline(u)))
+     .then((arg) => {
+       console.log(JSON.stringify(u));
+       dispatch(addOnline(u));
+     })
      .catch(err => console.error(err.message));
 
 export const login = () => dispatch =>
