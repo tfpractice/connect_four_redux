@@ -25,6 +25,8 @@ export const catConn = ({ id, }) => {
   pushR.onDisconnect().remove();
   pushR.set(Date.now);
 };
+export const createPlayer = u => setName(u.displayName)(setID(u.uid)(u));
+
 export const setCurrent = u => dispatch =>
    Promise.resolve(dispatch(setCurrentUser(u)))
      .then((arg) => {
@@ -33,17 +35,22 @@ export const setCurrent = u => dispatch =>
      })
      .catch(err => console.error(err.message));
 
-export const login = () => dispatch =>
+export const login = ({ displayName, } = { displayName: '', }) => dispatch =>
   Promise.resolve(dispatch(loginPend()))
     .then(() => auth.signInAnonymously()
-      .then(u => setID(u.uid)(u))
-      .then(u => setName(u.displayName || u.uid)(u))
-      .then(user => Promise.all(
-        [ loginSucc(user), setCurrent(user), ].map(dispatch)))
+      .then(u =>
+        u.updateProfile({ displayName: (displayName || u.uid), })
+
+          // .then(() => setID(u.uid)(u))
+          // .then(p => setName(u.displayName)(p))
+          .then(() => {
+            console.log('user', u);
+            return Promise.all(
+        [ loginSucc(u), setCurrent(createPlayer(u)), ].map(dispatch));
+          }))
       .catch(loginFail)
 );
 
-// const signOutAndDelete= u=> {u.delete();}
 export const logout = () => dispatch =>
   Promise.resolve(dispatch(logoutPend()))
     .then(() => auth.currentUser)

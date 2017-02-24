@@ -1,5 +1,5 @@
 import { auth, connRef, onlineRef, } from './utils/firebase';
-import { login, logout, } from './modules/auth/actions';
+import { createPlayer, login, logout, setCurrent, } from './modules/auth/actions';
 import { addUser, removeUser, setUsers, } from './modules/users/actions';
 
 export const authHandler = (store) => {
@@ -15,11 +15,7 @@ export const authHandler = (store) => {
 export const connHandler = (store) => {
   connRef.on('value', (snap) => {
     if (snap.val()) {
-      // console.log('CONN:NEW connection apperaed', auth.currentUser.toJSON());
-
-      auth.currentUser && store.dispatch(login());
-
-      // store.dispatch(login());
+      auth.currentUser && store.dispatch(setCurrent(createPlayer(auth.currentUser)));
     } else {
       console.log('CONN:user disconnected', snap.val());
     }
@@ -37,9 +33,9 @@ export const onlineHandler = (store) => {
     console.log('CHILD CHANGED', snap.val(), snap.hasChild('connections'));
     console.log('CHILD CHANGED', snap.hasChild('connections'));
 
-    // snap.hasChild('connections') || snap.ref.remove();
+    snap.hasChild('connections') || snap.ref.remove();
 
-    snap.hasChild('connections') || store.dispatch(logout());
+    // snap.hasChild('connections') || store.dispatch(logout());
   });
 
   onlineRef.limitToLast(10).on('child_removed', (snap) => {
