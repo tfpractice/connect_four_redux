@@ -15,6 +15,7 @@ export const authHandler = (store) => {
 export const connHandler = (store) => {
   connRef.on('value', (snap) => {
     if (snap.val()) {
+      // console.log('current ', auth.currentUser && auth.currentUser.uid);
       auth.currentUser && store.dispatch(setCurrent(createPlayer(auth.currentUser)));
     } else {
       console.log('CONN:user disconnected', snap.val());

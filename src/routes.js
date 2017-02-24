@@ -6,10 +6,9 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import FlatButton from 'material-ui/FlatButton';
 import AppBar from 'material-ui/AppBar';
-import { Main, NoMatch, } from './components';
+import { LoginForm, LogoutLink, Main, NoMatch, } from './components';
 import { AuthActs, } from './modules';
 
-import { LoginForm, } from './components';
 import { connRef, fireApp, } from './utils/firebase';
 
 const mapStateToProps = ({ users, }) => ({ users, });
@@ -30,7 +29,6 @@ export class Routes extends Component {
   // }
 
   render () {
-    console.log(this.props);
     return (
 <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme, { userAgent: false, })}>
   <BrowserRouter>
@@ -40,6 +38,7 @@ export class Routes extends Component {
         iconClassNameRight="muidocs-icon-navigation-expand-more"
       />
       <LoginForm formID={'mainLogin'}/>
+      <LogoutLink/>
       <div className="container">
         <Switch>
           <Route path="/" component={Main} />

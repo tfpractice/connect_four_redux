@@ -39,7 +39,7 @@ export const takeOffline = u => dispatch =>
 
 export const login = ({ displayName, } = { displayName: '', }) => dispatch =>
   Promise.resolve(dispatch(loginPend()))
-    .then(() => auth.currentUser || auth.signInAnonymously()
+    .then(() => auth.signInAnonymously()
       .then(u =>
         u.updateProfile({ displayName: (displayName || u.uid), })
           .then(() => {
@@ -58,7 +58,7 @@ export const logout = () => dispatch =>
       return auth.signOut()
         .then(() => {
           console.log('goig off');
-          return goOffline({ id: u.uid, });
+          return u && goOffline({ id: u.uid, });
         })
         .then(() => Promise.all(
           [ logoutSucc(null), unsetCurrent(null), ].map(dispatch)))
