@@ -19,12 +19,6 @@ const logoutSucc = rqActions(LOGOUT).success;
 
 export const setCurrentUser = u => ({ type: SET_CURRENT_USER, curry: set(u), });
 
-export const catConn = ({ id, }) => {
-  const pushR = onlineRef.child(`${id}`).child('connections').push();
-
-  pushR.onDisconnect().remove();
-  pushR.set(Date.now);
-};
 export const createPlayer = u => setName(u.displayName)(setID(u.uid)(u));
 
 export const setCurrent = u => dispatch =>
@@ -34,15 +28,20 @@ export const setCurrent = u => dispatch =>
        dispatch(addOnline(u));
      })
      .catch(err => console.error(err.message));
+     
+export const unsetCurrent = () => dispatch =>
+        Promise.resolve(dispatch(setCurrentUser(null)))
+
+          .catch(err => console.error(err.message));
+          
+export const takeOffline = u => dispatch =>
+  onlineRef.child(u.id).remove();
 
 export const login = ({ displayName, } = { displayName: '', }) => dispatch =>
   Promise.resolve(dispatch(loginPend()))
-    .then(() => auth.signInAnonymously()
+    .then(() => auth.currentUser || auth.signInAnonymously()
       .then(u =>
         u.updateProfile({ displayName: (displayName || u.uid), })
-
-          // .then(() => setID(u.uid)(u))
-          // .then(p => setName(u.displayName)(p))
           .then(() => {
             console.log('user', u);
             return Promise.all(
@@ -54,9 +53,19 @@ export const login = ({ displayName, } = { displayName: '', }) => dispatch =>
 export const logout = () => dispatch =>
   Promise.resolve(dispatch(logoutPend()))
     .then(() => auth.currentUser)
-    .then(u => auth.signOut()
-      .then(() => goOffline({ id: u.uid, }))
-      .then(() => u.delete()))
-    .then(() => Promise.all(
-      [ logoutSucc(null), setCurrent(null), ].map(dispatch)))
-    .catch(console.error);
+    .then((u) => {
+      console.log('logoout', u);
+      return auth.signOut()
+        .then(() => {
+          console.log('goig off');
+          return goOffline({ id: u.uid, });
+        })
+        .then(() => Promise.all(
+          [ logoutSucc(null), unsetCurrent(null), ].map(dispatch)))
+        .then((arf) => {
+          console.log('now delete', u, arf);
+          return u.delete();
+        });
+    })
+
+    .catch(e => dispatch(logoutFail(e.message)));
