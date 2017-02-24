@@ -1,7 +1,7 @@
+import { Player, } from 'connect_four_functional';
 import { addOnline, addUser, goOffline, } from '../users/actions';
 import { fireUtils, rqUtils, } from '../../utils';
 import { LOGIN, LOGOUT, SET_CURRENT_USER, } from './constants';
-import { Player, } from 'connect_four_functional';
 const { auth, onlineRef, } = fireUtils;
 const { rqConstants, rqActions, } = rqUtils;
 const { player, setID, setName, } = Player;

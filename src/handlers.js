@@ -15,10 +15,11 @@ export const authHandler = (store) => {
 export const connHandler = (store) => {
   connRef.on('value', (snap) => {
     if (snap.val()) {
-      console.log('CONN:NEW connection apperaed', auth.currentUser.toJSON());
+      // console.log('CONN:NEW connection apperaed', auth.currentUser.toJSON());
 
-      // auth.currentUser && store.dispatch(login());
-      store.dispatch(login());
+      auth.currentUser && store.dispatch(login());
+
+      // store.dispatch(login());
     } else {
       console.log('CONN:user disconnected', snap.val());
     }
