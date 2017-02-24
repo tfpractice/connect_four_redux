@@ -33,9 +33,9 @@ export const onlineHandler = (store) => {
     console.log('CHILD CHANGED', snap.val(), snap.hasChild('connections'));
     console.log('CHILD CHANGED', snap.hasChild('connections'));
 
-    snap.hasChild('connections') || snap.ref.remove();
+    // snap.hasChild('connections') || snap.ref.remove();
 
-    // snap.hasChild('connections') || store.dispatch(logout());
+    snap.hasChild('connections') || store.dispatch(logout());
   });
 
   onlineRef.limitToLast(10).on('child_removed', (snap) => {
