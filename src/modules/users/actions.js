@@ -17,27 +17,17 @@ export const addUser = u => ({ type: ADD_USER, curry: add(u), });
 export const removeUser = u => ({ type: REMOVE_USER, curry: remove(u), });
 export const checkConnections = id => getPresRef(id);
 
-export const catConn = (ref) => {
-  const pushR = ref.child('connections').push();
-
-  pushR.onDisconnect().remove();
-  pushR.set(Date.now());
-  return ref;
-};
-const updateRef = u => (ref) => {
-  console.log('updated ref');
-  ref.update(u); return ref;
-};
+export const catConn = ref =>
+   Promise.resolve(ref.child('connections').push())
+     .then(pref => pref.onDisconnect().remove()
+       .then(() => pref.set(Date.now())))
+     .then(() => ref);
+     
+const updateRef = u => ref => ref.update(u).then(() => ref);
 
 export const addOnline = u => dispatch =>
   Promise.resolve(onlineRef.child(u.id))
-
-    // .then(ref => Promise.resolve(ref.push())
-    //   .then(pref => pref.onDisconnect().remove()
-    //     .then(() => pref.set(Date.now())))
-    //   .then(() => ref))
     .then(updateRef(u))
-
     .then(catConn)
     .catch(console.error);
   
