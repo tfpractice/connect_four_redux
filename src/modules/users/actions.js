@@ -1,13 +1,14 @@
+import { Player, } from 'connect_four_functional';
 import { removeBin, removeSet, spread, } from 'fenugreek-collections';
 import { ADD_USER, REMOVE_USER, SET_USERS, } from './constants';
 import { fireUtils, rqUtils, } from '../../utils';
 import { setCurrent, } from '../auth/actions';
 const { connRef, fireApp, getPresRef, auth, db, getOnlineRef, onlineRef, } = fireUtils;
 const { rqConstants, rqActions, } = rqUtils;
-
+const { player, setID, setName, copy, } = Player;
 const hasID = arr => id => new Set(arr.map(n => n.id)).has(id);
 const set = users => () => users;
-const add = u => arr => hasID(arr)(u.id) ? arr : arr.concat(u);
+const add = u => arr => hasID(arr)(u.id) ? [ ...arr, ] : arr.concat(u);
 const remove = ({ id, }) => arr =>
   spread(removeSet(arr)(arr.find(n => n.id === id)));
 
@@ -17,7 +18,6 @@ export const removeUser = u => ({ type: REMOVE_USER, curry: remove(u), });
 export const checkConnections = id => getPresRef(id);
 
 export const catConn = (ref) => {
-  console.log('adding connection');
   const pushR = ref.child('connections').push();
 
   pushR.onDisconnect().remove();
@@ -31,7 +31,13 @@ const updateRef = u => (ref) => {
 
 export const addOnline = u => dispatch =>
   Promise.resolve(onlineRef.child(u.id))
+
+    // .then(ref => Promise.resolve(ref.push())
+    //   .then(pref => pref.onDisconnect().remove()
+    //     .then(() => pref.set(Date.now())))
+    //   .then(() => ref))
     .then(updateRef(u))
+
     .then(catConn)
     .catch(console.error);
   

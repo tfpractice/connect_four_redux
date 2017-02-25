@@ -7,7 +7,7 @@ export const authHandler = (store) => {
     if (user) {
       console.log('AUTH:SIGNEDIN.', user);
     } else {
-      console.log('AUTH:SIGNEDOUT.');
+
     }
   });
 };
@@ -15,8 +15,7 @@ export const authHandler = (store) => {
 export const connHandler = (store) => {
   connRef.on('value', (snap) => {
     if (snap.val()) {
-      // console.log('current ', auth.currentUser && auth.currentUser.uid);
-      auth.currentUser && store.dispatch(setCurrent(createPlayer(auth.currentUser)));
+      auth.currentUser && store.dispatch(login());
     } else {
       console.log('CONN:user disconnected', snap.val());
     }
@@ -24,6 +23,10 @@ export const connHandler = (store) => {
 };
 
 export const onlineHandler = (store) => {
+  const loggedIn = () => auth.currentUser;
+  const authID = () => loggedIn() && auth.currentUser.uid;
+  const matchID = val => val == authID();
+
   onlineRef.limitToLast(10).on('child_added', (snap) => {
     store.dispatch(addUser(snap.val()));
 
@@ -31,12 +34,13 @@ export const onlineHandler = (store) => {
   });
   
   onlineRef.limitToLast(10).on('child_changed', (snap) => {
-    console.log('CHILD CHANGED', snap.val(), snap.hasChild('connections'));
-    console.log('CHILD CHANGED', snap.hasChild('connections'));
-
-    // snap.hasChild('connections') || snap.ref.remove();
-
-    snap.hasChild('connections') || store.dispatch(logout());
+    if (!snap.hasChild('connections')) {
+      if (matchID(snap.key)) {
+        store.dispatch(logout());
+      } else {
+        snap.ref.remove();
+      }
+    }
   });
 
   onlineRef.limitToLast(10).on('child_removed', (snap) => {

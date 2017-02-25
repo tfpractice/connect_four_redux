@@ -1,3 +1,4 @@
+import { auth as fAuth, } from 'firebase';
 import { Player, } from 'connect_four_functional';
 import { addOnline, addUser, goOffline, } from '../users/actions';
 import { fireUtils, rqUtils, } from '../../utils';
@@ -24,8 +25,8 @@ export const createPlayer = u => setName(u.displayName)(setID(u.uid)(u));
 export const setCurrent = u => dispatch =>
    Promise.resolve(dispatch(setCurrentUser(u)))
      .then((arg) => {
-       console.log(JSON.stringify(u));
-       dispatch(addOnline(u));
+       console.log('preparing add', JSON.stringify(u));
+       return dispatch(addOnline(u));
      })
      .catch(err => console.error(err.message));
      
@@ -39,7 +40,7 @@ export const takeOffline = u => dispatch =>
 
 export const login = ({ displayName, } = { displayName: '', }) => dispatch =>
   Promise.resolve(dispatch(loginPend()))
-    .then(() => auth.signInAnonymously()
+    .then(() => fAuth().signInAnonymously()
       .then(u =>
         u.updateProfile({ displayName: (displayName || u.uid), })
           .then(() => {
@@ -50,22 +51,26 @@ export const login = ({ displayName, } = { displayName: '', }) => dispatch =>
       .catch(loginFail)
 );
 
-export const logout = () => dispatch =>
+export const logout = u => dispatch =>
   Promise.resolve(dispatch(logoutPend()))
     .then(() => auth.currentUser)
     .then((u) => {
       console.log('logoout', u);
-      return auth.signOut()
-        .then(() => {
-          console.log('goig off');
-          return u && goOffline({ id: u.uid, });
-        })
+      return u && goOffline({ id: u.uid, })
+        .then(() => u.delete())
+
+      // return auth.signOut()
+      //   .then(() => {
+      //     console.log('goig off');
+      //     return u && goOffline({ id: u.uid, });
+      //   })
         .then(() => Promise.all(
-          [ logoutSucc(null), unsetCurrent(null), ].map(dispatch)))
-        .then((arf) => {
-          console.log('now delete', u, arf);
-          return u.delete();
-        });
+          [ logoutSucc(null), unsetCurrent(null), ].map(dispatch)));
+
+        // .then((arf) => {
+        //   console.log('now delete', u, arf);
+        //   return u.delete();
+        // });
     })
 
     .catch(e => dispatch(logoutFail(e.message)));

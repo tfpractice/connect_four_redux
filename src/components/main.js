@@ -6,9 +6,9 @@ const Main = ({ users, }) => (
       <div className="App">
         <div className="App-header">
           <h2>Welcome to Connect Four Redux</h2>
+          <Users/>
+          <p className="App-intro" />
         </div>
-        <Users/>
-        <p className="App-intro" />
       </div>
     );
 
