@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect, } from 'react-redux';
-import FlatButton from 'material-ui/FlatButton';
+import Button from 'material-ui/Button';
 import { UserActs, } from '../modules';
 
 const mapStateToProps = ({ users, auth: { user, }, }) => ({ users, id: user && user.id, });
@@ -8,7 +8,7 @@ const Users = ({ users, addUser, id, }) => (
       <div className="App">
         <div className="App-header">
           <h1>the current user ID is {id}</h1>
-          <FlatButton label="add user" onClick={() => addUser('11')}/>
+          <Button label="add user" onClick={() => addUser('11')}/>
           
           <p>users</p>
           <ul>

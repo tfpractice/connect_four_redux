@@ -1,5 +1,5 @@
 import React from 'react';
-import FlatButton from 'material-ui/FlatButton';
+import Button from 'material-ui/Button';
 import { connect, } from 'react-redux';
 import { Field, } from 'redux-form';
 
@@ -10,7 +10,7 @@ import LogoutLink from './logoutLink';
 const baseLogin = ({ handleSubmit, }) => (
   <form onSubmit={handleSubmit} >
     <Field name="displayName" component={renderText} placeholder="displayName" />
-    <FlatButton label="Login" primary type="submit" />
+    <Button label="Login" primary type="submit" />
     <LogoutLink/>
   </form>
 );

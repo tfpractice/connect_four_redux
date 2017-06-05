@@ -1,9 +1,10 @@
 import React, { Component, } from 'react';
 import { connect, } from 'react-redux';
 import { BrowserRouter, Link, Route, Switch, } from 'react-router-dom';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+
+// import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+// import getMuiTheme from 'material-ui/styles/getMuiTheme';
+// import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import AppBar from 'material-ui/AppBar';
 import { LoginForm, Main, NoMatch, } from './components';
 
@@ -13,7 +14,6 @@ export class Routes extends Component {
 
   render () {
     return (
-<MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme, { userAgent: false, })}>
   <BrowserRouter>
     <div className="Game">
       <AppBar
@@ -29,7 +29,6 @@ export class Routes extends Component {
       </div>
     </div>
   </BrowserRouter>
-</MuiThemeProvider>
     );
   }
 }

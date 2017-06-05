@@ -33,7 +33,7 @@
     "connect_four_functional": "^2.0.1",
     "fenugreek-collections": "^1.1.1",
     "firebase": "^4.1.1",
-    "material-ui": "^0.18.1",
+    "material-ui": "next",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-redux": "^5.0.5",
