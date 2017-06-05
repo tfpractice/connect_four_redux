@@ -1,8 +1,7 @@
-import React, { Component, } from 'react';
+import React from 'react';
 import { connect, } from 'react-redux';
 import FlatButton from 'material-ui/FlatButton';
 import { UserActs, } from '../modules';
-import { auth, } from '../utils/firebase';
 
 const mapStateToProps = ({ users, auth: { user, }, }) => ({ users, id: user && user.id, });
 const Users = ({ users, addUser, id, }) => (

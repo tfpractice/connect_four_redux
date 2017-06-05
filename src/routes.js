@@ -4,29 +4,12 @@ import { BrowserRouter, Link, Route, Switch, } from 'react-router-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
-import FlatButton from 'material-ui/FlatButton';
 import AppBar from 'material-ui/AppBar';
-import { LoginForm, LogoutLink, Main, NoMatch, } from './components';
-import { AuthActs, } from './modules';
-
-import { connRef, fireApp, } from './utils/firebase';
+import { LoginForm, Main, NoMatch, } from './components';
 
 const mapStateToProps = ({ users, }) => ({ users, });
 
 export class Routes extends Component {
-  // ComponentDidMount() {
-  //   const { dispatch, } = this.props;
-  //
-  //   console.log(dispatch(AuthActs.addUser('3')));
-  //   console.log(this.props);
-  //   connRef.on('value', (snapshot) => {
-  //     if (snapshot.val()) {
-  //       console.log('connection val');
-  //       dispatch(AuthActs.addUser('3'));
-  //       fireApp.auth().signInAnonymously().catch();
-  //     }
-  //   });
-  // }
 
   render () {
     return (
