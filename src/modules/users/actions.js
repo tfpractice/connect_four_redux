@@ -29,6 +29,7 @@ export const addOnline = u => dispatch =>
   Promise.resolve(onlineRef.child(u.id))
     .then(updateRef(u))
     .then(catConn)
+    
     .catch(console.error);
   
 export const goOffline = ({ id, }) => {

@@ -12,9 +12,7 @@ import { AuthActs, } from '../../modules';
 const baseLogin = ({ handleSubmit, }) => (
   <form onSubmit={handleSubmit} >
     <Field name="displayName" component={TextField} placeholder="displayName" type="text" />
-    {/* <Field name="password" component={TextField} placeholder="password" type="password" /> */}
     <FlatButton label="Login" primary type="submit" />
-    {/* <AlertBar message={'you logged in'} /> */}
   </form>
 );
 const ReduxLogin = reduxForm()(baseLogin);
