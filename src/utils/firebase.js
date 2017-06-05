@@ -18,3 +18,15 @@ export const presenceRef = db.ref('connections');
 
 export const getPresRef = id => presenceRef.child(`${id}`);
 export const getOnlineRef = id => onlineRef.push(`${id}`);
+
+// export const fireMid = ({ dispatch, getState, }) => next => (action) => {
+//   const result = next(action);
+//
+//   if (GAME_ACTIONS.has(action.type)) {
+//     if (action.type !== 'UPDATE_GAME') {
+//       db.ref('game').set(getState().game);
+//     }
+//   }
+//
+//   return result;
+// };
