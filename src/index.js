@@ -9,6 +9,7 @@ import { authHandler, connHandler, onlineHandler, } from './handlers';
 import './index.css';
 import Routes from './routes';
 import { styleManager, theme, } from './utils';
+import { BrowserRouter, Link, Route, Switch, } from 'react-router-dom';
 
 injectTapEventPlugin();
 const store = getStore();
@@ -19,7 +20,9 @@ onlineHandler(store);
 ReactDOM.render(
   <Provider store={store}>
     <MuiThemeProvider theme={theme} styleManager={styleManager}>
-      <Routes />
+      <BrowserRouter>
+        <Route component={Routes} />
+      </BrowserRouter>
     </MuiThemeProvider>
     </Provider>, document.getElementById('root')
 );

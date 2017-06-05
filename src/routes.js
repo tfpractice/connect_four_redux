@@ -1,6 +1,7 @@
 import React, { Component, } from 'react';
 import { connect, } from 'react-redux';
 import { BrowserRouter, Link, Route, Switch, } from 'react-router-dom';
+import Grid from 'material-ui/Grid';
 
 // import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 // import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -14,7 +15,7 @@ export class Routes extends Component {
 
   render () {
     return (
-  <BrowserRouter>
+
     <div className="Game">
       <AppBar
         title={'Connect Four Redux'}
@@ -28,7 +29,6 @@ export class Routes extends Component {
         </Switch>
       </div>
     </div>
-  </BrowserRouter>
     );
   }
 }
