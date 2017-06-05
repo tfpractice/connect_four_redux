@@ -38,7 +38,6 @@ export class Routes extends Component {
         iconClassNameRight="muidocs-icon-navigation-expand-more"
       />
       <LoginForm formID={'mainLogin'}/>
-      <LogoutLink/>
       <div className="container">
         <Switch>
           <Route path="/" component={Main} />

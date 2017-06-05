@@ -9,6 +9,7 @@ import { Field, reduxForm, } from 'redux-form';
 // import { resetForm, } from '../../utils';
 import { AuthActs, } from '../../modules';
 import { ClearForm, renderText, } from '../../utils';
+import LogoutLink from './logoutLink';
 
 // import { AlertBar, } from '../stateful';
 
@@ -16,17 +17,17 @@ const baseLogin = ({ handleSubmit, }) => (
   <form onSubmit={handleSubmit} >
     <Field name="displayName" component={renderText} placeholder="displayName" />
     <FlatButton label="Login" primary type="submit" />
+    <LogoutLink/>
   </form>
 );
-const ReduxLogin = reduxForm()(baseLogin);
+const ReduxLogin = ClearForm(baseLogin);
 
 const LoginForm = ({ login, formID, }) => (
-  <div className="row">
-    <p>Login</p>
+
     <ReduxLogin
-      form={formID} onSubmit={login} onSubmitSuccess={resetForm(formID)}
+      form={formID} onSubmit={login}
     />
-  </div>
+
 );
 
 export default connect(null, AuthActs)(LoginForm);
