@@ -75,8 +75,20 @@ export const dragEnded = force => (d) => {
 
 export const linkSelect = links => d3.selectAll('.link').data(links);
 
-export const nodeSelect = nArr =>
-  d3.select('.boardVis')
+export const nodeSelect = (nArr) => {
+  // const bv
+  // import d3 from 'd3';
+
+  const bv = d3.select('.boardVis').attr;
+
+  // .attr({
+  //    width: '100%',
+  //    height: '100%',
+  // });
+
+  console.log('bv', bv);
+  
+  return d3.select('.boardVis')
     .selectAll('.column')
     .data(cIDs(nArr))
     .select('.colGroup')
@@ -86,6 +98,7 @@ export const nodeSelect = nArr =>
     .attr('r', 15)
     .attr('fill', (d => color(d.player)))
     .attr('opacity', 0.4);
+};
     
 export const updateNodes = (domNodes = d3.selectAll('.nodeCircle')) => (arg) => {
   domNodes

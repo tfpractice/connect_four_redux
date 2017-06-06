@@ -17,6 +17,12 @@ const { joinGrid, } = Grid;
 const { board, players: getPlayers, } = Game;
 
 const mapStateToProps = ({ players, game, }, { nodes: xnodes, }) => {
+  d3.select('.boardVis');
+
+    // .attr({
+    //  width: '100%',
+    //  height: '100%',
+    // });
   const nodes = game.nodes;
   const myGrid = joinGrid(board(game));
   const links = getPlayers(game).map(pLinks(game.nodes)).reduce(flatten, []);
