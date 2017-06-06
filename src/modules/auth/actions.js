@@ -9,7 +9,10 @@ const { auth, onlineRef, } = fireUtils;
 const { rqActions, } = rqUtils;
 const { player, setID, setName, } = Player;
 
-const set = user => () => user;
+const set = user => () => {
+  console.log('user', user);
+  return user || null;
+};
 const unset = () => () => null;
 
 const loginPend = rqActions(LOGIN).pending;
@@ -19,8 +22,10 @@ const logoutPend = rqActions(LOGOUT).pending;
 const logoutFail = rqActions(LOGOUT).failure;
 const logoutSucc = rqActions(LOGOUT).success;
 
-export const createPlayer = u =>
-  u.uid ? setName(u.displayName)(setID(u.uid)(u)) : u;
+export const createPlayer = (u) => {
+  console.log('createPlayer', u);
+  return u.uid ? setName(u.displayName || u.uid)(setID(u.uid)(u)) : u;
+};
 
 export const setCurrentUser = u => ({ type: SET_CURRENT_USER, curry: set(u), });
 
