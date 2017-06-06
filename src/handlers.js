@@ -1,5 +1,5 @@
 import { auth, connRef, onlineRef, } from './utils/firebase';
-import { createPlayer, login, logout, setCurrent, } from './modules/auth/actions';
+import { login, logout, } from './modules/auth/actions';
 import { addPlayer, removePlayer, } from './modules/game/actions';
 import { addUser, removeUser, setUsers, } from './modules/users/actions';
 
@@ -29,7 +29,6 @@ export const authHandler = (store) => {
     if (user) {
       console.log('AUTH:SIGNEDIN.', user);
     } else {
-
     }
   });
 };
@@ -48,19 +47,19 @@ export const onlineHandler = (store) => {
   onlineRef.on('child_added', (snap) => {
     hasName(snap) && store.dispatch(addPlayer(snap.val()));
   });
-
+  
   onlineRef.on('child_changed', (snap) => {
     if (curDiscon(snap)) {
       console.log('child_changed curDiscon(snap)', snap.key, snap.val());
-  
+      
       store.dispatch(logout());
     } else if (noConn(snap)) {
       console.log('child_changed noConn(snap)', snap.key, snap.val());
-  
+      
       snap.ref.remove();
     } else if (hasConn(snap)) {
       console.log('child_changed hasConn(snap)', snap.key, snap.val());
-  
+      
       store.dispatch(addPlayer(snap.val()));
     }
   });
@@ -68,12 +67,10 @@ export const onlineHandler = (store) => {
   onlineRef.on('child_removed', (snap) => {
     console.log('child removed', snap.val());
     if (noConn(snap)) {
-      console.log('child_removed alternate curDiscon disconnected', snap.val(), snap.key());
-
-      // store.dispatch(removePlayer(snap.val()));
+      console.log('child_removed alternate  disconn', snap.val(), snap.key());
       store.dispatch(removeUser(snap.val()));
     }
-  
+    
     if (curDiscon(snap)) {
       console.log('child_removed alternate curDiscon disconnected', snap.val(), snap.key());
     }
