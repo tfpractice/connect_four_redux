@@ -1,28 +1,16 @@
-import { connect, } from 'react-redux';
 import * as d3 from 'd3';
+import { connect, } from 'react-redux';
 import { Game, } from 'connect_four_functional';
 import { flattenBin as flatten, spread, } from 'fenugreek-collections';
 import { Grid, } from 'game_grid';
 import Visualization from './component';
-import { dragEnded,
-dragged,
-dragStarted, graphLinks,
-linkSelect,
-nodeSelect,
-playerLinks,
-pLinks,
-updateLinks, updateNodes, } from './funcs';
+import { dragEnded, dragged, dragStarted, graphLinks, linkSelect,
+nodeSelect, playerLinks, pLinks, updateLinks, updateNodes, } from './funcs';
 
 const { joinGrid, } = Grid;
 const { board, players: getPlayers, } = Game;
 
 const mapStateToProps = ({ players, game, }, { nodes: xnodes, }) => {
-  d3.select('.boardVis');
-
-    // .attr({
-    //  width: '100%',
-    //  height: '100%',
-    // });
   const nodes = game.nodes;
   const myGrid = joinGrid(board(game));
   const links = getPlayers(game).map(pLinks(game.nodes)).reduce(flatten, []);

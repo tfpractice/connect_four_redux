@@ -1,5 +1,6 @@
 import React from 'react';
 import d3 from 'd3';
+
 const Visualization = ({ links, }) =>
 
   // const bv = d3.select('.boardVis');

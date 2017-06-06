@@ -17,9 +17,7 @@ const baseLogin = ({ handleSubmit, }) => (
 const ReduxLogin = ClearForm(baseLogin);
 
 const LoginForm = ({ login, formID, }) => (
-    <ReduxLogin
-      form={formID} onSubmit={login}
-    />
+    <ReduxLogin form={formID} onSubmit={login} />
 );
 
 export default connect(null, AuthActs)(LoginForm);

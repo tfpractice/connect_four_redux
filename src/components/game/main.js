@@ -11,10 +11,8 @@ class Home extends Component {
     return (
       <Grid container direction="column" justify="center" align="center" style={{ paddingTop: '5rem', }}>
         <Grid item xs={11} sm={10} className="homeDiv">
-          {/* <Paper> */}
           this is the game section
           <Board/>
-          {/* </Paper> */}
         </Grid>
       </Grid>
     );
