@@ -1,61 +1,108 @@
-/* eslint-disable */
+
 import * as d3 from 'd3';
-// const C4Func = require('connect_four_functional');
-import * as C4Func from 'connect_four_functional';
-console.log('C4Func', C4Func);
-import { spread, flattenBin as flatten } from 'fenugreek-collections';
-const { Utils, 
-  Board: C4Board,
-   Traversals, 
-   Node: { column: getCol, samePlayer } } =
-C4Func;
-// const { Commands: { spread, flatten } } = Utils;
-const { next, nodes: gNodes, neighbors: nabes } = C4Board;
-const { fromElements } = C4Board;
-const { omniGraph, colGraph, rowGraph, posGraph, negGraph } = Traversals;
+import { Board, Game, Node, } from 'connect_four_functional';
 
-export const playerGraph = (g) => ({ id: player }) =>
-  fromElements(...gNodes(g).filter(samePlayer({ player })));
+import { flattenBin as flatten, spread, } from 'fenugreek-collections';
+import { Compare, Components, Node as GdNode, Grid, } from 'game_grid';
+import { Graph, } from 'graph-curry';
+
+const { omniComps, } = Components;
+const { sameCol, } = Compare;
+
+const { samePlayer, } = Node;
+const { column: getCol, } = GdNode;
+
+const { playerGraph, } = Board;
+const { board, players: getPlayers, } = Game;
+
+const { graph, nodes: getNodes, neighbors: nabes, } = Graph;
+
+const { joinGrid, colGrid, rowGrid, posGrid, negGrid, } = Grid;
+
 export const cIDs = nodes => spread(new Set(nodes.map(getCol)));
-export const tupleLink = ([source, nbs]) => nbs.map(target => ({ source, target }));
-export const reduceLink = (g) => (e) => tupleLink([e, nabes(g)(e)]);
-export const concatLinks = (links, newLinks) => [...links, ...newLinks];
-export const graphLinks = (graph) =>
-  gNodes(graph).map(reduceLink(graph)).reduce(concatLinks, []);
+export const tupleLink = ([ source, nbs, ]) => nbs.map(target => ({ source, target, }));
+export const reduceLink = g => e => tupleLink([ e, nabes(g)(e), ]);
+export const concatLinks = (links, newLinks) => [ ...links, ...newLinks, ];
+export const graphLinks = graph =>
+  getNodes(graph).map(reduceLink(graph)).reduce(concatLinks, []);
+  
+export const pLinks = nodes => ({ id: player, }) => {
+  console.log('player', player);
 
+  return graphLinks(joinGrid(graph(...nodes.filter(samePlayer({ player, })))));
+};
+
+export const pCols = g => p =>
+  graphLinks(colGrid(playerGraph(g)(p)));
+export const pRows = g => p =>
+  graphLinks(rowGrid(playerGraph(g)(p)));
+export const pPos = g => p =>
+  graphLinks(posGrid(playerGraph(g)(p)));
+export const pNeg = g => p =>
+  graphLinks(negGrid(playerGraph(g)(p)));
+  
+export const playerLinks = g => p =>
+  [ pCols(g)(p), pRows(g)(p), pPos(g)(p), pNeg(g)(p), ].reduce(flatten, []);
+  
 export const color = d3.scaleOrdinal()
-  .domain([null, 0, 1])
-  .range(['steelblue', '#ff0000', '#000000']);
+    .domain([ null, 0, 1, ])
+    .range([ 'steelblue', '#ff0000', '#000000', ]);
 
 export const scaleX = d3.scaleLinear()
-  .domain([0, 7])
-  .range([960 * .25, (960 * .75)]);
+    .domain([ 0, 7, ])
+    .range([ 960 * 0.25, (960 * 0.75), ]);
 
 export const scaleY = d3.scaleLinear()
-  .domain([0, 7])
-  .range([500 * .25, (500 * .75)]);
+    .domain([ 0, 7, ])
+    .range([ 500 * 0.25, (500 * 0.75), ]);
 
-// export const playerLinks = (g) => (p) => graphLinks(playerGraph(g)(p));
-export const pCols = (g) => (p) => graphLinks(colGraph(playerGraph(g)(p)));
-export const pRows = (g) => (p) => graphLinks(rowGraph(playerGraph(g)(p)));
-export const pPos = (g) => (p) => graphLinks(posGraph(playerGraph(g)(p)));
-export const pNeg = (g) => (p) => graphLinks(negGraph(playerGraph(g)(p)));
-export const playerLinks = (g) => (p) =>
-  [pCols(g)(p), pRows(g)(p), pPos(g)(p), pNeg(g)(p)].reduce(flatten, []);
-
-export const dragStarted = (force) => (d) => {
+export const dragStarted = force => (d) => {
+  console.log('dragStarted', d);
   if (!d3.event.active) force.alphaTarget(0.3).restart();
   d3.event.x = d.fx = d.x;
   d3.event.y = d.fy = d.y;
 };
 
-export const dragged = (force) => (d) => {
+export const dragged = force => (d) => {
+  console.log('draggged', d);
+
   d.fx = d3.event.sourceEvent.x;
   d.fy = d3.event.sourceEvent.y;
 };
 
-export const dragEnded = (force) => (d) => {
+export const dragEnded = force => (d) => {
+  console.log('dragEnded', d);
   if (!d3.event.active) force.alphaTarget(0);
   d.fx = null;
   d.fy = null;
+};
+
+export const linkSelect = links => d3.selectAll('.link').data(links);
+
+export const nodeSelect = nArr =>
+  d3.select('.boardVis')
+    .selectAll('.column')
+    .data(cIDs(nArr))
+    .select('.colGroup')
+    .selectAll('.node')
+    .data(column => nArr.filter(sameCol({ column, })))
+    .select('.nodeCircle')
+    .attr('r', 15)
+    .attr('fill', (d => color(d.player)))
+    .attr('opacity', 0.4);
+    
+export const updateNodes = (domNodes = d3.selectAll('.nodeCircle')) => () => {
+  domNodes
+    .attr('cx', (({ x, }) => x))
+    .attr('cy', (({ y, }) => y));
+};
+
+export const updateLinks = (domLinks = d3.selectAll('.link')) => () => {
+  domLinks
+    .attr('stroke', (d => color(d.source.player)))
+    .attr('stroke-width', 1)
+    .attr('x1', ({ source: { x, }, }) => x)
+    .attr('y1', ({ source: { y, }, }) => y)
+    .attr('x2', ({ target: { x, }, }) => x)
+    .attr('y2', ({ target: { y, }, }) => y);
 };

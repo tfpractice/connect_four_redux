@@ -34,6 +34,8 @@
     "d3": "^4.9.1",
     "fenugreek-collections": "^1.1.1",
     "firebase": "^4.1.1",
+    "game_grid": "^4.0.2",
+    "graph-curry": "^2.1.0",
     "material-ui": "next",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",

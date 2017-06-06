@@ -2963,7 +2963,7 @@ function-bind@^1.0.2, function-bind@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/function-bind/-/function-bind-1.1.0.tgz#16176714c801798e4e8f2cf7f7529467bb4a5771"
 
-game_grid@^4.0.1:
+game_grid@^4.0.1, game_grid@^4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/game_grid/-/game_grid-4.0.2.tgz#d9723f42f8180f49ff676e0cbf6be8d5e0e16d3f"
   dependencies:
