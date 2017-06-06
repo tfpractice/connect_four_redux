@@ -15,6 +15,7 @@ import { BrowserRouter, Link, Route, Switch, } from 'react-router-dom';
 injectTapEventPlugin();
 const store = getStore();
 
+authHandler(store);
 connHandler(store);
 onlineHandler(store);
 

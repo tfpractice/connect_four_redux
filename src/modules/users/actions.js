@@ -6,9 +6,14 @@ import { setCurrent, } from '../auth/actions';
 const { connRef, fireApp, getPresRef, auth, db, getOnlineRef, onlineRef, } = fireUtils;
 const { rqConstants, rqActions, } = rqUtils;
 const { player, setID, setName, copy, } = Player;
+
 const hasID = arr => id => new Set(arr.map(n => n.id)).has(id);
 const set = users => () => users;
-const add = u => arr => hasID(arr)(u.id) ? [ ...arr, ] : arr.concat(u);
+const add = u => arr => arr.filter(p => p.id !== u.id).concat(u);
+
+// hasID(arr)(u.id) ?
+// [ ...arr, ] : arr.concat(u);
+
 const remove = ({ id, }) => arr =>
   spread(removeSet(arr)(arr.find(n => n.id === id)));
 
@@ -29,7 +34,6 @@ export const addOnline = u => dispatch =>
   Promise.resolve(onlineRef.child(u.id))
     .then(updateRef(u))
     .then(catConn)
-    
     .catch(console.error);
   
 export const goOffline = ({ id, }) => {

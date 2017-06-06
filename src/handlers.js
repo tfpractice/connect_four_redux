@@ -1,5 +1,6 @@
 import { auth, connRef, onlineRef, } from './utils/firebase';
 import { createPlayer, login, logout, setCurrent, } from './modules/auth/actions';
+import { addPlayer, removePlayer, } from './modules/game/actions';
 import { addUser, removeUser, setUsers, } from './modules/users/actions';
 
 const loggedIn = () => !!auth.currentUser;
@@ -45,7 +46,7 @@ export const onlineHandler = (store) => {
     hasName(snap) && store.dispatch(removeUser({ id: 'computer', }));
   });
   onlineRef.on('child_added', (snap) => {
-    hasName(snap) && store.dispatch(addUser(snap.val()));
+    hasName(snap) && store.dispatch(addPlayer(snap.val()));
   });
 
   onlineRef.on('child_changed', (snap) => {
@@ -60,13 +61,16 @@ export const onlineHandler = (store) => {
     } else if (hasConn(snap)) {
       console.log('child_changed hasConn(snap)', snap.key, snap.val());
   
-      store.dispatch(addUser(snap.val()));
+      store.dispatch(addPlayer(snap.val()));
     }
   });
   
   onlineRef.on('child_removed', (snap) => {
     console.log('child removed', snap.val());
     if (noConn(snap)) {
+      console.log('child_removed alternate curDiscon disconnected', snap.val(), snap.key());
+
+      // store.dispatch(removePlayer(snap.val()));
       store.dispatch(removeUser(snap.val()));
     }
   

@@ -1,7 +1,7 @@
 import { auth as fAuth, } from 'firebase';
 import { Player, } from 'connect_four_functional';
 import { addOnline, addUser, goOffline, } from '../users/actions';
-import { addPlayer, } from '../game/actions';
+import { addPlayer, removePlayer, } from '../game/actions';
 import { fireUtils, rqUtils, } from '../../utils';
 import { LOGIN, LOGOUT, SET_CURRENT_USER, } from './constants';
 const { auth, onlineRef, } = fireUtils;
@@ -21,7 +21,8 @@ const logoutSucc = rqActions(LOGOUT).success;
 
 export const setCurrentUser = u => ({ type: SET_CURRENT_USER, curry: set(u), });
 
-export const createPlayer = u => setName(u.displayName)(setID(u.uid)(u));
+export const createPlayer = u =>
+u.displayName ? setName(u.displayName)(setID(u.uid)(u)) : u;
 
 export const setCurrent = u => dispatch =>
    Promise.resolve(dispatch(setCurrentUser(u)))
@@ -32,12 +33,23 @@ export const setCurrent = u => dispatch =>
      .catch(err => console.error(err.message));
      
 export const unsetCurrent = () => dispatch =>
-        Promise.resolve(dispatch(setCurrentUser(null)))
-
-          .catch(err => console.error(err.message));
+  Promise.resolve(dispatch(setCurrentUser(null)))
+    .catch(err => console.error(err.message));
           
-export const takeOffline = u => dispatch =>
-  onlineRef.child(u.id).remove();
+export const takeOffline = (u) => {
+  console.log('takeOffline', u);
+  console.log('takeOffline', auth.currentUser);
+  return (onlineRef.child(u.id).remove()).then(() => u);
+};
+export const authPlayer = amod => createPlayer(amod.currentUser);
+
+  // export const takeOffline = u =>
+  // u && onlineRef.child(`${u.uid}`).remove().then(() => u);
+
+export const deleteU = u => u && u.delete().then(() => {
+  console.log('u', u);
+  return u;
+});
 
 export const login = ({ displayName, } = { displayName: '', }) => dispatch =>
   Promise.resolve(dispatch(loginPend()))
@@ -52,26 +64,43 @@ export const login = ({ displayName, } = { displayName: '', }) => dispatch =>
       .catch(loginFail)
 );
 
-export const logout = u => dispatch =>
-  Promise.resolve(dispatch(logoutPend()))
-    .then(() => auth.currentUser)
+// export const logout = u => dispatch =>
+//   Promise.resolve(dispatch(logoutPend()))
+//     .then(() => auth.currentUser)
+//
+//     // .then(takeOffline)
+//
+//     .then((au) => {
+//       console.log('logoout', u);
+//       console.log('au', au);
+//
+//       // return u && goOffline({ id: u.uid, })
+//       return u && Promise.resolve(takeOffline(u))
+//
+//         // .then(() => u.delete())
+//
+//         .then(() => Promise.all(
+//           [ logoutSucc(null), unsetCurrent(null), ].map(dispatch)));
+//     })
+//     .catch(e => dispatch(logoutFail(e.message)));
+//
+export const logout = (user = authPlayer(auth)) => (dispatch, getState) => {
+  console.log('logging out user arg', user, getState().auth.user, auth.currentUser);
+  return Promise.resolve(dispatch(logoutPend()))
+    .then(() => user)
+    .then(takeOffline)
+
+    // .then(deleteU)
+    // .then(createPlayer)
     .then((u) => {
-      console.log('logoout', u);
-      return u && goOffline({ id: u.uid, })
-        .then(() => u.delete())
-
-      // return auth.signOut()
-      //   .then(() => {
-      //     console.log('goig off');
-      //     return u && goOffline({ id: u.uid, });
-      //   })
-        .then(() => Promise.all(
-          [ logoutSucc(null), unsetCurrent(null), ].map(dispatch)));
-
-        // .then((arf) => {
-        //   console.log('now delete', u, arf);
-        //   return u.delete();
-        // });
+      console.log('auth.currentUser', auth.currentUser);
+      return Promise.all([
+        logoutSucc(),
+        removePlayer(getState().auth.user),
+        unsetCurrent(),
+        auth.currentUser.delete(),
+      
+      ].map(dispatch));
     })
-
     .catch(e => dispatch(logoutFail(e.message)));
+};
