@@ -1,19 +1,16 @@
 import { connect, } from 'react-redux';
-import Visualization from './component';
 import * as d3 from 'd3';
-import * as C4Func from 'connect_four_functional';
 import { Game, } from 'connect_four_functional';
 import { flattenBin as flatten, spread, } from 'fenugreek-collections';
 import { Grid, } from 'game_grid';
-import { color, dragEnded,
+import Visualization from './component';
+import { dragEnded,
 dragged,
 dragStarted, graphLinks,
 linkSelect,
 nodeSelect,
 playerLinks,
 pLinks,
-scaleX,
-scaleY,
 updateLinks, updateNodes, } from './funcs';
 
 const { joinGrid, } = Grid;
@@ -34,7 +31,7 @@ const mapStateToProps = ({ players, game, }, { nodes: xnodes, }) => {
  
   nodeSelect(nodes).call(d3.drag()
     .on('start', dragStarted(myForce))
-    .on('drag', dragged)
+    .on('drag', dragged(myForce))
     .on('end', dragEnded(myForce)));
  
   return ({ links, });

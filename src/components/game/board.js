@@ -6,9 +6,7 @@ import Visualization from './visualization';
 const stateToProps = ({ game, }) =>
   ({ game, colIDs: [ ...new Set(game.nodes.map(n => n.column)), ], });
 
-const Board = ({ nodes, actions, colIDs, active, winner, }) => {
-  console.log('colIDs', colIDs);
-  return (
+const Board = ({ nodes, actions, colIDs, active, winner, }) => (
   <section className="board">
     <svg className="boardVis" stroke="green" width={1000} height={600}>
       <Visualization nodes={nodes} />
@@ -16,12 +14,5 @@ const Board = ({ nodes, actions, colIDs, active, winner, }) => {
     </svg>
   </section>
   );
-};
-
-//
-// Board.propTypes = {
-//   nodes: PropTypes.array.isRequired,
-//   actions: PropTypes.object.isRequired,
-// };
 
 export default connect(stateToProps)(Board);
