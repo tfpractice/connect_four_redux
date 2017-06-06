@@ -10,7 +10,7 @@ const stateToProps = ({ game, }) =>
 const Board = ({ nodes, actions, colIDs, active, winner, }) => (
   <Grid container className="board">
     <Grid item xs={12}>
-      <svg className="boardVis" stroke="green" width={'100%'} height={'100% '}>
+      <svg className="boardVis" width={1000} height={600}>
         <Visualization />
         {colIDs.map(id => <Column key={id} id={id} />) }
       </svg>
