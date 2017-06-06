@@ -15,7 +15,9 @@ class Game extends Component {
     return (
       <Grid container direction="column" justify="center" align="center" style={{ paddingTop: '5rem', }}>
         <Grid item xs={11} sm={10} className="homeDiv">
-          <Button onClick={start}>Start game</Button>                    <Board/>
+          <Button onClick={start}>Start game</Button>
+          <Board/>
+          
         </Grid>
       </Grid>
     );

@@ -94,13 +94,14 @@ export const updateNodes = (domNodes = d3.selectAll('.nodeCircle')) => (arg) => 
 
 export const updateLinks = (domLinks = d3.selectAll('.link')) => () => {
   domLinks
-
     .attr('stroke', ((d) => {
-      console.log('d.source', d.source);
-      return color(d.source.player);
-    }))
+      const a = 0;
 
-    // .attr('stroke', '#f0f')
+      // console.log('d', d);
+
+      // return color(d.source.player);
+      return color(0);
+    }))
     .attr('stroke-width', 3)
     .attr('x1', ({ source: { x, }, }) => x)
     .attr('y1', ({ source: { y, }, }) => y)

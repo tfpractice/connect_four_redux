@@ -25,6 +25,7 @@ export class Main extends Component {
             <Route component={NoMatch}/>
           </Switch>
           <Route path="/" component={Game} />
+          
         </Grid>
       </Grid>
     </Grid>

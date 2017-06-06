@@ -21,7 +21,6 @@ const Visualization = ({ links, }) =>
         y1={source.y}
         x2={target.x}
         y2={target.y}
-        stroke={'#f0f'}
         className="link"/>)
     )}
   </svg>

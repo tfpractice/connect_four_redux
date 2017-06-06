@@ -59,8 +59,11 @@ const stateToProps = ({ game, auth: { user, }, }, { id, }) => {
   });
 };
 const Column = ({ id, active, next, nodes, game, mOver, clk, claimNext, setColumn, isActive, }) => {
-  console.log('next(game)', Game.next(game));
-  console.log('Game.colNodes(game)', Game.colNodes(game));
+  const a = 0;
+
+  // console.log('next(game)', Game.next(game));
+  // console.log('Game.colNodes(game)', Game.colNodes(game));
+
   return (
   <svg className="column" id={`col_${id}`}
     onClick={() => isActive && claimNext(game)}
