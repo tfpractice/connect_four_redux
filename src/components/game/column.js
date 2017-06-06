@@ -4,11 +4,10 @@ import Node from './node';
 import { GameActs, } from '../../modules';
 
 import { Board as C4Board, Node as C4Node, Game, } from 'connect_four_functional';
-const isActive = u => (g) => {
-  console.log('isActive u', u);
-  console.log('Game.active(g)', Game.active(g));
-  return u && Game.active(g).id === u.id;
-};
+const getID = ({ id, } = { id: '', }) => id || '';
+
+const isActive = u => g =>
+   u && getID(u) && getID(Game.active(g)) === getID(u);
 
 // const{actions}
 // const { sameCol, samePlayer } = C4Node;
@@ -50,18 +49,27 @@ const mapStateToProps = ({ players: [ active, passive, ], nodes, auth: { user, }
   // });
 };
 const stateToProps = ({ game, auth: { user, }, }, { id, }) => {
-  console.log('user', user);
+  // console.log('user', user);
+  const a = 0;
+
   return ({
- nodes: game.nodes.filter(({ column, }) => column === id),
- isActive: isActive(user)(game),
+    game,
+    nodes: game.nodes.filter(({ column, }) => column === id),
+    isActive: isActive(user)(game),
   });
 };
-const Column = ({ id, active, next, nodes, mOver, clk, setColumn, isActive, }) => (
-  <svg className="column" id={`col_${id}`} onClick={clk} onMouseOver={() => isActive && setColumn(id)}>
+const Column = ({ id, active, next, nodes, game, mOver, clk, claimNext, setColumn, isActive, }) => {
+  console.log('next(game)', Game.next(game));
+  console.log('Game.colNodes(game)', Game.colNodes(game));
+  return (
+  <svg className="column" id={`col_${id}`}
+    onClick={() => isActive && claimNext(game)}
+    onMouseOver={() => isActive && setColumn(id)}>
     <g className="colGroup" stroke={'none'}>
       {nodes.map(n => <Node key={n.id} node={n}/>)}
-          </g>
-    </svg>
-);
+    </g>
+  </svg>
+  );
+};
 
 export default connect(stateToProps, GameActs)(Column);

@@ -36,8 +36,15 @@ export const removePlayer = player =>
 export const setColumn = cID =>
  ({ type: SET_COLUMN, curry: Game.setColumn(cID), });
 
-export const claimNext = () =>
-({ type: CLAIM_NEXT, curry: Game.claimNext, });
+export const start = () => ({ type: START_GAME, curry: Game.start, });
+export const claimNext = (g) => {
+  console.log('g.nodes', g.nodes);
+
+  // cl
+  // console.log('Game.claimNext(g)', Game.claimNext(g));
+  console.log('Game.claimNext(g).nodes', Game.claimNext(g).nodes);
+  return ({ type: CLAIM_NEXT, curry: Game.claimNext, });
+};
 
 // export const setNodes = nodes => ({ type: SET_NODES, curry: Game.setNodes(nodes), });
 // export const setNodes = nodes => ({ type: SET_NODES, curry: Game.setNodes(nodes), });
