@@ -33,49 +33,21 @@ export const authHandler = (store) => {
   });
 };
 
-// export const connHandler = (store) => {
-//   connRef.on('value', (snap) => {
-//     if (snap.val()) {
-//       auth.currentUser && store.dispatch(login());
-//     } else {
-//       console.log('CONN:user disconnected', snap.val());
-//     }
-//   });
-// };
-
 export const connHandler = (store) => {
   connRef.on('value', (snap) => {
+    console.log('getUser()', getUser());
     reconnected(snap) && store.dispatch(login(getUser()));
   });
 };
 
 export const onlineHandler = (store) => {
-  // const loggedIn = () => auth.currentUser;
-  // const authID = () => loggedIn() && auth.currentUser.uid;
-  // const matchID = val => val == authID();
-
-  // onlineRef.limitToLast(10).on('child_added', (snap) => {
-  //   store.dispatch(addUser(snap.val()));
-  //
-  //   // snap.hasChild('connections') || snap.ref.remove();
-  // });
-  
   onlineRef.once('child_added', (snap) => {
     hasName(snap) && store.dispatch(removeUser({ id: 'computer', }));
   });
   onlineRef.on('child_added', (snap) => {
     hasName(snap) && store.dispatch(addUser(snap.val()));
   });
-  
-  // onlineRef.limitToLast(10).on('child_changed', (snap) => {
-  //   if (!snap.hasChild('connections')) {
-  //     if (matchID(snap.key)) {
-  //       store.dispatch(logout());
-  //     } else {
-  //       snap.ref.remove();
-  //     }
-  //   }
-  // });
+
   onlineRef.on('child_changed', (snap) => {
     if (curDiscon(snap)) {
       console.log('child_changed curDiscon(snap)', snap.key, snap.val());
@@ -91,11 +63,6 @@ export const onlineHandler = (store) => {
       store.dispatch(addUser(snap.val()));
     }
   });
-
-  // onlineRef.limitToLast(10).on('child_removed', (snap) => {
-  //   store.dispatch(removeUser(snap.val()));
-  // });
-  //
   
   onlineRef.on('child_removed', (snap) => {
     console.log('child removed', snap.val());
@@ -108,15 +75,3 @@ export const onlineHandler = (store) => {
     }
   });
 };
-
-// const gref = db.ref('game');
-// const deckRef = gref.child('deck');
-// const disRef = gref.child('discard');
-//
-// export const gameHandler = (store) => {
-//   gref.on('value', (snap) => {
-//     if (hasVal(snap)) {
-//       store.dispatch(updateGame(snap.val()));
-//     }
-//   });
-// };

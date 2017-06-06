@@ -1,6 +1,7 @@
 import { auth as fAuth, } from 'firebase';
 import { Player, } from 'connect_four_functional';
 import { addOnline, addUser, goOffline, } from '../users/actions';
+import { addPlayer, } from '../game/actions';
 import { fireUtils, rqUtils, } from '../../utils';
 import { LOGIN, LOGOUT, SET_CURRENT_USER, } from './constants';
 const { auth, onlineRef, } = fireUtils;
@@ -46,7 +47,7 @@ export const login = ({ displayName, } = { displayName: '', }) => dispatch =>
           .then(() => {
             console.log('user', u);
             return Promise.all(
-        [ loginSucc(u), setCurrent(createPlayer(u)), ].map(dispatch));
+        [ loginSucc(u), setCurrent(createPlayer(u)), addPlayer(createPlayer(u)), ].map(dispatch));
           }))
       .catch(loginFail)
 );

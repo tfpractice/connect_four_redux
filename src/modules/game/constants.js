@@ -9,6 +9,8 @@ export const START_GAME = 'START_GAME';
 export const STOP_GAME = 'STOP_GAME';
 export const TOGGLE_PLAYERS = 'TOGGLE_PLAYERS';
 export const TOGGLE_STATE = 'TOGGLE_STATE';
+export const ADD_PLAYER = 'ADD_PLAYER';
+export const REMOVE_PLAYER = 'REMOVE_PLAYER';
 
 export const GAME_ACTIONS = new Set([
   CLAIM_NEXT,
@@ -22,4 +24,6 @@ export const GAME_ACTIONS = new Set([
   STOP_GAME,
   TOGGLE_PLAYERS,
   TOGGLE_STATE,
+  ADD_PLAYER,
+  REMOVE_PLAYER,
 ]);
