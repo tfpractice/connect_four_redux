@@ -1,9 +1,15 @@
 import React from 'react';
+import { connect, } from 'react-redux';
+import { color, } from './visualization/funcs';
 
-const Node = ({ node: { column, row, id, player, }, }) => (
+const colors = game => game.players.map((p, i) => [ p.id, color(i), ])
+  .reduce((p, [ key, val, ]) => Object.assign(p, { [key]: val, }), {});
+const stateToProps = ({ game, }) => ({ colors: colors(game), });
+
+const Node = ({ node: { column, row, id, player, }, colors, }) => (
   <svg className="node" id={`node::${column}::${row}`}>
-    <circle fill="#ff00ff" id={id} className="nodeCircle" />
+    <circle fill={player ? colors[player] : '#ff00ff'} id={id} r={'5%'} className="nodeCircle" />
     </svg>
 );
 
-export default Node;
+export default connect(stateToProps)(Node);

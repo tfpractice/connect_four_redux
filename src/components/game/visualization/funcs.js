@@ -56,6 +56,9 @@ export const scaleY = d3.scaleLinear()
     .domain([ 0, 7, ])
     .range([ 500 * 0.25, (500 * 0.75), ]);
 
+export const boardProps = () => d3.select('.boardVis').attr('width');
+
+// console.log('boardProps()÷', boardProps()÷);
 export const dragStarted = force => (d) => {
   if (!d3.event.active) force.alphaTarget(0.3).restart();
   d3.event.x = d.fx = d.x;
@@ -75,16 +78,28 @@ export const dragEnded = force => (d) => {
 
 export const linkSelect = links => d3.selectAll('.link').data(links);
 
-export const nodeSelect = nArr => d3.select('.boardVis')
-  .selectAll('.column')
-  .data(cIDs(nArr))
-  .select('.colGroup')
-  .selectAll('.node')
-  .data(column => nArr.filter(sameCol({ column, })))
-  .select('.nodeCircle')
-  .attr('r', 15)
-  .attr('fill', (d => color(d.player)))
-  .attr('opacity', 0.4);
+export const nodeSelect = (nArr) => {
+  const bv = d3.select('.board').selectAll('.boardVis').style('width', '100%');
+
+  // console.log('bv', bv.style('width'));
+  console.log('d3.select', d3.select('.boardVis').selectAll('.column'));
+  return d3.select('.boardVis')
+    .selectAll('.column')
+    .data(cIDs(nArr))
+
+    // .data(cIDs(nArr), c => c)
+    .select('.colGroup')
+    .selectAll('.node')
+
+    .data(column => nArr.filter(sameCol({ column, })))
+
+    // .data(column => nArr.filter(sameCol({ column, })), (d, i) => { console.log('d', d); return d || i; })
+    .select('.nodeCircle')
+
+    // .attr('r', 15)
+    // .attr('fill', (d => color(d.player)))
+    .attr('opacity', 0.4);
+};
     
 export const updateNodes = (domNodes = d3.selectAll('.nodeCircle')) => (arg) => {
   domNodes

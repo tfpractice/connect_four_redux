@@ -1,18 +1,8 @@
 import React from 'react';
 import d3 from 'd3';
+import { connect, } from 'react-redux';
 
-const Visualization = ({ links, }) =>
-
-  // const bv = d3.select('.boardVis');
-
-  // console.log('bv', bv);
-
-    // .attr({
-    //  width: '100%',
-    //  height: '100%',
-    // });
-
-   (
+const Visualization = ({ players, links, colors, }) => (
   <svg className="linkVis">
     {links.map(({ source, target, }, i) =>
       (<line
@@ -21,9 +11,11 @@ const Visualization = ({ links, }) =>
         y1={source.y}
         x2={target.x}
         y2={target.y}
+
+        stroke={source.player ? colors[source.player] : 'none'}
         className="link"/>)
     )}
   </svg>
   );
 
-export default Visualization;
+export default (Visualization);
