@@ -23,9 +23,12 @@ const Column = ({ id, active, next, nodes, game, mOver, clk, claimNext, setColum
   const a = 0;
   
   return (
-  <g className="column" id={`col_${id}`}
+  <g
+    className="column"
+    id={`col_${id}`}
     onClick={ claimNext}
-    onMouseOver={() => setColumn(id)}>
+    onMouseOver={() => setColumn(id)}
+  >
     <g className="colGroup" stroke={'none'}>
       {nodes.map(n => <Node key={n.id} node={n}/>)}
     </g>

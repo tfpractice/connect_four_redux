@@ -8,9 +8,9 @@ const stateToProps = ({ game, }) =>
   ({ game, colIDs: [ ...new Set(game.nodes.map(n => n.column)), ], });
 
 const Board = ({ nodes, actions, colIDs, active, winner, }) => (
-  <Grid container className="board">
-    <Grid item xs>
-      <svg viewBox="0, 0, 10, 10" className="boardVis">
+  <Grid container justify="center" className="board">
+    <Grid item xs={11}>
+      <svg viewBox="0, 0, 7, 6" className="boardVis">
         <Visualization />
         {colIDs.map(id => <Column key={id} id={id} />) }
       </svg>

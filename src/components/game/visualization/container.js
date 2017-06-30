@@ -17,12 +17,22 @@ const mapStateToProps = ({ players, game, }) => {
   const omniLinks = graphLinks(myGrid);
   
   const myForce = d3.forceSimulation(nodes)
+
    .force('charge', d3.forceManyBody())
-   .force('link', d3.forceLink(omniLinks).distance(30).id(({ id, }) => id))
 
-  //  .force('link', d3.forceLink(omniLinks).distance((d) => { console.log('d', d); return 15; }).id(({ id, }) => id))
+  //  .force('x', d3.forceX().x(n => n.column))
 
-  //  .force('center', d3.forceCenter(960 / 2, 500 / 2))
+  //  .force('y', d3.forceY().y(n => n.row))
+   //
+   .force('link', d3.forceLink(omniLinks)
+   .strength(1 / 21)
+   .distance(l =>
+     Math.hypot(
+       (l.source.column) - (l.target.column), (l.source.row) - (l.target.row)
+     )
+   ).id(({ id, }) => id))
+
+  //  .force('center', d3.forceCenter(5, 5).x(n => n.column).y(n => n.row))
    .on('tick.n', updateNodes(nodeSelect(nodes)))
    .on('tick.l', updateLinks(linkSelect(links)));
 
@@ -31,14 +41,24 @@ const mapStateToProps = ({ players, game, }) => {
   // console.log('bp', bp);
 
   nodeSelect(nodes).call(d3.drag()
+
     .on('start', dragStarted(myForce))
     .on('drag', dragged(myForce))
-    .on('end', dragEnded(myForce)));
+    .on('end', dragEnded(myForce))
+    );
 
-  const colors = game.players.map((p, i) => [ p.id, color(i), ])
-  .reduce((p, [ key, val, ]) => Object.assign(p, { [key]: val, }), {});
+  // linkSelect(links)
+  //   .call(d3.drag()
+  //
+  //     .on('start', dragStarted(myForce))
+  //     .on('drag', dragged(myForce))
+  //     .on('end', dragEnded(myForce))
+  //     );
 
-  console.log('colors', colors);
+  const colors = game.players
+    .map((p, i) => [ p.id, color(i), ])
+    .reduce((p, [ key, val, ]) => Object.assign(p, { [key]: val, }), {});
+
   return ({ links, colors, players, });
 };
 

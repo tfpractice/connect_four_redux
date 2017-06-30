@@ -6,9 +6,10 @@ const colors = game => game.players.map((p, i) => [ p.id, color(i), ])
   .reduce((p, [ key, val, ]) => Object.assign(p, { [key]: val, }), {});
 const stateToProps = ({ game, }) => ({ colors: colors(game), });
 
+//
 const Node = ({ node: { column, row, id, player, }, colors, }) => (
   <g className="node" id={`node::${column}::${row}`}>
-    <circle fill={player ? colors[player] : '#ff00ff'} id={id} r={'5%'} className="nodeCircle" />
+    <circle cx={column} cy={row} r={1 / 42} fill={player ? colors[player] : '#ff00ff'} id={id} r={'5%'} className="nodeCircle" />
   </g>
 );
 

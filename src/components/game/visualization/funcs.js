@@ -27,7 +27,8 @@ export const graphLinks = graph =>
   getNodes(graph).map(reduceLink(graph)).reduce(concatLinks, []);
   
 export const pLinks = nodes => ({ id: player, }) => {
-  console.log('player', player);
+  // console.log('player', player);
+  const a = 0;
 
   return graphLinks(joinGrid(graph(...nodes.filter(samePlayer({ player, })))));
 };
@@ -44,24 +45,28 @@ export const pNeg = g => p =>
 export const playerLinks = g => p =>
   [ pCols(g)(p), pRows(g)(p), pPos(g)(p), pNeg(g)(p), ].reduce(flatten, []);
   
+export const boardScaleX = base => box => d3.scaleLinear()
+  .domain([ box.width * 0.1, box.width * 0.9, ])
+  .range([ 0, 7, ]);
+  
+export const boardScaleY = base => box => d3.scaleLinear()
+  .domain([ box.height * 0.1, box.height * 0.9, ])
+  .range([ 0, 6, ]);
+
+  //
+export const getBox = sel => d3.select(sel).node().getBoundingClientRect();
+
 export const color = d3.scaleOrdinal()
     .domain([ null, 0, 1, ])
     .range([ '#fff', '#ff0000', '#000000', ]);
 
-export const scaleX = d3.scaleLinear()
-    .domain([ 0, 7, ])
-    .range([ 960 * 0.25, (960 * 0.75), ]);
-
-export const scaleY = d3.scaleLinear()
-    .domain([ 0, 7, ])
-    .range([ 500 * 0.25, (500 * 0.75), ]);
-
 export const boardProps = () => d3.select('.boardVis').attr('width');
 
 export const dragStarted = force => (d) => {
+  console.log('d3.event', d3.event);
   if (!d3.event.active) force.alphaTarget(0.3).restart();
-  d3.event.x = d.fx = d.x;
-  d3.event.y = d.fy = d.y;
+    d.x=boardScaleX()(getBox('.boardVis'))(d3.event.x) = d.fx;
+    d.y=boardScaleY()(getBox('.boardVis'))(d3.event.y) = d.fy;
 };
 
 export const dragged = force => (d) => {
@@ -71,17 +76,16 @@ export const dragged = force => (d) => {
 
 export const dragEnded = force => (d) => {
   if (!d3.event.active) force.alphaTarget(0);
-  d.fx = null;
-  d.fy = null;
+  d.fx = d.column;
+  d.fy = d.row;
 };
 
-export const linkSelect = links => d3.selectAll('.link').data(links);
+export const linkSelect = links =>
+  d3.selectAll('.link').data(links);
 
 export const nodeSelect = (nArr) => {
   const bv = d3.select('.board')
   .selectAll('.boardVis');
-
-  // .style('width', '100%');
 
   return d3.select('.boardVis')
     .selectAll('.column')
@@ -93,14 +97,27 @@ export const nodeSelect = (nArr) => {
     .data(column => nArr.filter(sameCol({ column, })))
 
     .select('.nodeCircle')
+    
+    .attr('cx', (d, i) => d.row)
+
+    .attr('cy', (d, i) => d.column)
+
+    .attr('r', (d, i) => 1 / 10)
 
     .attr('opacity', 0.4);
 };
     
 export const updateNodes = (domNodes = d3.selectAll('.nodeCircle')) => (arg) => {
   domNodes
-    .attr('cx', (({ x, }) => x))
-    .attr('cy', (({ y, }) => y));
+
+    .attr('cx', (({ x, }) => boardScaleX()(getBox('.boardVis'))(x)))
+    .attr('cy', (({ y, }) => boardScaleY()(getBox('.boardVis'))(y)));
+
+    // .attr('r', 1);
+
+    //
+    // .attr('cx', ((d, i) => d.column))
+    // .attr('cy', ((d, i) => d.row));
 };
 
 export const updateLinks = (domLinks = d3.selectAll('.link')) => () => {
@@ -110,9 +127,9 @@ export const updateLinks = (domLinks = d3.selectAll('.link')) => () => {
 
       return color(0);
     }))
-    .attr('stroke-width', 3)
-    .attr('x1', ({ source: { x, }, }) => x)
-    .attr('y1', ({ source: { y, }, }) => y)
-    .attr('x2', ({ target: { x, }, }) => x)
-    .attr('y2', ({ target: { y, }, }) => y);
+    .attr('stroke-width', 1 / 42)
+    .attr('x1', d => boardScaleX()(getBox('.boardVis'))(d.source.x))
+    .attr('y1', d => boardScaleY()(getBox('.boardVis'))(d.source.y))
+    .attr('x2', d => boardScaleX()(getBox('.boardVis'))(d.target.x))
+    .attr('y2', d => boardScaleY()(getBox('.boardVis'))(d.target.y));
 };
