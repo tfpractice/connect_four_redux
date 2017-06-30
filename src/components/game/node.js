@@ -7,9 +7,9 @@ const colors = game => game.players.map((p, i) => [ p.id, color(i), ])
 const stateToProps = ({ game, }) => ({ colors: colors(game), });
 
 const Node = ({ node: { column, row, id, player, }, colors, }) => (
-  <svg className="node" id={`node::${column}::${row}`}>
+  <g className="node" id={`node::${column}::${row}`}>
     <circle fill={player ? colors[player] : '#ff00ff'} id={id} r={'5%'} className="nodeCircle" />
-    </svg>
+  </g>
 );
 
 export default connect(stateToProps)(Node);

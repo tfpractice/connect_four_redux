@@ -16,17 +16,21 @@ export class Main extends Component {
   
   render () {
     return (
-    <Grid container direction="column" justify="center" align="center" className="Game">
-      <Nav/>
-      <Grid container direction="column" justify="center" align="center" style={styles}>
-        <Grid item xs={11} >
-          <Switch>
-            <Route path="/" component={Info} />
-            <Route component={NoMatch}/>
-          </Switch>
-          <Route path="/" component={Game} />
-          
-        </Grid>
+    <Grid container justify="center" align="center" className="Game">
+      <Grid item xs>
+        <Nav/>
+
+      </Grid>
+      <Grid item xs={12} className="homeRoute" >
+        <Switch>
+          <Route path="/" component={Info} />
+          <Route component={NoMatch}/>
+        </Switch>
+
+      </Grid>
+      <Grid item xs>
+        <Route component={Game} />
+
       </Grid>
     </Grid>
     );

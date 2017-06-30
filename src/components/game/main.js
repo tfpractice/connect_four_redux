@@ -13,11 +13,14 @@ class Game extends Component {
     const { start, } = this.props;
 
     return (
-      <Grid container direction="column" justify="center" align="center" style={{ paddingTop: '5rem', }}>
-        <Grid item xs={11} sm={10} className="homeDiv">
+      <Grid container align="center" justify="center">
+        <Grid item xs={11} className="GameGrid">
           <Button onClick={start}>Start game</Button>
+
+        </Grid>
+        <Grid item xs={11} className="GameGrid">
           <Board/>
-          
+
         </Grid>
       </Grid>
     );

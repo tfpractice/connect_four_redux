@@ -24,7 +24,6 @@ ReactDOM.render(
     <MuiThemeProvider theme={theme} styleManager={styleManager}>
       <BrowserRouter>
         <Route component={Home} />
-        
       </BrowserRouter>
     </MuiThemeProvider>
     </Provider>, document.getElementById('root')
