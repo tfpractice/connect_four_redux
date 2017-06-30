@@ -82,7 +82,7 @@ export const nodeSelect = (nArr) => {
   const bv = d3.select('.board').selectAll('.boardVis').style('width', '100%');
 
   // console.log('bv', bv.style('width'));
-  console.log('d3.select', d3.select('.boardVis').selectAll('.column'));
+  // console.log('d3.select', d3.select('.boardVis').selectAll('.column'));
   return d3.select('.boardVis')
     .selectAll('.column')
     .data(cIDs(nArr))
