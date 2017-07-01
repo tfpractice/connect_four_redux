@@ -16,6 +16,6 @@ const Board = ({ nodes, actions, colIDs, active, winner, }) => (
       </svg>
     </Grid>
   </Grid>
-  );
+);
 
 export default connect(stateToProps)(Board);
