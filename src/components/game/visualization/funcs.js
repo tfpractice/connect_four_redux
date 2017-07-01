@@ -104,26 +104,13 @@ export const updateNodes = (domNodes = d3.selectAll('.nodeCircle')) => (arg) => 
 
 export const updateLinks = (domLinks = d3.selectAll('.linkLine')) => () => {
   domLinks
-    .attr('x1', (d) => {
-      console.log('d', d);
-      return boardScaleX()(getBox('.boardVis'))(d.source.x);
-    })
-    .attr('y1', (d) => {
-      console.log('d', d);
-      return boardScaleY()(getBox('.boardVis'))(d.source.y);
-    })
-    .attr('x2', (d) => {
-      console.log('d', d);
-      return boardScaleX()(getBox('.boardVis'))(d.target.x);
-    })
-    .attr('y2', (d) => {
-      console.log('d', d);
-      return boardScaleY()(getBox('.boardVis'))(d.target.y);
-    })
+    .attr('x1', d => boardScaleX()(getBox('.boardVis'))(d.source.x))
+    .attr('y1', d => boardScaleY()(getBox('.boardVis'))(d.source.y))
+    .attr('x2', d => boardScaleX()(getBox('.boardVis'))(d.target.x))
+    .attr('y2', d => boardScaleY()(getBox('.boardVis'))(d.target.y))
     .attr('stroke', ((d) => {
       const a = 0;
-      
-      // return color(0);
+
       return '#ff00ff';
     }))
     .attr('stroke-width', 1 / 42);
@@ -154,13 +141,6 @@ export const dragNodes = nodes => sim => nodeSelect(nodes)
     .on('start', dragStarted(sim))
     .on('drag', dragged(sim))
     .on('end', dragEnded(sim)));
-
-//       
-// export const dragLinks = links => sim => linkSelect(links)
-//   .call(setContainer(d3.drag())
-//     .on('start', dragStartedL(sim))
-//     .on('drag', draggedL(sim))
-//     .on('end', dragEndedL(sim)));
 
 const boardLinks = game =>
   [ board, joinGrid, graphLinks, ].reduce((a, fn) => fn(a), game);
