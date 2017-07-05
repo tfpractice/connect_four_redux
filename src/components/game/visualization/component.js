@@ -6,9 +6,6 @@ import { loadGameGraph, loadGraph, } from './funcs';
 class Visualization extends Component {
   componentDidMount() {
     loadGameGraph(this.props.game);
-    const dlinks = d3.selectAll('.link');
-
-    console.log('FLDSNDUINDF', dlinks);
   }
   
   render() {
@@ -16,22 +13,23 @@ class Visualization extends Component {
 
     console.log('links', links);
     return (
-      <svg className="linkVis">
-        {links.map(({ source, target, }, i) => (
-          <g key={i} className="linkGroup">
-            <line id={`link${i}`} className="link linkLine"
+      <g className="linkVis">
+        {links.map(({ source, target, }, i) =>
 
-              // x1={source.column}
-              // y1={source.row}
-              // x2={target.column}
-              // y2={target.row}
-              stroke={
-                source.player ? colors[source.player] : 'none'
-              }
-            />
-          </g>
-        ))}
-      </svg>
+          (
+          <line id={`link${i}`} className="link linkLine"
+
+            // x1={source.column}
+            // y1={source.row}
+            // x2={target.column}
+            // y2={target.row}
+            stroke={
+              source.player ? colors[source.player] : 'none'
+            }
+          />
+          )
+        )}
+      </g>
     );
   }
 }

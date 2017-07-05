@@ -12,9 +12,8 @@ const stateToProps = ({ game, }, { player, }) => ({ isActive: isActive(player)(g
 const pStyle = isActive => isActive ? { backgroundColor: '#f0f', } : {};
 
 const PlayerCard = ({ player, isActive, }) => (
-  
   <Card style={pStyle(isActive)}>
-    <CardHeader title={player.name}/>
+    <CardHeader title={player.name} subheader={player.id}/>
   </Card>
 );
 
