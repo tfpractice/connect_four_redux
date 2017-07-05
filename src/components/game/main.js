@@ -6,28 +6,36 @@ import { connect, } from 'react-redux';
 import Board from './board';
 import Button from 'material-ui/Button';
 import { GameActs, } from '../../modules';
-
-// import {, } from '../player';
-import Players from './players';
+import { PlayerCard, } from '../player';
 
 const stateToProps = state => ({ ...state, });
 
 class Game extends Component {
   render() {
     const { start, game, } = this.props;
-    
+
+    console.log('game', game);
+    console.log('game.players', game.players);
     return (
       <Grid container align="center" justify="center">
         <Grid item xs={11} className="GameGrid">
-          <Button onClick={start}>New  game</Button>
+          <Button onClick={start}>Start game</Button>
 
         </Grid>
         <Grid item xs={11} className="players">
-          <Players players={game.players}/>
-        </Grid>
+          <h1>playes</h1>
+          {game.players.map((p, i) =>
 
-        <Grid item xs={9} className="GameGrid">
+            // console.log('p', p);
+            (
+            <PlayerCard key={i} player={p}/>
+            )
+          )}
+
+        </Grid>
+        <Grid item xs={11} className="GameGrid">
           <Board/>
+
         </Grid>
       </Grid>
     );
