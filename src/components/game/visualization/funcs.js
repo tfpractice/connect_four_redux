@@ -80,12 +80,16 @@ export const dragEnded = force => (d) => {
   d.fy = null;
 };
 
-export const linkSelect = links =>
-  d3.select('.boardVis')
+export const linkSelect = (links) => {
+  console.log('linksLINKSELECT', links);
+  
+  return d3.select('.boardVis')
     .selectAll('.linkGroup')
+    .enter()
     .data(links)
     .select('.linkLine')
     .attr('stroke', '#fff');
+};
 
 export const nodeSelect = nArr =>
   d3.select('.boardVis')
@@ -107,11 +111,28 @@ export const updateNodes = (domNodes = d3.selectAll('.nodeCircle')) => (arg) => 
 };
 
 export const updateLinks = (domLinks = d3.selectAll('.linkLine')) => () => {
-  domLinks
-    .attr('x1', d => boardScaleX()(getBox('.boardVis'))(d.source.x))
-    .attr('y1', d => boardScaleY()(getBox('.boardVis'))(d.source.y))
-    .attr('x2', d => boardScaleX()(getBox('.boardVis'))(d.target.x))
-    .attr('y2', d => boardScaleY()(getBox('.boardVis'))(d.target.y))
+  // console.log('domLinks', domLinks);
+  // domLinks.enter()
+  domLinks.enter()
+
+  //   .select('.linkLine')
+  // d3.selectAll('.linkLine')
+    .attr('x1', (d) => {
+      console.log('dUPDATEDLINKS', d);
+      return boardScaleX()(getBox('.boardVis'))(d.source.x);
+    })
+    .attr('y1', (d) => {
+      console.log('d', d);
+      return boardScaleY()(getBox('.boardVis'))(d.source.y);
+    })
+    .attr('x2', (d) => {
+      console.log('d', d);
+      return boardScaleX()(getBox('.boardVis'))(d.target.x);
+    })
+    .attr('y2', (d) => {
+      console.log('d', d);
+      return boardScaleY()(getBox('.boardVis'))(d.target.y);
+    })
     .attr('stroke', ((d) => {
       const a = 0;
       
@@ -125,20 +146,21 @@ const manyBody = sim => sim.force('charge', d3.forceManyBody());
 const fCenter = sim => sim.force('center', d3.forceCenter(getBox('.boardVis').height / 2, getBox('.boardVis').height / 2));
 
 const fLink = links => sim => sim.force('link',
-  d3.forceLink(links).id(({ id, }) => id)
-    .distance(l =>
-      Math.hypot(
-        (l.source.x) - (l.target.x), (l.source.y) - (l.target.y)
-      )
-    ));
+  d3.forceLink(links).links(links));
+
+// .id(
+//   (d) => {
+//     console.log('d', d);
+//     return d;
+//   })
+//   .distance(l =>
+//     Math.hypot(
+//       (l.source.x) - (l.target.x), (l.source.y) - (l.target.y)
+//     )
+//   ));
 
 export const createSim = nodes => // fCenter(manyBody(d3.forceSimulation(nodes)));
   ((d3.forceSimulation(nodes)));
-export const tickLinks = links => sim => sim
-  .on('tick.link', updateLinks(linkSelect(links)));
-
-export const tickNodes = nodes => sim => sim
-  .on('tick.node', updateNodes(nodeSelect(nodes)));
 
 export const dragNodes = nodes => sim => nodeSelect(nodes)
   .call(setContainer(d3.drag())
@@ -146,6 +168,11 @@ export const dragNodes = nodes => sim => nodeSelect(nodes)
     .on('drag', dragged(sim))
     .on('end', dragEnded(sim)));
 
+export const tickLinks = links => sim => sim
+  .on('tick.link', updateLinks(linkSelect(links)));
+
+export const tickNodes = nodes => sim => sim
+  .on('tick.node', updateNodes(nodeSelect(nodes)));
 const boardLinks = game =>
   [ board, joinGrid, graphLinks, ].reduce((a, fn) => fn(a), game);
 
@@ -153,9 +180,11 @@ const userLinks = g =>
   getPlayers(g).map(pLinks(g.nodes)).reduce(flatten, []);
 
 export const loadGameGraph = game => [ createSim,
-  fLink(boardLinks(game)),
+  fLink(userLinks(game)),
 
   // tickNodes(game.nodes),
+  // tickLinks(boardLinks(game)),
+
   tickLinks(userLinks(game)),
   dragNodes(game.nodes), ]
   .reduce((sim, fn) => fn(sim), game.nodes);
