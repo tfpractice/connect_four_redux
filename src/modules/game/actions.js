@@ -42,6 +42,3 @@ export const start = () => ({ type: START_GAME, curry: Game.start, });
 export const claimNext = () => ({ type: CLAIM_NEXT, curry: Game.claimNext, });
 
 export const select = () => ({ type: START_GAME, curry: Game.select, });
-
-// export const setNodes = nodes => ({ type: SET_NODES, curry: Game.setNodes(nodes), });
-// export const setNodes = nodes => ({ type: SET_NODES, curry: Game.setNodes(nodes), });
