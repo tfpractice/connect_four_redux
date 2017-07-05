@@ -1,12 +1,13 @@
 import { Game, } from 'connect_four_functional';
 import { ADD_PLAYER, CLAIM_NEXT, END_IF_WON, REMOVE_PLAYER, SET_COLUMN, SET_MIN,
   SET_NODES, SET_PLAYERS, SET_PLAYSTATE, START_GAME, STOP_GAME,
-TOGGLE_PLAYERS, TOGGLE_STATE, } from './constants';
+  TOGGLE_PLAYERS, TOGGLE_STATE, } from './constants';
+
 const {
   stop,
 
- // claimNext, claimSwap, endIfWon, select,  setMin, setNodes,
- //     setPlayers, setPlayState, start, stop, togglePlayers, toggleState,
+  // claimNext, claimSwap, endIfWon, select,  setMin, setNodes,
+  //     setPlayers, setPlayState, start, stop, togglePlayers, toggleState,
 } = Game;
 
 const players = ({ players, }) => players;
@@ -28,13 +29,13 @@ export const setNodes = nodes => ({ type: SET_NODES, curry: Game.setNodes(nodes)
 export const setPlayers = players => ({ type: SET_NODES, curry: Game.setPlayers(players), });
 
 export const addPlayer = p =>
-({ type: ADD_PLAYER, curry: addPlr(p), });
+  ({ type: ADD_PLAYER, curry: addPlr(p), });
 
 export const removePlayer = player =>
   ({ type: REMOVE_PLAYER, curry: rmPlr(player), });
 
 export const setColumn = cID =>
- ({ type: SET_COLUMN, curry: Game.setColumn(cID), });
+  ({ type: SET_COLUMN, curry: Game.setColumn(cID), });
 
 export const start = () => ({ type: START_GAME, curry: Game.start, });
 export const claimNext = () => ({ type: CLAIM_NEXT, curry: Game.claimNext, });
