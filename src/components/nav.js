@@ -9,24 +9,24 @@ import { LoginForm, } from './auth';
 const Nav = (props) => {
   console.log('props', props);
   return (
-   <AppBar>
-     <Toolbar>
-       <Grid container justify="space-between" direction="row" align="center">
-         <Grid item>
-           <Grid container direction="row" align="center">
-             <Link to="/" >
-               <Text type="headline" secondary >
-                 Connect Four Redux
-               </Text>
-             </Link>
-           </Grid>
-         </Grid>
-         <Grid item>
-           <LoginForm formID={'mainLogin'}/>
-         </Grid>
-       </Grid>
-     </Toolbar>
-   </AppBar>
+    <AppBar>
+      <Toolbar>
+        <Grid container justify="space-between" direction="row" align="center">
+          <Grid item>
+            <Grid container direction="row" align="center">
+              <Link to="/" >
+                <Text type="headline" color="secondary" >
+                  Connect Four Redux
+                </Text>
+              </Link>
+            </Grid>
+          </Grid>
+          <Grid item>
+            <LoginForm formID={'mainLogin'}/>
+          </Grid>
+        </Grid>
+      </Toolbar>
+    </AppBar>
   );
 };
 

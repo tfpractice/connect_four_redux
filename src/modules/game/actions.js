@@ -3,6 +3,7 @@ import { ADD_PLAYER, CLAIM_NEXT, END_IF_WON, REMOVE_PLAYER, SET_COLUMN, SET_MIN,
   SET_NODES, SET_PLAYERS, SET_PLAYSTATE, START_GAME, STOP_GAME,
   TOGGLE_PLAYERS, TOGGLE_STATE, } from './constants';
 
+console.log('Game', Game);
 const {
   stop,
 
@@ -39,6 +40,8 @@ export const setColumn = cID =>
 
 export const start = () => ({ type: START_GAME, curry: Game.start, });
 export const claimNext = () => ({ type: CLAIM_NEXT, curry: Game.claimNext, });
+
+export const select = () => ({ type: START_GAME, curry: Game.select, });
 
 // export const setNodes = nodes => ({ type: SET_NODES, curry: Game.setNodes(nodes), });
 // export const setNodes = nodes => ({ type: SET_NODES, curry: Game.setNodes(nodes), });
