@@ -51,9 +51,13 @@ export const boardScaleX = base => box => d3.scaleLinear()
 export const boardScaleY = base => box => d3.scaleLinear()
   .domain([ 0, box.height * 0.9, ])
   .range([ 0, 6, ]);
-
+  
 export const color = d3.scaleOrdinal()
   .domain([ null, 0, 1, ])
+  .range([ '#fff', '#ff0000', '#000000', ]);
+    
+export const pColor = players => d3.scaleOrdinal()
+  .domain([ null, ...d3.extent(players.map(p => p.id)), ])
   .range([ '#fff', '#ff0000', '#000000', ]);
 
 export const setContainer = (drag = d3.drag()) =>
@@ -110,7 +114,7 @@ export const updateLinks = (domLinks = d3.selectAll('.linkLine')) => () => {
     .attr('y2', d => boardScaleY()(getBox('.boardVis'))(d.target.y))
     .attr('stroke', ((d) => {
       const a = 0;
-
+      
       return '#ff00ff';
     }))
     .attr('stroke-width', 1 / 42);
@@ -128,8 +132,8 @@ const fLink = links => sim => sim.force('link',
       )
     ));
 
-export const createSim = nodes => fCenter(manyBody(d3.forceSimulation(nodes)));
-
+export const createSim = nodes => // fCenter(manyBody(d3.forceSimulation(nodes)));
+  ((d3.forceSimulation(nodes)));
 export const tickLinks = links => sim => sim
   .on('tick.link', updateLinks(linkSelect(links)));
 
@@ -150,7 +154,8 @@ const userLinks = g =>
 
 export const loadGameGraph = game => [ createSim,
   fLink(boardLinks(game)),
-  tickNodes(game.nodes),
+
+  // tickNodes(game.nodes),
   tickLinks(userLinks(game)),
   dragNodes(game.nodes), ]
   .reduce((sim, fn) => fn(sim), game.nodes);
