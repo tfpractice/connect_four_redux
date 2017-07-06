@@ -27,7 +27,7 @@ const Column = ({ id, active, next, nodes, game, mOver, clk, claimNext, select, 
     <g
       className="column"
       id={`col_${id}`}
-      onClick={ select}
+      onClick={select}
       onMouseOver={() => setColumn(id)}
     >
       <g className="colGroup" stroke={'none'}>

@@ -19,11 +19,7 @@ const mapStateToProps = ({ players, game, }) => {
   const colors = game => game.players.map((p, i) =>
     [ p.id, pColor(game.players)(p.id), ]).reduce((p, [ key, val, ]) =>
     Object.assign(p, { [key]: val, }), {});
-      
-  // const colors = game.players
-  //   .map((p, i) => [ p.id, color(i), ])
-  //   .reduce((p, [ key, val, ]) => Object.assign(p, { [key]: val, }), {});
-  // 
+    
   return ({
     links, omniLinks, colors: colors(game), nodes, game,
   });

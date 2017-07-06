@@ -23,14 +23,9 @@ class Game extends Component {
 
         </Grid>
         <Grid item xs={11} className="players">
-          <h1>playes</h1>
-          {game.players.map((p, i) =>
-
-            // console.log('p', p);
-            (
+          {game.players.map((p, i) => (
             <PlayerCard key={i} player={p}/>
-            )
-          )}
+          ))}
 
         </Grid>
         <Grid item xs={11} className="GameGrid">
