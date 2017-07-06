@@ -84,10 +84,6 @@ export const onlineHandler = (store) => {
 export const gameHandler = (store) => {
   gameRef.on('value', (snap) => {
     if (hasVal(snap)) {
-      console.log('gameRef', gameRef);
-      console.log('snap.val()', snap.val());
-      console.log('store.getState()', store.getState());
-
       snap.val().players.length && store.dispatch(updateGame((snap.val())));
     }
   });
