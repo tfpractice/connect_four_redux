@@ -1,7 +1,11 @@
-import { auth, connRef, onlineRef, } from './utils/firebase';
+import { auth, connRef, gameRef, onlineRef, } from './utils/firebase';
 import { login, logout, } from './modules/auth/actions';
-import { addPlayer, removePlayer, } from './modules/game/actions';
+import { addPlayer, removePlayer, updateGame, } from './modules/game/actions';
 import { addUser, removeUser, setUsers, } from './modules/users/actions';
+import { GAME_ACTIONS, } from './modules/game/constants';
+import { Game, } from 'connect_four_functional';
+
+const { setPlayers, } = Game;
 
 const loggedIn = () => !!auth.currentUser;
 const loggedOut = () => !loggedIn();
@@ -73,6 +77,18 @@ export const onlineHandler = (store) => {
     
     if (curDiscon(snap)) {
       console.log('child_removed alternate curDiscon disconnected', snap.val(), snap.key());
+    }
+  });
+};
+
+export const gameHandler = (store) => {
+  gameRef.on('value', (snap) => {
+    if (hasVal(snap)) {
+      console.log('gameRef', gameRef);
+      console.log('snap.val()', snap.val());
+      console.log('store.getState()', store.getState());
+
+      snap.val().players.length && store.dispatch(updateGame((snap.val())));
     }
   });
 };

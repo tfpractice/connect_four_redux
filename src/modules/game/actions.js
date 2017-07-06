@@ -1,7 +1,7 @@
 import { Game, } from 'connect_four_functional';
 import { ADD_PLAYER, CLAIM_NEXT, END_IF_WON, REMOVE_PLAYER, SET_COLUMN, SET_MIN,
   SET_NODES, SET_PLAYERS, SET_PLAYSTATE, START_GAME, STOP_GAME,
-  TOGGLE_PLAYERS, TOGGLE_STATE, } from './constants';
+  TOGGLE_PLAYERS, TOGGLE_STATE, UPDATE_GAME, } from './constants';
 
 console.log('Game', Game);
 const {
@@ -31,6 +31,9 @@ export const setPlayers = players => ({ type: SET_NODES, curry: Game.setPlayers(
 
 export const addPlayer = p =>
   ({ type: ADD_PLAYER, curry: addPlr(p), });
+  
+export const updateGame = g =>
+  ({ type: UPDATE_GAME, curry: state => g, });
 
 export const removePlayer = player =>
   ({ type: REMOVE_PLAYER, curry: rmPlr(player), });

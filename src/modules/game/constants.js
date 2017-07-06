@@ -11,7 +11,7 @@ export const TOGGLE_PLAYERS = 'TOGGLE_PLAYERS';
 export const TOGGLE_STATE = 'TOGGLE_STATE';
 export const ADD_PLAYER = 'ADD_PLAYER';
 export const REMOVE_PLAYER = 'REMOVE_PLAYER';
-
+export const UPDATE_GAME = 'UPDATE_GAME';
 export const GAME_ACTIONS = new Set([
   CLAIM_NEXT,
   END_IF_WON,
@@ -26,4 +26,5 @@ export const GAME_ACTIONS = new Set([
   TOGGLE_STATE,
   ADD_PLAYER,
   REMOVE_PLAYER,
+  UPDATE_GAME,
 ]);
