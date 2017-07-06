@@ -1547,13 +1547,13 @@ connect-history-api-fallback@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/connect-history-api-fallback/-/connect-history-api-fallback-1.3.0.tgz#e51d17f8f0ef0db90a64fdb47de3051556e9f169"
 
-connect_four_functional@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/connect_four_functional/-/connect_four_functional-2.0.1.tgz#be9dc1b4dcc2b7fa12cc61d39b6bd97af162169b"
+connect_four_functional@^2.0.2-2:
+  version "2.0.2-2"
+  resolved "https://registry.yarnpkg.com/connect_four_functional/-/connect_four_functional-2.0.2-2.tgz#ce7f99cb2f9fe0f3f4d0b5470ff0e68ce728d33e"
   dependencies:
-    fenugreek-collections "^1.1.0"
-    game_grid "^4.0.1"
-    graph-curry "^2.0.0"
+    fenugreek-collections "^1.2.0-0"
+    game_grid "^4.0.2"
+    graph-curry "^2.1.0"
 
 console-browserify@^1.1.0:
   version "1.1.0"
@@ -3114,7 +3114,7 @@ function-bind@^1.0.2, function-bind@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/function-bind/-/function-bind-1.1.0.tgz#16176714c801798e4e8f2cf7f7529467bb4a5771"
 
-game_grid@^4.0.1, game_grid@^4.0.2:
+game_grid@^4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/game_grid/-/game_grid-4.0.2.tgz#d9723f42f8180f49ff676e0cbf6be8d5e0e16d3f"
   dependencies:
@@ -3242,7 +3242,7 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.6, graceful-fs@^4.1.9:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/graceful-readlink/-/graceful-readlink-1.0.1.tgz#4cafad76bc62f02fa039b2f94e9a3dd3a391a725"
 
-graph-curry@^2.0.0, graph-curry@^2.1.0:
+graph-curry@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/graph-curry/-/graph-curry-2.1.0.tgz#4a3908f8ab3840aa4e706addb279e2e080d21bca"
   dependencies:
@@ -5603,15 +5603,9 @@ promise-polyfill@^6.0.2:
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/promise-polyfill/-/promise-polyfill-6.0.2.tgz#d9c86d3dc4dc2df9016e88946defd69b49b41162"
 
-promise@7.1.1:
+promise@7.1.1, promise@^7.1.1:
   version "7.1.1"
   resolved "https://registry.yarnpkg.com/promise/-/promise-7.1.1.tgz#489654c692616b8aa55b0724fa809bb7db49c5bf"
-  dependencies:
-    asap "~2.0.3"
-
-promise@^7.1.1:
-  version "7.3.1"
-  resolved "https://registry.yarnpkg.com/promise/-/promise-7.3.1.tgz#064b72602b18f90f29192b8b1bc418ffd1ebd3bf"
   dependencies:
     asap "~2.0.3"
 

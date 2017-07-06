@@ -33,7 +33,7 @@
     "react-scripts": "1.0.10"
   },
   "dependencies": {
-    "connect_four_functional": "^2.0.1",
+    "connect_four_functional": "^2.0.2-2",
     "d3": "^4.9.1",
     "fenugreek-collections": "^1.2.0-0",
     "firebase": "^4.1.3",
