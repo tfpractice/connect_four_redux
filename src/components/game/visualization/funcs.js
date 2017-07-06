@@ -1,10 +1,9 @@
 import * as d3 from 'd3';
 import { Board, Game, Node, } from 'connect_four_functional';
 import { flattenBin as flatten, spread, } from 'fenugreek-collections';
-import { Compare, Components, Node as GdNode, Grid, } from 'game_grid';
+import { Compare, Node as GdNode, Grid, } from 'game_grid';
 import { Graph, } from 'graph-curry';
 
-// const { omniComps, } = Components;
 const { sameCol, } = Compare;
 const { samePlayer, } = Node;
 const { column: getCol, } = GdNode;

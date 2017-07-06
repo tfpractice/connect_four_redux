@@ -10,12 +10,13 @@ const stateToProps = state => ({ ...state, });
 
 class Game extends Component {
   render() {
-    const { start, game, } = this.props;
+    const { start, game, resetGame, } = this.props;
 
     return (
       <Grid container align="center" justify="center">
         <Grid item xs={11} className="GameGrid">
           <Button onClick={start}>Start game</Button>
+          <Button onClick={() => resetGame(game)}>Reset game</Button>
 
         </Grid>
         <Grid item xs={11} className="players">
