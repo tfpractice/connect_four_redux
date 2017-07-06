@@ -17,7 +17,7 @@ class Game extends Component {
         <Grid item xs={11} className="GameGrid">
           <Button onClick={start}>Start game</Button>
           <Button onClick={() => resetGame(game)}>Reset game</Button>
-
+          
         </Grid>
         <Grid item xs={11} className="players">
           {game.players.map((p, i) => (

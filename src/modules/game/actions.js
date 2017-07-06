@@ -3,26 +3,11 @@ import { ADD_PLAYER, CLAIM_NEXT, REMOVE_PLAYER, SET_COLUMN,
   SET_NODES, START_GAME,
   UPDATE_GAME, } from './constants';
 
-console.log('Game', Game);
-const players = ({ players, }) => players;
-const hasID = i => ({ id, }) => id === i;
-const matches = p0 => p1 => hasID(p0.id)(p1);
-const xMatches = p0 => p1 => !matches(p0)(p1);
-const update = next => p => matches(next)(p) ? (next) : p;
+export const setNodes = nodes =>
+  ({ type: SET_NODES, curry: Game.setNodes(nodes), });
 
-const reset = game => state => Game.setPlayers(game.players)();
-
-export const playerByID = i => g => players(g).find(hasID(i));
-export const findPlr = p => g => players(g).find(matches(p));
-export const hasPlr = p => g => players(g).some(matches(p));
-export const mendPlr = p => g => Game.setPlayers(players(g).map(update(p)))(g);
-export const pushPlr = p => g => Game.setPlayers(players(g).concat(p))(g);
-
-export const addPlr = p => g => hasPlr(p)(g) ? mendPlr(p)(g) : pushPlr(p)(g);
-export const rmPlr = p => g => Game.setPlayers((players(g)).filter(xMatches(p)))(g);
-
-export const setNodes = nodes => ({ type: SET_NODES, curry: Game.setNodes(nodes), });
-export const setPlayers = players => ({ type: SET_NODES, curry: Game.setPlayers(players), });
+export const setPlayers = players =>
+  ({ type: SET_NODES, curry: Game.setPlayers(players), });
 
 export const addPlayer = p =>
   ({ type: ADD_PLAYER, curry: Game.addPlr(p), });
