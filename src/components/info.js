@@ -1,6 +1,5 @@
 import React from 'react';
 import Grid from 'material-ui/Grid';
-import Users from './users';
 
 const Main = ({ users, }) => (
   <Grid container direction="column" justify="center" align="center" className="infoGrid">

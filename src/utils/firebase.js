@@ -1,8 +1,5 @@
 import * as firebase from 'firebase';
 import { GAME_ACTIONS, } from '../modules/game/constants';
-import { Game, } from 'connect_four_functional';
-
-const { setPlayers, } = Game;
 
 export const config = {
   apiKey: process.env.REACT_APP_C4REDUX_FIREBASE_KEY,
@@ -28,7 +25,7 @@ export const fireMid = ({ dispatch, getState, }) => next => (action) => {
   const result = next(action);
 
   if (GAME_ACTIONS.has(action.type)) {
-    if (action.type !== 'UPDATE_GAME') {
+    if (action.type !== 'UPDATE_GAME' && getState().game.players.length) {
       db.ref('game').set(getState().game);
     }
   }

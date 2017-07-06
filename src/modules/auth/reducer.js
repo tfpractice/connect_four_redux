@@ -1,5 +1,5 @@
 import { combineReducers, } from 'redux';
-import { AUTH_ACTIONS, LOGIN_ACTIONS, LOGOUT_ACTIONS, USER_ACTIONS, } from './constants';
+import { LOGIN_ACTIONS, LOGOUT_ACTIONS, USER_ACTIONS, } from './constants';
 
 const reqDefault = { status: null, updatedAt: null, message: null, };
 

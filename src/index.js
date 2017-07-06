@@ -7,10 +7,11 @@ import getStore from './store';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import { authHandler, connHandler, gameHandler, onlineHandler, } from './handlers';
 import './index.css';
-import Routes from './routes';
+
+// import Routes from './routes';
 import { Home, } from './components';
 import { styleManager, theme, } from './utils';
-import { BrowserRouter, Link, Route, Switch, } from 'react-router-dom';
+import { BrowserRouter, Route, } from 'react-router-dom';
 
 injectTapEventPlugin();
 const store = getStore();

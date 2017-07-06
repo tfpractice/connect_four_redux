@@ -1,11 +1,8 @@
 import React, { Component, } from 'react';
-import * as d3 from 'd3';
-import { connect, } from 'react-redux';
-import { loadGameGraph, loadGraph, } from './funcs';
+import { loadGameGraph, } from './funcs';
 
 class Visualization extends Component {
   componentDidMount() {
-    console.log('updating');
     loadGameGraph(this.props.game);
   }
   componentDidUpdate() {
@@ -15,9 +12,6 @@ class Visualization extends Component {
   render() {
     const { links, colors, } = this.props;
 
-    console.log('links', links);
-
-    // 
     return (
       <g className="linkVis">
         {links.map(({ source, target, }, i) => (

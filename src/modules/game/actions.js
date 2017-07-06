@@ -1,15 +1,15 @@
 import { Game, } from 'connect_four_functional';
-import { ADD_PLAYER, CLAIM_NEXT, END_IF_WON, REMOVE_PLAYER, SET_COLUMN, SET_MIN,
-  SET_NODES, SET_PLAYERS, SET_PLAYSTATE, START_GAME, STOP_GAME,
-  TOGGLE_PLAYERS, TOGGLE_STATE, UPDATE_GAME, } from './constants';
+import { ADD_PLAYER, CLAIM_NEXT, REMOVE_PLAYER, SET_COLUMN,
+  SET_NODES, START_GAME,
+  UPDATE_GAME, } from './constants';
 
-console.log('Game', Game);
-const {
-  stop,
-
-  // claimNext, claimSwap, endIfWon, select,  setMin, setNodes,
-  //     setPlayers, setPlayState, start, stop, togglePlayers, toggleState,
-} = Game;
+// END_IF_WON
+// SET_MIN
+// SET_PLAYERS
+// SET_PLAYSTATE
+// STOP_GAME
+// TOGGLE_PLAYERS
+// TOGGLE_STATE
 
 const players = ({ players, }) => players;
 const hasID = i => ({ id, }) => id === i;

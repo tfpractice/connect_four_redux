@@ -1,11 +1,7 @@
 import { auth, connRef, gameRef, onlineRef, } from './utils/firebase';
 import { login, logout, } from './modules/auth/actions';
-import { addPlayer, removePlayer, updateGame, } from './modules/game/actions';
-import { addUser, removeUser, setUsers, } from './modules/users/actions';
-import { GAME_ACTIONS, } from './modules/game/constants';
-import { Game, } from 'connect_four_functional';
-
-const { setPlayers, } = Game;
+import { addPlayer, updateGame, } from './modules/game/actions';
+import { removeUser, } from './modules/users/actions';
 
 const loggedIn = () => !!auth.currentUser;
 const loggedOut = () => !loggedIn();
@@ -39,7 +35,6 @@ export const authHandler = (store) => {
 
 export const connHandler = (store) => {
   connRef.on('value', (snap) => {
-    console.log('getUser()', getUser());
     reconnected(snap) && store.dispatch(login(getUser()));
   });
 };
@@ -54,15 +49,15 @@ export const onlineHandler = (store) => {
   
   onlineRef.on('child_changed', (snap) => {
     if (curDiscon(snap)) {
-      console.log('child_changed curDiscon(snap)', snap.key, snap.val());
+      // console.log('child_changed curDiscon(snap)', snap.key, snap.val());
       
       store.dispatch(logout());
     } else if (noConn(snap)) {
-      console.log('child_changed noConn(snap)', snap.key, snap.val());
+      // console.log('child_changed noConn(snap)', snap.key, snap.val());
       
       snap.ref.remove();
     } else if (hasConn(snap)) {
-      console.log('child_changed hasConn(snap)', snap.key, snap.val());
+      // console.log('child_changed hasConn(snap)', snap.key, snap.val());
       
       store.dispatch(addPlayer(snap.val()));
     }
