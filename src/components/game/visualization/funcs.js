@@ -88,10 +88,10 @@ export const linkSelect = (links) => {
     .selectAll('.linkLine')
     .data(links)
 
-    .attr('x1', d => d.source.column)
-    .attr('y1', d => d.source.row)
-    .attr('x2', d => d.target.column)
-    .attr('y2', d => d.target.row);
+    .attr('x1', d => d.source.x)
+    .attr('y1', d => d.source.y)
+    .attr('x2', d => d.target.x)
+    .attr('y2', d => d.target.y);
 
   // 
   // // .enter()
@@ -128,10 +128,10 @@ export const updateLinks = (domLinks = d3.selectAll('.linkLine')) => () => {
   // console.log('domLinks', domLinks);
   // domLinks.enter()
   domLinks
-    .attr('x1', d => d.source.column)
-    .attr('y1', d => d.source.row)
-    .attr('x2', d => d.target.column)
-    .attr('y2', d => d.target.row)
+    .attr('x1', d => d.source.y)
+    .attr('y1', d => d.source.x)
+    .attr('x2', d => d.target.y)
+    .attr('y2', d => d.target.x)
 
   //   .select('.linkLine')
   // d3.selectAll('.linkLine')
@@ -203,6 +203,6 @@ export const loadGameGraph = game => [ createSim,
   fLink(boardLinks(game)),
 
   // tickNodes(game.nodes),
-  tickLinks(boardLinks(game)),
+  // tickLinks(boardLinks(game)),
   dragNodes(game.nodes), ]
   .reduce((sim, fn) => fn(sim), game.nodes);

@@ -12,6 +12,7 @@ class Visualization extends Component {
   render() {
     const { links, colors, } = this.props;
 
+    console.log('links', links);
     return (
       <g className="linkVis">
         {links.map(({ source, target, }, i) => (
