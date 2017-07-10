@@ -3,6 +3,8 @@ import { ADD_PLAYER, CLAIM_NEXT, REMOVE_PLAYER, SET_COLUMN,
   SET_NODES, START_GAME,
   UPDATE_GAME, } from './constants';
 
+const clear = () => Game.setPlayers([])(Game.game());
+
 export const setNodes = nodes =>
   ({ type: SET_NODES, curry: Game.setNodes(nodes), });
 
@@ -23,6 +25,9 @@ export const setColumn = cID =>
   
 export const resetGame = game =>
   ({ type: UPDATE_GAME, curry: Game.resetGame, });
+    
+export const clearGame = game =>
+  ({ type: UPDATE_GAME, curry: clear, });
 
 export const start = () => ({ type: START_GAME, curry: Game.start, });
 export const claimNext = () => ({ type: CLAIM_NEXT, curry: Game.claimNext, });

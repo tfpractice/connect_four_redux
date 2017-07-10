@@ -1,7 +1,7 @@
 import { auth as fAuth, } from 'firebase';
 import { Player, } from 'connect_four_functional';
 import { addOnline, } from '../users/actions';
-import { addPlayer, removePlayer, } from '../game/actions';
+import { addPlayer, clearGame, removePlayer, } from '../game/actions';
 import { fireUtils, rqUtils, } from '../../utils';
 import { LOGIN, LOGOUT, SET_CURRENT_USER, } from './constants';
 
@@ -57,6 +57,7 @@ export const logout = (user = authPlayer(auth)) => (dispatch, getState) => {
     .then(u => Promise.all([
       logoutSucc(),
       removePlayer(getState().auth.user),
+      clearGame(),
       unsetCurrent(),
       auth.currentUser.delete(),
     ].map(dispatch)))
