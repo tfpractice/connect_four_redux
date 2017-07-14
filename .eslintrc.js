@@ -1,5 +1,5 @@
 module.exports = {
-    extends: ['airbnb-base', 'react-app'],
+    extends: [ 'airbnb-base', 'react-app' ],
     settings: {
       'import/resolver': {
         'babel-module': {},
@@ -34,7 +34,7 @@ module.exports = {
         'no-warning-comments': 0,
         curly: 0,
         'no-confusing-arrow': 0,
-        'arrow-parens': [2, 'as-needed', { requireForBlockBody: true }],
+        'arrow-parens': [ 2, 'as-needed', { requireForBlockBody: true }],
         'no-alert': 0,
         // Warnings
         'no-debugger': 1,
@@ -53,16 +53,16 @@ module.exports = {
              { ignoreChainWithDepth: 3, },
         ],
         // Errors
-        'func-call-spacing': ['error', 'never'],
+        'func-call-spacing': [ 'error', 'never' ],
         'no-undef': 2,
         'no-dupe-keys': 2,
         'no-empty-character-class': 2,
         'no-self-compare': 2,
         'valid-typeof': 2,
         'no-unused-vars': 2,
-        'no-multi-spaces': [ 2, {
+        'no-multi-spaces': [2, {
           exceptions: { Property: true },
-        },],
+        }, ],
         //  "handle-callback-err": 2,
         'no-shadow-restricted-names': 2,
         'no-new-require': 2,
@@ -70,10 +70,10 @@ module.exports = {
         // stylistic errors
         'new-cap': 2,
         'semi-spacing': 2,
-        'array-bracket-spacing': [ 'error', 'always', { singleValue: true,
+        'array-bracket-spacing': ['error', 'always', { singleValue: true,
           objectsInArrays: false,
-          arraysInArrays: false, }, ],
-        indent: ['error', 2, {
+          arraysInArrays: false, },],
+        indent: [ 'error', 2, {
           FunctionDeclaration:
             { body: 1, parameters: 'first' },
           FunctionExpression:
@@ -85,7 +85,7 @@ module.exports = {
         quotes: [
             2, 'single',
         ],
-        'key-spacing': [ 2, {
+        'key-spacing': [2, {
           singleLine: {
               beforeColon: false,
               afterColon: true,
@@ -96,8 +96,8 @@ module.exports = {
               // afterColon: true,
               mode: 'minimum',
               // align: 'value',
-            }, },],
-        'lines-around-comment': ['error', { beforeBlockComment: true,
+            }, }, ],
+        'lines-around-comment': [ 'error', { beforeBlockComment: true,
           afterBlockComment: false,
           beforeLineComment: true,
           afterLineComment: false,
@@ -106,38 +106,38 @@ module.exports = {
           allowObjectStart: true,
           allowObjectEnd: true,
           allowArrayStart: true,
-          allowArrayEnd: true, },],
-        'object-curly-spacing': [ 'error', 'always', {
+          allowArrayEnd: true, }, ],
+        'object-curly-spacing': ['error', 'always', {
           arraysInObjects: false,
-          objectsInObjects: false, }, ],
-        'object-curly-newline': [ 'error', {
+          objectsInObjects: false, },],
+        'object-curly-newline': ['error', {
           ObjectExpression: { multiline: true, minProperties: 5 },
           ObjectPattern: { multiline: true },
-        }, ],
-        'newline-after-var': ['error', 'always' ],
+        },],
+        'newline-after-var': [ 'error', 'always'],
         // 'object-property-newline': ['error', { allowMultiplePropertiesPerLine: true }],
-        'line-comment-position': [ 'error', { position: 'above' }],
+        'line-comment-position': ['error', { position: 'above' }],
         'brace-style': [
             'error',
             '1tbs', {
                 allowSingleLine: true,
               },
         ],
-        'comma-dangle': [ 'error', {
+        'comma-dangle': ['error', {
           arrays: 'always',
           objects: 'always',
           imports: 'always',
           exports: 'always',
           functions: 'ignore',
-        },],
-        'no-trailing-spaces': [ 'error', { skipBlankLines: true }],
-        'no-multiple-empty-lines': ['error', { max: 1, maxEOF: 1 }],
-        'rest-spread-spacing': [ 'error', 'never'],
-        'sort-imports': ['error', {
+        }, ],
+        'no-trailing-spaces': ['error', { skipBlankLines: true }],
+        'no-multiple-empty-lines': [ 'error', { max: 1, maxEOF: 1 }],
+        'rest-spread-spacing': ['error', 'never' ],
+        'sort-imports': [ 'error', {
           ignoreCase: true,
           ignoreMemberSort: false,
-          memberSyntaxSortOrder: ['none', 'single', 'all',  'multiple', ],
-        },],
+          memberSyntaxSortOrder: [ 'none', 'single', 'all',  'multiple',],
+        }, ],
         //  Plugin rules
         'jsx-quotes': 1,
         'jsx-a11y/href-no-hash': 0,
@@ -152,17 +152,17 @@ module.exports = {
         'react/react-in-jsx-scope': 1,
         'react/self-closing-comp': 1,
         'react/jsx-wrap-multilines': 1,
-        'react/jsx-filename-extension': [1, { extensions: [ '.js', '.jsx' ] }],
-        'react/jsx-equals-spacing': [ 2, 'never'],
+        'react/jsx-filename-extension': [ 1, { extensions: ['.js', '.jsx'] }],
+        'react/jsx-equals-spacing': [2, 'never' ],
         // imports-plugins
         
-        'import/order': [ 'error', { groups:
-         [['builtin', 'external'], 'index', 'parent', 'sibling' ], },],
+        'import/order': ['error', { groups:
+         [[ 'builtin', 'external' ], 'index', 'parent', 'sibling'], }, ],
         'import/no-extraneous-dependencies':
-         ['error',
+         [ 'error',
           { devDependencies: true,
             optionalDependencies: false,
-            peerDependencies: false, }, ],
+            peerDependencies: false, },],
       },
   };
 
