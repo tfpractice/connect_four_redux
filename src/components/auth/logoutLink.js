@@ -3,6 +3,7 @@ import Button from 'material-ui/Button';
 import { connect, } from 'react-redux';
 
 import { AuthActs, } from '../../modules';
+
 const stateToProps = ({ auth: { user, }, }) => ({ user, });
 const LogoutLink = ({ logout, user, }) =>
   user && <Button onClick={() => logout(user)} >Logout</Button>;
