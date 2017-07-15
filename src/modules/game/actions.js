@@ -1,5 +1,5 @@
 import { Game, } from 'connect_four_functional';
-import { fireUtils, rqUtils, } from '../../utils';
+import { fireUtils, } from '../../utils';
 import { logout, unsetCurrent, } from '../auth/actions';
 import { ADD_PLAYER, CLAIM_NEXT, CLEAR_GAME, REMOVE_PLAYER,
   SET_COLUMN, SET_NODES, START_GAME, UPDATE_GAME, } from './constants';

@@ -86,6 +86,8 @@ export const gameHandler = (store) => {
   gameRef.on('value', (snap) => {
     if (hasVal(snap)) {
       snap.val().players.length && store.dispatch(updateGame((snap.val())));
+
+      // snap.hasChild('')
     }
   });
 };
