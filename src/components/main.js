@@ -8,8 +8,6 @@ import NoMatch from './noMatch';
 import Info from './info';
 import Game from './game';
 
-// const styles = { marginTop: '5em', };
-
 const mapStateToProps = ({ users, }) => ({ users, });
 
 export class Main extends Component {
