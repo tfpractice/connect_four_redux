@@ -3,25 +3,18 @@ import { connect, } from 'react-redux';
 import Node from './node';
 import { GameActs, } from '../../modules';
 
-import { Game, } from 'connect_four_functional';
+const stateToProps = ({ game, auth: { user, }, }, { id, }) =>
+  ({ nodes: game.nodes.filter(({ column, }) => column === id), });
 
-const getID = ({ id, } = { id: '', }) => id || '';
-
-const isActive = u => g =>
-  u && getID(u) && getID(Game.active(g)) === getID(u);
-
-const stateToProps = ({ game, auth: { user, }, }, { id, }) => ({
-  game,
-  nodes: game.nodes.filter(({ column, }) => column === id),
-  isActive: isActive(user)(game),
-});
-
+const mergeProps = (s, { setColumn, ...d }, { id, ...o }) =>
+  ({ ...s, ...d, ...o, setColumn: () => setColumn(id), });
+  
 const Column = ({ id, nodes, select, setColumn, }) => (
   <g
-    className="column"
     id={`col_${id}`}
+    className="column"
     onClick={select}
-    onMouseOver={() => setColumn(id)}
+    onMouseOver={setColumn}
   >
     <g className="colGroup" stroke={'none'}>
       {nodes.map(n => <Node key={n.id} node={n}/>)}
@@ -29,4 +22,4 @@ const Column = ({ id, nodes, select, setColumn, }) => (
   </g>
 );
 
-export default connect(stateToProps, GameActs)(Column);
+export default connect(stateToProps, GameActs, mergeProps)(Column);

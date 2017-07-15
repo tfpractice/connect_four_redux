@@ -7,26 +7,39 @@ import Card, { CardActions, CardContent, CardHeader, } from 'material-ui/Card';
 import { GameActs, } from '../../modules';
 import { PlayerCard, } from '../player';
 import Board from './board';
+import Players from './players';
+import { boardLinks, loadGameGraph, tickLinks, } from './visualization/funcs';
 
-const stateToProps = state => ({ ...state, });
+const stateToProps = ({ game, }) => {
+  // loadGameGraph(game);
+  const a = 0;
+
+  return ({ game, });
+};
 
 class Game extends Component {
+  componentDidMount() {
+    tickLinks(boardLinks(this.props.game))(loadGameGraph(this.props.game));
+  }
+  componentDidUpdate(a, b) {
+
+    // loadGameGraph(this.props.game);
+  }
   render() {
     const { start, game, resetGame, clearGame, } = this.props;
     
     return (
       <Grid container align="center" justify="center">
+        <Grid item xs={10} className="GameGrid">
+          <Board/>
+
+        </Grid>
         <Grid item xs={11} className="GameGrid">
           <Card>
             <CardHeader title={`in play?${game.inPlay}`}/>
             <CardContent>
-              <Grid container align="center" justify="center">
-                {game.players.map((p, i) => (
-                  <Grid item xs sm={6} key={p.id}>
-                    <PlayerCard player={p}/>
-                  </Grid>
-                ))}
-              </Grid>
+              <Players/>
+
             </CardContent>
             <CardActions>
               <Button onClick={start}>Start game</Button>
@@ -37,12 +50,38 @@ class Game extends Component {
           </Card>
         </Grid>
 
-        <Grid item xs={11} className="GameGrid">
-          <Board/>
-
-        </Grid>
       </Grid>
     );
   }
 }
+
+const PureGame = ({ start, game, resetGame, clearGame, }) => {
+  console.log('gmae', game);
+  
+  return (
+    <Grid container align="center" justify="center">
+      <Grid item xs={10} className="GameGrid">
+        <Board/>
+
+      </Grid>
+      <Grid item xs={11} className="GameGrid">
+        <Card>
+          <CardHeader title={`in play?${game.inPlay}`}/>
+          <CardContent>
+            <Players/>
+
+          </CardContent>
+          <CardActions>
+            <Button onClick={start}>Start game</Button>
+            <Button onClick={clearGame}>clearGame game</Button>
+            <Button onClick={() => resetGame(game)}>Reset game</Button>
+
+          </CardActions>
+        </Card>
+      </Grid>
+
+    </Grid>
+  );
+};
+
 export default connect(stateToProps, GameActs)(Game);

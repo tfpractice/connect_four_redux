@@ -1,36 +1,51 @@
 import React, { Component, } from 'react';
-import { loadGameGraph, } from './funcs';
+import { loadGameGraph, simInit, } from './funcs';
+import Link from './link';
+import { connect, } from 'react-redux';
 
 class Visualization extends Component {
   componentDidMount() {
     loadGameGraph(this.props.game);
   }
   componentDidUpdate() {
-    loadGameGraph(this.props.game);
+    // loadGameGraph(this.props.game);
   }
   
   render() {
-    const { links, colors, } = this.props;
+    const { links, cMap, sim, } = this.props;
+
+    console.log('this', this);
+    console.log('sim', sim);
 
     // console.log('links', links);
     return (
       <g className="linkVis">
-        {links.map(({ source, target, }, i) => (
-          <line key={i} id={`link${i}`} className="link linkLine"
+        {links.map((link, i) => (
+          <Link link={link} key={i} id={`link${i}`}
 
-            // x1={source.column}
-            // y1={source.row}
-            // x2={target.column}
-            // y2={target.row}
-            stroke={
-              source.player ? colors[source.player] : 'none'
-            }
-          />
+            stroke={ cMap.get(link.source.player)
+
+            }/>
+
         )
         )}
       </g>
     );
   }
 }
+
+const Vix = ({ links, cMap, }) => (
+  <g className="linkVis">
+    {links.map((link, i) => (
+      <Link link={link} key={i} id={`link${i}`}
+
+        stroke={ cMap.get(link.source.player)
+
+        }/>
+
+    )
+    )}
+  </g>
+);
 
 export default (Visualization);

@@ -53,12 +53,28 @@ export const boardScaleY = base => box => d3.scaleLinear()
   
 export const color = d3.scaleOrdinal()
   .domain([ null, 0, 1, ])
-  .range([ '#fff', '#ff0000', '#000000', ]);
+  .range([ '#fff', '#F44336', '#000000', ]);
     
 export const pColor = players => d3.scaleOrdinal()
   .domain([ null, ...d3.extent(players.map(p => p.id)), ])
   .range([ '#fff', '#ff0000', '#000000', ]);
+    
+export const colorMap = (def = '#fff') => players =>
+  new Map(players.map(p => [ p.id, pColor(players)(p.id), ]))
+    .set(null, def).set(undefined, def).set('', def);
+  
+const pExtent = players => (d3.extent(players.map(p => p.id)));
+const exIdx = players => p => pExtent(players).indexOf(p.id);
+const compareIDX = players => (a, b) => exIdx(players)(a) - exIdx(players)(b);
 
+export const pSort = players => [ ...players, ].sort(compareIDX(players));
+    
+export const pColorDomain = players => d3.scaleOrdinal()
+  .domain([ null, ...d3.extent(players.map(p => p.id)), ]);
+export const pColorRange = players =>
+  (range = [ '#fff', '#ff0000', '#000000', ]) =>
+    pColorDomain(players).range(range);
+    
 export const setContainer = (drag = d3.drag()) =>
   drag.container(d3.select('.boardVis').node());
 
@@ -86,12 +102,12 @@ export const linkSelect = (links) => {
 
     // .select('.linkVis')
     .selectAll('.linkLine')
-    .data(links)
+    .data(links);
 
-    .attr('x1', d => d.source.x)
-    .attr('y1', d => d.source.y)
-    .attr('x2', d => d.target.x)
-    .attr('y2', d => d.target.y);
+  // .attr('x1', d => d.source.x)
+  // .attr('y1', d => d.source.y)
+  // .attr('x2', d => d.target.x)
+  // .attr('y2', d => d.target.y);
 
   // 
   // // .enter()
@@ -128,40 +144,42 @@ export const updateLinks = (domLinks = d3.selectAll('.linkLine')) => () => {
   // console.log('domLinks', domLinks);
   // domLinks.enter()
   domLinks
+
     .attr('x1', d => d.source.y)
     .attr('y1', d => d.source.x)
     .attr('x2', d => d.target.y)
-    .attr('y2', d => d.target.x)
+    .attr('y2', d => d.target.x);
 
   //   .select('.linkLine')
   // d3.selectAll('.linkLine')
-    // .attr('x1', (d) => {
-    //   console.log('dUPDATEDLINKS', d);
-    // 
-    //   // ret
-    //   return boardScaleX()(getBox('.boardVis'))(d.source.x);
-    // })
-    // .attr('y1', d =>
-    // 
-    //   // console.log('d', d);
-    //   boardScaleY()(getBox('.boardVis'))(d.source.y)
-    // )
-    // .attr('x2', d =>
-    // 
-    //   // console.log('d', d);
-    //   boardScaleX()(getBox('.boardVis'))(d.target.x)
-    // )
-    // .attr('y2', d =>
-    // 
-    //   // console.log('d', d);
-    //   boardScaleY()(getBox('.boardVis'))(d.target.y)
-    // )
-    // .attr('stroke', ((d) => {
-    //   const a = 0;
-    //   
-    //   return '#ff00ff';
-    // }))
-    .attr('stroke-width', 1 / 42);
+  // .attr('x1', (d) => {
+  //   console.log('dUPDATEDLINKS', d);
+  // 
+  //   // ret
+  //   return boardScaleX()(getBox('.boardVis'))(d.source.x);
+  // })
+  // .attr('y1', d =>
+  // 
+  //   // console.log('d', d);
+  //   boardScaleY()(getBox('.boardVis'))(d.source.y)
+  // )
+  // .attr('x2', d =>
+  // 
+  //   // console.log('d', d);
+  //   boardScaleX()(getBox('.boardVis'))(d.target.x)
+  // )
+  // .attr('y2', d =>
+  // 
+  //   // console.log('d', d);
+  //   boardScaleY()(getBox('.boardVis'))(d.target.y)
+  // );
+
+  // .attr('stroke', ((d) => {
+  //   const a = 0;
+  //   
+  //   return '#ff00ff';
+  // }))
+  // .attr('stroke-width', 0.2);
 };
 
 const manyBody = sim => sim.force('charge', d3.forceManyBody());
@@ -178,9 +196,16 @@ const fLink = links => sim => sim.force('link',
   // )
 );
 
-export const createSim = nodes => // fCenter(manyBody(d3.forceSimulation(nodes)));
+export const nodeInit = game =>
+  (d3.forceSimulation(game.nodes));
+  
+// export const linkInit = game =>
+//   (d3.forceSimulation(game.nodes));
+export const createSim = sim =>
+  fCenter(manyBody(sim));
+
 // 
-  ((d3.forceSimulation(nodes)));
+// ((d3.forceSimulation(nodes)));
 
 export const dragNodes = nodes => sim => nodeSelect(nodes)
   .call(setContainer(d3.drag())
@@ -188,21 +213,37 @@ export const dragNodes = nodes => sim => nodeSelect(nodes)
     .on('drag', dragged(sim))
     .on('end', dragEnded(sim)));
 
-export const tickLinks = links => sim => sim
-  .on('tick.link', updateLinks(linkSelect(links)));
+export const tickLinks = links => (sim) => {
+  // console.log('sim', sim.force('link'));
+  const a = 0;
+
+  return sim
+    .on('tick.link', updateLinks(linkSelect(links)));
+};
 
 export const tickNodes = nodes => sim => sim
   .on('tick.node', updateNodes(nodeSelect(nodes)));
-const boardLinks = game =>
+  
+export const boardLinks = game =>
   [ board, joinGrid, graphLinks, ].reduce((a, fn) => fn(a), game);
 
 const userLinks = g =>
   getPlayers(g).map(playerLinks(g.nodes)).reduce(flatten, []);
 
-export const loadGameGraph = game => [ createSim,
+export const loadGameGraph = game => [
+  nodeInit,
+  
   fLink(boardLinks(game)),
+  createSim,
+  tickNodes(game.nodes),
 
-  // tickNodes(game.nodes),
-  // tickLinks(boardLinks(game)),
+  tickLinks(boardLinks(game)),
   dragNodes(game.nodes), ]
-  .reduce((sim, fn) => fn(sim), game.nodes);
+  .reduce((sim, fn) => fn(sim), game);
+  
+// const mountSimulation = sim =>
+//   [ createSim,
+//     tickNodes(sim.nodes()),
+//     tickLinks(sim.force('link').links()),
+//     dragNodes(sim.nodes()), ]
+//     .reduce((sim, fn) => fn(sim), sim);

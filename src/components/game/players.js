@@ -1,16 +1,21 @@
 import React from 'react';
 import Grid from 'material-ui/Grid';
+import { spread, } from 'fenugreek-collections';
+import { Game, } from 'connect_four_functional';
 import { connect, } from 'react-redux';
 import { PlayerCard, } from '../player';
+import { pSort, } from '../game/visualization/funcs';
+
+const stateToProps = ({ game, }) => ({ players: pSort(Game.players(game)), });
 
 const Players = ({ players, }) => (
-  <Grid container justify="center">
+  <Grid container align="center" justify="center">
     {players.map((p, i) => (
-      <Grid item xs={11} sm={6}>
-        <PlayerCard key={p.id} player={p}/>
+      <Grid item xs sm={6} key={p.id}>
+        <PlayerCard player={p}/>
       </Grid>
     ))}
   </Grid>
 );
 
-export default Players;
+export default connect(stateToProps)(Players);
