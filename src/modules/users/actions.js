@@ -17,6 +17,28 @@ export const addUser = u => ({ type: ADD_USER, curry: add(u), });
 export const removeUser = u => ({ type: REMOVE_USER, curry: remove(u), });
 export const checkConnections = id => getPresRef(id);
 
+export const addDiscon = ref => Promise.resolve(ref.onDisconnect())
+  .then((dRef) => {
+    console.log('conn', ref.child('connections'));
+    
+    ref.child('connections').on('value', (snap) => {
+      console.log('connection valu', snap.val());
+      
+      snap.hasChildren() === false ? dRef.remove() : dRef.update({ connections: ref.child('connections').push().key, });
+    });
+    console.log('dref removed', dRef, ref.toJSON());
+
+    // 
+    // dRef.update({ connections: ref.child('connections').push().key, });
+  })
+  .then((r) => { console.log('addDiscon', r, ref); return ref; });
+
+// .update(
+//   { connections: ref.child('connections').push(), }, () =>
+//     console.log(ref.child('connections'))
+// ))
+//   .then((r) => { console.log('addDiscon', r, ref); return ref; });
+  
 export const catConn = ref =>
   Promise.resolve(ref.child('connections').push())
     .then(pref => pref.onDisconnect().remove()
@@ -30,9 +52,14 @@ export const addOnline = u => dispatch =>
     .then(updateRef(u))
     .then(catConn)
     .catch(console.error);
+
+// 
+// export const takeOffline = u => onlineRef.child(u.id).remove().then(() =>
+//   u);
   
 export const goOffline = ({ id, }) => {
   console.log('going offline', onlineRef.child(`${id}`));
-  return onlineRef.child(`${id}`).remove();
+  return onlineRef.child(`${id}`).remove()
+  ;
 };
    

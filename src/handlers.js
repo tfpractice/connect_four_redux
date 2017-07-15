@@ -6,7 +6,7 @@ import { removeUser, } from './modules/users/actions';
 const loggedIn = () => !!auth.currentUser;
 const loggedOut = () => !loggedIn();
 const getUser = () => loggedIn() && auth.currentUser;
-const authID = () => loggedIn() ? getUser.uid : '';
+const authID = () => loggedIn() ? getUser().uid : '';
 
 const matchID = val => val == authID();
 const authSnap = snap => matchID(snap.key);
@@ -28,6 +28,12 @@ export const authHandler = (store) => {
   auth.onAuthStateChanged((user) => {
     if (user) {
       console.log('AUTH:SIGNEDIN.', user);
+      
+      // onlineRef.child(user.uid).child('connections')
+      //   .on('value', (snap) => {
+      //     console.log('online auth ref snap', snap, snap.val());
+      //     !hasVal(snap) && onlineRef.child(authID()).remove();
+      //   });
     } else {
     }
   });
@@ -49,11 +55,11 @@ export const onlineHandler = (store) => {
   
   onlineRef.on('child_changed', (snap) => {
     if (curDiscon(snap)) {
-      // console.log('child_changed curDiscon(snap)', snap.key, snap.val());
+      console.log('child_changed curDiscon(snap)', snap.key, snap.val());
       
       store.dispatch(logout());
     } else if (noConn(snap)) {
-      // console.log('child_changed noConn(snap)', snap.key, snap.val());
+      console.log('child_changed noConn(snap)', snap.key, snap.val());
       
       snap.ref.remove();
     } else if (hasConn(snap)) {
@@ -64,14 +70,14 @@ export const onlineHandler = (store) => {
   });
   
   onlineRef.on('child_removed', (snap) => {
-    console.log('child removed', snap.val());
+    // console.log('child removed', snap.val());
     if (noConn(snap)) {
-      console.log('child_removed alternate  disconn', snap.val(), snap.key());
+      console.log('child_removed alternate  disconn', snap.val(), snap.key);
       store.dispatch(removeUser(snap.val()));
     }
     
     if (curDiscon(snap)) {
-      console.log('child_removed alternate curDiscon disconnected', snap.val(), snap.key());
+      console.log('child_removed alternate curDiscon disconnected', snap.val(), snap.key);
     }
   });
 };

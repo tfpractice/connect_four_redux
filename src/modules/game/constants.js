@@ -12,7 +12,9 @@ export const TOGGLE_STATE = 'TOGGLE_STATE';
 export const ADD_PLAYER = 'ADD_PLAYER';
 export const REMOVE_PLAYER = 'REMOVE_PLAYER';
 export const UPDATE_GAME = 'UPDATE_GAME';
+export const CLEAR_GAME = 'CLEAR_GAME';
 export const GAME_ACTIONS = new Set([
+  CLEAR_GAME,
   CLAIM_NEXT,
   END_IF_WON,
   SET_COLUMN,

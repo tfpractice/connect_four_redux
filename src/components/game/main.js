@@ -1,18 +1,19 @@
 import React, { Component, } from 'react';
 import Grid from 'material-ui/Grid';
 import { connect, } from 'react-redux';
-import Board from './board';
 import Button from 'material-ui/Button';
 import Card, { CardActions, CardContent, CardHeader, } from 'material-ui/Card';
+
 import { GameActs, } from '../../modules';
 import { PlayerCard, } from '../player';
+import Board from './board';
 
 const stateToProps = state => ({ ...state, });
 
 class Game extends Component {
   render() {
     const { start, game, resetGame, clearGame, } = this.props;
-
+    
     return (
       <Grid container align="center" justify="center">
         <Grid item xs={11} className="GameGrid">
@@ -35,7 +36,7 @@ class Game extends Component {
             </CardActions>
           </Card>
         </Grid>
-        
+
         <Grid item xs={11} className="GameGrid">
           <Board/>
 

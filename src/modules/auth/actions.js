@@ -19,10 +19,7 @@ const logoutPend = rqActions(LOGOUT).pending;
 const logoutFail = rqActions(LOGOUT).failure;
 const logoutSucc = rqActions(LOGOUT).success;
 
-export const createPlayer = (u) => {
-  console.log('createPlayer', u);
-  return u.uid ? setName(u.displayName || u.uid)(setID(u.uid)(u)) : u;
-};
+export const createPlayer = u => u.uid ? setName(u.displayName || u.uid)(setID(u.uid)(u)) : u;
 
 export const setCurrentUser = u => ({ type: SET_CURRENT_USER, curry: set(u), });
 
@@ -35,7 +32,8 @@ export const unsetCurrent = () => dispatch =>
   Promise.resolve(dispatch(setCurrentUser(null)))
     .catch(err => console.error(err.message));
          
-export const takeOffline = u => onlineRef.child(u.id).remove().then(() => u);
+export const takeOffline = u => onlineRef.child(u.uid).remove().then(() =>
+  u);
 export const authPlayer = amod => createPlayer(amod.currentUser);
 export const deleteU = u => u && u.delete().then(() => u);
 
@@ -50,16 +48,17 @@ export const login = ({ displayName, } = { displayName: '', }) => dispatch =>
       .catch(loginFail)
     );
 export const logout = (user = authPlayer(auth)) => (dispatch, getState) => {
-  console.log('logging out user arg', user, getState().auth.user, auth.currentUser);
+  const a = 0;
+
   return Promise.resolve(dispatch(logoutPend()))
-    .then(() => user)
+    .then(() => auth.currentUser)
     .then(takeOffline)
+    .then(deleteU)
     .then(u => Promise.all([
       logoutSucc(),
       removePlayer(getState().auth.user),
-      clearGame(),
       unsetCurrent(),
-      auth.currentUser.delete(),
+      clearGame(),
     ].map(dispatch)))
     .catch(e => dispatch(logoutFail(e.message)));
 };

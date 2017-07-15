@@ -1,4 +1,5 @@
 import * as firebase from 'firebase';
+import { Game, } from 'connect_four_functional';
 import { GAME_ACTIONS, } from '../modules/game/constants';
 
 export const config = {
@@ -23,12 +24,12 @@ export const getOnlineRef = id => onlineRef.push(`${id}`);
 
 export const fireMid = ({ dispatch, getState, }) => next => (action) => {
   const result = next(action);
-
+  
   if (GAME_ACTIONS.has(action.type)) {
     if (action.type !== 'UPDATE_GAME' && getState().game.players.length) {
-      db.ref('game').set(getState().game);
+      gameRef.set(getState().game);
     }
   }
-
+  
   return result;
 };
