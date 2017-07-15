@@ -5,13 +5,11 @@ import Button from 'material-ui/Button';
 import Card, { CardActions, CardContent, CardHeader, } from 'material-ui/Card';
 
 import { GameActs, } from '../../modules';
-import { PlayerCard, } from '../player';
 import Board from './board';
 import Players from './players';
 import { boardLinks, loadGameGraph, tickLinks, } from './visualization/funcs';
 
 const stateToProps = ({ game, }) => {
-  // loadGameGraph(game);
   const a = 0;
 
   return ({ game, });
@@ -32,7 +30,6 @@ class Game extends Component {
       <Grid container align="center" justify="center">
         <Grid item xs={10} className="GameGrid">
           <Board/>
-
         </Grid>
         <Grid item xs={11} className="GameGrid">
           <Card>

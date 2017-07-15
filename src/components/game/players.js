@@ -1,6 +1,5 @@
 import React from 'react';
 import Grid from 'material-ui/Grid';
-import { spread, } from 'fenugreek-collections';
 import { Game, } from 'connect_four_functional';
 import { connect, } from 'react-redux';
 import { PlayerCard, } from '../player';

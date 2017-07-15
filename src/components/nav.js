@@ -9,15 +9,13 @@ import { LoginForm, } from './auth';
 const Nav = props => (
   <AppBar>
     <Toolbar>
-      <Grid container justify="space-between" direction="row" align="center">
+      <Grid container justify="space-between" align="center">
         <Grid item>
-          <Grid container direction="row" align="center">
-            <Link to="/" >
-              <Text type="headline" color="secondary" >
-                Connect Four Redux
-              </Text>
-            </Link>
-          </Grid>
+          <Link to="/" >
+            <Text type="headline" color="secondary" >
+              Connect Four Redux
+            </Text>
+          </Link>
         </Grid>
         <Grid item>
           <LoginForm formID={'mainLogin'}/>
