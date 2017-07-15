@@ -3,7 +3,7 @@ import { Game, } from 'connect_four_functional';
 import { flattenBin as flatten, } from 'fenugreek-collections';
 import { Grid, } from 'game_grid';
 import Visualization from './component';
-import { colorMap, graphLinks, loadGameGraph, nodeInit, pLinks, } from './funcs';
+import { colorMap, graphLinks, loadGameGraph, nodeInit, pLinks, } from '../../../utils/viz';
 
 const { joinGrid, } = Grid;
 const { board, players: getPlayers, } = Game;

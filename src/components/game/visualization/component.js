@@ -1,5 +1,5 @@
 import React, { Component, } from 'react';
-import { loadGameGraph, simInit, } from './funcs';
+import { loadGameGraph, simInit, } from '../../../utils/viz';
 import Link from './link';
 import { connect, } from 'react-redux';
 

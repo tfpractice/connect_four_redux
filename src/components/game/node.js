@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect, } from 'react-redux';
-import { colorMap, } from './visualization/funcs';
+import { colorMap, } from '../../utils/viz';
 
 const stateToProps = ({ game: { players, }, }, { node: { player, }, }) =>
   ({ fill: colorMap('#fff')(players).get(player), });

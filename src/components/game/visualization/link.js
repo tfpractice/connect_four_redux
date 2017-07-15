@@ -1,5 +1,5 @@
 import React from 'react';
-import { cMap, } from './funcs';
+import { cMap, } from '../../../utils/viz';
 import { connect, } from 'react-redux';
 
 const x1 = ({ source, }) => source.x || source.column;

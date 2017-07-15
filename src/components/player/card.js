@@ -2,7 +2,7 @@ import React from 'react';
 import { connect, } from 'react-redux';
 import Card, { CardHeader, } from 'material-ui/Card';
 import { Game, Player, } from 'connect_four_functional';
-import { pColor, pColorRange, } from '../game/visualization/funcs';
+import { pColor, pColorRange, } from '../../utils/viz';
 
 const range = [ '#fff', '#C62828', '#000', ];
 const colors = game => game.players.map((p, i) =>

@@ -3,8 +3,13 @@ node_modules
 
 coverage
 /coverage
+
 dist
 /dist
+
+/build
+build
+
 
 .DS_Store
 .env
