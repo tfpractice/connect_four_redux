@@ -1,7 +1,31 @@
 import React, { Component, } from 'react';
-import { loadGameGraph, simInit, } from '../../../utils/viz';
 import Link from './link';
 import { connect, } from 'react-redux';
+
+import { Game, } from 'connect_four_functional';
+import { flattenBin as flatten, } from 'fenugreek-collections';
+import { Grid, } from 'game_grid';
+import { colorMap, graphLinks, loadGameGraph, nodeInit, pLinks, simInit, } from '../../../utils/viz';
+
+const { joinGrid, } = Grid;
+const { board, players: getPlayers, } = Game;
+
+const mapStateToProps = ({ game, }) => {
+  const nodes = game.nodes;
+  const myGrid = joinGrid(board(game));
+  const links = getPlayers(game).map(pLinks(game.nodes)).reduce(flatten, []);
+  const omniLinks = graphLinks(myGrid);
+
+  const simulation = simInit(game);
+
+  const sLinks = simulation.force('link').links();
+
+  console.log('links', sLinks);
+  
+  return ({
+    links, omniLinks, nodes, simulation, links, sLinks, game, cMap: colorMap()(game.players),
+  });
+};
 
 class Visualization extends Component {
   componentDidMount() {
@@ -12,10 +36,11 @@ class Visualization extends Component {
   }
   
   render() {
-    const { links, cMap, sim, } = this.props;
+    const { links, cMap, simulation, } = this.props;
 
-    console.log('this', this);
-    console.log('sim', sim);
+    const lol = 0;
+
+    // console.log('sim', sim);
 
     // console.log('links', links);
     return (
@@ -48,4 +73,4 @@ const Vix = ({ links, cMap, }) => (
   </g>
 );
 
-export default (Visualization);
+export default connect(mapStateToProps)(Visualization);

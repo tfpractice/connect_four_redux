@@ -3,7 +3,7 @@ import Grid from 'material-ui/Grid';
 import { Game, } from 'connect_four_functional';
 import { connect, } from 'react-redux';
 import { PlayerCard, } from '../player';
-import { pSort, } from '../game/visualization/funcs';
+import { pSort, } from '../../utils/viz';
 
 const stateToProps = ({ game, }) => ({ players: pSort(Game.players(game)), });
 
