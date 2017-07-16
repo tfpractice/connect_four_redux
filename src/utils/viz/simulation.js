@@ -1,15 +1,32 @@
 import * as d3 from 'd3';
 import { Board, Game, Node, } from 'connect_four_functional';
 import { flattenBin as flatten, spread, } from 'fenugreek-collections';
-import { Compare, Node as GdNode, Grid, } from 'game_grid';
-import { Graph, } from 'graph-curry';
-import { boardScaleX, boardScaleY, getBox, setContainer, } from './scales';
-import { boardLinks, cIDs, graphLinks, playerLinks, } from './links';
+import { Compare, Filter, Node as GdNode, Grid, } from 'game_grid';
+import { boardScaleX, boardScaleY, getBox, selectorScaleX, selectorScaleY,
+  setContainer, } from './scales';
+import { boardLinks, cIDs, graphLinks, playerLinks, userLinks, } from './links';
 
-const { sameCol, } = Compare;
-const { board, players: getPlayers, } = Game;
-const { graph, nodes: getNodes, neighbors: nabes, } = Graph;
-const { joinGrid, } = Grid;
+const { byCol, } = Filter;
+
+export const gameX = x => boardScaleX()(getBox('.boardVis'))(x);
+export const gameY = y => boardScaleY()(getBox('.boardVis'))(y);
+
+export const linkSelect = (links) => {
+  d3.select('.boardVis')
+    .selectAll('.linkLine')
+    .data(links);
+};
+
+export const nodeSelect = nArr =>
+  d3.select('.boardVis')
+    .selectAll('.column')
+    .data(cIDs(nArr))
+    .select('.colGroup')
+    .selectAll('.node')
+    .data(byCol(nArr))
+    .select('.nodeCircle')
+    .attr('opacity', 0.4)
+;
 
 export const dragStarted = force => (d) => {
   if (!d3.event.active) force.alphaTarget(0.3).restart();
@@ -28,36 +45,48 @@ export const dragEnded = force => (d) => {
   d.fy = null;
 };
 
-export const linkSelect = (links) => {
-  d3.select('.boardVis')
-    .selectAll('.linkLine')
-    .data(links);
-};
-
-export const nodeSelect = nArr =>
-  d3.select('.boardVis')
-    .selectAll('.column')
-    .data(cIDs(nArr))
-    .select('.colGroup')
-    .selectAll('.node')
-    .data(column => nArr.filter(sameCol({ column, })))
-    .select('.nodeCircle')
-    .attr('opacity', 0.4)
-;
 export const updateNodes = (domNodes = d3.selectAll('.nodeCircle')) => (arg) => {
   domNodes
     .attr('r', 1 / 4)
-    .attr('cx', (({ x, }) => boardScaleX()(getBox('.boardVis'))(x)))
-    .attr('cy', (({ y, }) => boardScaleY()(getBox('.boardVis'))(y)));
+    .attr('cx', (({ x, }) => gameX(x)))
+    .attr('cy', (({ y, }) => gameY(y)));
 };
 
 export const updateLinks = (domLinks = d3.selectAll('.linkLine')) => () => {
+  console.log('updateLinks');
   domLinks
-    .attr('x1', d => d.source.y)
-    .attr('y1', d => d.source.x)
-    .attr('x2', d => d.target.y)
-    .attr('y2', d => d.target.x);
+    .attr('x1', d => gameX(d.source.x))
+    .attr('y1', d => gameY(d.source.y))
+    .attr('x2', d => gameX(d.target.x))
+    .attr('y2', d => gameY(d.target.y))
+
+    .attr('stroke', '#fff');
 };
+
+export const dragNodes = nodes => sim => nodeSelect(nodes)
+  .call(setContainer(d3.drag())
+    .on('start', dragStarted(sim))
+    .on('drag', dragged(sim))
+    .on('end', dragEnded(sim)));
+
+//     
+// export const dragLinks = links => sim => linkSelect(links)
+//   .call(setContainer(d3.drag())
+//     .on('start', dragStarted(sim))
+//     .on('drag', dragged(sim))
+//     .on('end', dragEnded(sim)));
+
+export const tickLinks = links => (sim) => {
+  const a = 0;
+
+  console.log('tickLinks', links);
+  
+  return sim
+    .on('tick', updateLinks(linkSelect(links)));
+};
+
+export const tickNodes = nodes => sim => sim
+  .on('tick.node', updateNodes(nodeSelect(nodes)));
 
 const manyBody = sim => sim.force('charge', d3.forceManyBody());
 const fCenter = sim => sim.force('center', d3.forceCenter(getBox('.boardVis').height / 2, getBox('.boardVis').height / 2));
@@ -66,33 +95,17 @@ const fLink = links => sim => sim.force('link',
   d3.forceLink(links).id((d, i) => d.id)
 );
 
-export const nodeInit = game =>
-  (d3.forceSimulation(game.nodes));
-  
-export const createSim = sim =>
-  fCenter(manyBody(sim));
-  
-export const dragNodes = nodes => sim => nodeSelect(nodes)
-  .call(setContainer(d3.drag())
-    .on('start', dragStarted(sim))
-    .on('drag', dragged(sim))
-    .on('end', dragEnded(sim)));
-    
-export const tickLinks = links => (sim) => {
-  const a = 0;
-  
-  return sim
-    .on('tick.link', updateLinks(linkSelect(links)));
-};
+export const boardForce = game => sim => sim.force('board',
+  d3.forceLink(boardLinks(game)).id((d, i) => d.id)
+);
 
-export const tickNodes = nodes => sim => sim
-  .on('tick.node', updateNodes(nodeSelect(nodes)));
+export const playerForce = game => sim => sim.force('players',
+  d3.forceLink(userLinks(game)).id((d, i) => d.id)
+);
 
-// export const boardLinks = game =>
-//   [ board, joinGrid, graphLinks, ].reduce((a, fn) => fn(a), game);
-  
-const userLinks = g =>
-  getPlayers(g).map(playerLinks(g.nodes)).reduce(flatten, []);
+export const nodeInit = game => d3.forceSimulation(game.nodes);
+
+export const createSim = sim => fCenter(manyBody(sim));
 
 export const loadGameGraph = game => [
   nodeInit,
@@ -103,8 +116,13 @@ export const loadGameGraph = game => [
   dragNodes(game.nodes), ]
   .reduce((sim, fn) => fn(sim), game);
 
-export const simInit = game =>
-  [ nodeInit, fLink(boardLinks(game)), ].reduce((sim, fn) => fn(sim), game);
+export const simInit = game => [
+  nodeInit, boardForce(game), playerForce(game), fLink(boardLinks(game)),
+].reduce((sim, fn) => fn(sim), game);
 
 export const mountSimulation = sim =>
-  [ fCenter, manyBody, tickNodes(sim.nodes), ].reduce((s, fn) => fn(s), sim);
+  [ fCenter, manyBody,
+    tickNodes(sim.nodes()),
+    tickLinks(sim.force('players').links()),
+    dragNodes(sim.nodes()),
+  ].reduce((s, fn) => fn(s), sim);

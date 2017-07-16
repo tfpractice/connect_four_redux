@@ -41,5 +41,8 @@ export const pNeg = g => p =>
 export const playerLinks = g => p =>
   [ pCols(g)(p), pRows(g)(p), pPos(g)(p), pNeg(g)(p), ].reduce(flatten, []);
   
+export const userLinks = g =>
+  getPlayers(g).map(pLinks(g.nodes)).reduce(flatten, []);
+
 export const boardLinks = game =>
   [ board, joinGrid, graphLinks, ].reduce((a, fn) => fn(a), game);

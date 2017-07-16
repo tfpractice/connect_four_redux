@@ -13,7 +13,6 @@ const stateToProps = ({ game, }) => ({ game, });
 
 class Game extends Component {
   componentDidMount() {
-    tickLinks(boardLinks(this.props.game))(loadGameGraph(this.props.game));
   }
   componentDidUpdate(a, b) {
 
