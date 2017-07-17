@@ -5,28 +5,7 @@ import { Compare, Filter, Node as GdNode, Grid, } from 'game_grid';
 import { boardScaleX, boardScaleY, getBox, selectorScaleX, selectorScaleY,
   setContainer, } from './scales';
 import { boardLinks, cIDs, graphLinks, playerLinks, userLinks, } from './links';
-
-const { byCol, } = Filter;
-
-export const gameX = x => boardScaleX()(getBox('.boardVis'))(x);
-export const gameY = y => boardScaleY()(getBox('.boardVis'))(y);
-
-export const linkSelect = (links) => {
-  d3.select('.boardVis')
-    .selectAll('.linkLine')
-    .data(links);
-};
-
-export const nodeSelect = nArr =>
-  d3.select('.boardVis')
-    .selectAll('.column')
-    .data(cIDs(nArr))
-    .select('.colGroup')
-    .selectAll('.node')
-    .data(byCol(nArr))
-    .select('.nodeCircle')
-    .attr('opacity', 0.4)
-;
+import { gameX, gameY, linkSelect, nodeSelect, updateLinks, updateNodes, updateSim, } from './selections';
 
 export const dragStarted = force => (d) => {
   if (!d3.event.active) force.alphaTarget(0.3).restart();
@@ -35,6 +14,7 @@ export const dragStarted = force => (d) => {
 };
 
 export const dragged = force => (d) => {
+  console.log('d', d);
   d.fx = d3.event.sourceEvent.x;
   d.fy = d3.event.sourceEvent.y;
 };
@@ -45,41 +25,14 @@ export const dragEnded = force => (d) => {
   d.fy = null;
 };
 
-export const updateNodes = (domNodes = d3.selectAll('.nodeCircle')) => (arg) => {
-  domNodes
-    .attr('r', 1 / 4)
-    .attr('cx', (({ x, }) => gameX(x)))
-    .attr('cy', (({ y, }) => gameY(y)));
-};
-
-export const updateLinks = (domLinks = d3.selectAll('.linkLine')) => () => {
-  console.log('updateLinks');
-  domLinks
-    .attr('x1', d => gameX(d.source.x))
-    .attr('y1', d => gameY(d.source.y))
-    .attr('x2', d => gameX(d.target.x))
-    .attr('y2', d => gameY(d.target.y))
-
-    .attr('stroke', '#fff');
-};
-
 export const dragNodes = nodes => sim => nodeSelect(nodes)
   .call(setContainer(d3.drag())
     .on('start', dragStarted(sim))
     .on('drag', dragged(sim))
     .on('end', dragEnded(sim)));
 
-//     
-// export const dragLinks = links => sim => linkSelect(links)
-//   .call(setContainer(d3.drag())
-//     .on('start', dragStarted(sim))
-//     .on('drag', dragged(sim))
-//     .on('end', dragEnded(sim)));
-
 export const tickLinks = links => (sim) => {
   const a = 0;
-
-  console.log('tickLinks', links);
   
   return sim
     .on('tick', updateLinks(linkSelect(links)));
@@ -87,6 +40,8 @@ export const tickLinks = links => (sim) => {
 
 export const tickNodes = nodes => sim => sim
   .on('tick.node', updateNodes(nodeSelect(nodes)));
+
+export const ticked = sim => sim.on('tick', updateSim(sim));
 
 const manyBody = sim => sim.force('charge', d3.forceManyBody());
 const fCenter = sim => sim.force('center', d3.forceCenter(getBox('.boardVis').height / 2, getBox('.boardVis').height / 2));
@@ -122,7 +77,9 @@ export const simInit = game => [
 
 export const mountSimulation = sim =>
   [ fCenter, manyBody,
-    tickNodes(sim.nodes()),
-    tickLinks(sim.force('players').links()),
+    ticked,
+
+    // tickNodes(sim.nodes()),
+    // tickLinks(sim.force('players').links()),
     dragNodes(sim.nodes()),
   ].reduce((s, fn) => fn(s), sim);

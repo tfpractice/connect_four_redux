@@ -15,6 +15,8 @@ const mapStateToProps = ({ game, }) => {
   const links = simulation.force('players').links();
   const omniLinks = simulation.force('board').links();
 
+  // mountSimulation(simulation);
+
   return ({
     links, nodes: game.nodes, simulation, game, cMap: colorMap()(game.players),
   });

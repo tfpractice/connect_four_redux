@@ -2,18 +2,6 @@ import * as d3 from 'd3';
 import { Board, Game, Node, } from 'connect_four_functional';
 import { flattenBin as flatten, spread, } from 'fenugreek-collections';
 
-// import { Compare, Node as GdNode, Grid, } from 'game_grid';
-// import { Graph, } from 'graph-curry';
-
-// 
-// const { sameCol, } = Compare;
-// const { samePlayer, } = Node;
-// const { column: getCol, } = GdNode;
-// const { playerGraph, } = Board;
-// const { board, players: getPlayers, } = Game;
-// const { graph, nodes: getNodes, neighbors: nabes, } = Graph;
-// const { joinGrid, colGrid, rowGrid, posGrid, negGrid, } = Grid;
-
 export const getBox = sel =>
   d3.select(sel).node().getBoundingClientRect();
 
@@ -23,18 +11,26 @@ export const selHeight = sel => getBox(sel).height;
 
 export const boardScaleX = base => box => d3.scaleLinear()
   .domain([ 0, box.width * 0.9, ])
-  .range([ 0, 7, ]);
+  .range([ 0, 100, ]);
 
 export const boardScaleY = base => box => d3.scaleLinear()
   .domain([ 0, box.height * 0.9, ])
-  .range([ 0, 6, ]);
-
+  .range([ 0, 100, ]);
+  
 export const selectorScaleX = sel => data => d3.scaleLinear()
   .domain([ 0, getBox(sel).width * 0.9, ])
   .range(d3.extent(data.map(d => d.column)));
 
 export const selectorScaleY = sel => data => d3.scaleLinear()
   .domain([ 0, getBox(sel).height * 0.9, ])
+  .range(d3.extent(data.map(d => d.row)));
+    
+export const containerScaleX = data => d3.scaleLinear()
+  .domain([ 0, 0.9, ])
+  .range(d3.extent(data.map(d => d.column)));
+
+export const containerScaleY = data => d3.scaleLinear()
+  .domain([ 0, 0.9, ])
   .range(d3.extent(data.map(d => d.row)));
 
 export const color = d3.scaleOrdinal()
