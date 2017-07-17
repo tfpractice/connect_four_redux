@@ -24,26 +24,63 @@ export const linkSelect = links =>
   d3.select('.boardVis')
     .selectAll('.linkLine')
     .data(links)
-    .append('line')
-    .classed('linkLine', true);
 
-export const updateNodes = (domNodes = d3.selectAll('.nodeCircle')) => (arg) => {
+    // .append('line')
+    // .classed('linkLine', true)
+    .attr('stroke-width', '1');
+
+export const updateNodes = (domNodes = d3.selectAll('.nodeCircle')) => sim =>
   domNodes
-    .attr('r', 1)
-    .attr('cx', (({ x, }) => gameX(x)))
-    .attr('cy', (({ y, }) => gameY(y)));
-};
+    .attr('r', 2)
+    .attr('cx', sim.force('x').x())
+    .attr('cy', sim.force('y').y())
+  ;
 
-export const updateLinks = (domLinks = d3.selectAll('.linkLine')) => () => {
-  domLinks
-    .attr('x1', d => gameX(d.source.x))
-    .attr('y1', d => gameY(d.source.y))
-    .attr('x2', d => gameX(d.target.x))
-    .attr('y2', d => gameY(d.target.y))
+export const updateLinks = (domLinks = d3.selectAll('.linkLine')) => (sim) => {
+  const a = 0;
+
+  console.log('sim', sim.force('players'));
+  
+  return domLinks.selectAll('.linkLine')
+
+    // .append('line')
+    // .classed('linkLine', true)
+    .attr('x1', (d) => {
+      console.log(sim.force('x').x()(d.source));
+      
+      return sim.force('x').x()(d.source);
+    })
+    .attr('y1', (d) => {
+      console.log(sim.force('y').y()(d.source));
+      
+      return sim.force('y').y()(d.source);
+    })
+    .attr('x2', (d) => {
+      console.log(sim.force('x').x()(d.target));
+      
+      return sim.force('x').x()(d.target);
+    })
+    .attr('y2', (d) => {
+      console.log(sim.force('y').y()(d.target));
+      
+      return sim.force('y').y()(d.target);
+    })
     .attr('stroke', '#fff');
 };
 
 export const updateSim = sim => () => {
-  updateNodes(nodeSelect(sim.nodes()))();
-  updateLinks(linkSelect(sim.force('players').links()))();
+  // console.log('sim.force().links()', sim.force('board').links().length);
+  // console.log('sim.force().links()', sim.force('players').links().length);
+  updateNodes(nodeSelect(sim.nodes()))(sim);
+  updateLinks()(sim);
+};
+
+export const updateSimNodes = nodes => sim => () => {
+  updateNodes(nodeSelect(nodes))(sim);
+};
+
+export const updateSimLinks = links => sim => () => {
+  // console.log('linkss', links);
+  console.log('updateSimLinks', sim.force('players').links());
+  updateLinks(linkSelect(links))(sim);
 };

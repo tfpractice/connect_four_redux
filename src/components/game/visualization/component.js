@@ -15,8 +15,6 @@ const mapStateToProps = ({ game, }) => {
   const links = simulation.force('players').links();
   const omniLinks = simulation.force('board').links();
 
-  // mountSimulation(simulation);
-
   return ({
     links, nodes: game.nodes, simulation, game, cMap: colorMap()(game.players),
   });
@@ -24,7 +22,7 @@ const mapStateToProps = ({ game, }) => {
 
 class Visualization extends Component {
   componentDidMount() {
-    mountSimulation(this.props.simulation);
+    mountSimulation(this.props.game)(this.props.simulation);
   }
   componentDidUpdate() {
     // mountSimulation(this.props.simulation);
@@ -35,9 +33,11 @@ class Visualization extends Component {
 
     const lol = 0;
 
+    console.log('simulation.force(\'players\').links()', simulation.force('players').links());
+
     // console.log('sim', sim);
 
-    // console.log('links', links);
+    console.log('links', links);
     return (
       <g className="linkVis">
         {links.map((link, i) => (
