@@ -2,10 +2,9 @@ import * as d3 from 'd3';
 import { boardLinks, cIDs, graphLinks, playerLinks, userLinks, } from './links';
 import { Compare, Filter, Node as GdNode, Grid, } from 'game_grid';
 import { boardScaleX, boardScaleY, getBox, selectorScaleX, selectorScaleY,
-  setContainer,} from './scales';
+  setContainer, } from './scales';
 
 const { byCol, } = Filter;
-
 
 export const nodeSelect = nArr =>
   d3.select('.boardVis')
@@ -20,8 +19,10 @@ export const nodeSelect = nArr =>
 
 export const linkSelect = links =>
   d3.select('.boardVis')
-    .selectAll('.linkLine')
+    .selectAll('.linkVis')
+    .selectAll('.linkGroup')
     .data(links)
+    .select('.linkLine')
 
     // .append('line')
     // .classed('linkLine', true)
@@ -29,6 +30,7 @@ export const linkSelect = links =>
 
 export const updateNodes = (domNodes = d3.selectAll('.nodeCircle')) => sim =>
   domNodes
+
     // .attr('r', 2)
     .attr('cx', sim.force('x').x())
     .attr('cy', sim.force('y').y())
@@ -79,7 +81,9 @@ export const updateSimNodes = nodes => sim => () => {
 
 export const updateSimLinks = links => sim => () => {
   // console.log('linkss', links);
-const a =0
+  const a = 0;
+
   // console.log('updateSimLinks', sim.force('players').links());
+
   updateLinks(linkSelect(links))(sim);
 };
