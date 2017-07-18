@@ -18,11 +18,15 @@ export const fLink = links => sim => sim.force('link',
 );
 
 export const boardForce = game => sim => sim.force('board',
-  d3.forceLink(boardLinks(game)).id((d, i) => d.id)
+  d3.forceLink(boardLinks(game))
+
+  // .id((d, i) => d.id)
 );
 
 export const playerForce = game => sim => sim.force('players',
-  d3.forceLink(userLinks(game)).id((d, i) => d.id)
+  d3.forceLink(userLinks(game))
+
+  // .id((d, i) => d.id)
 );
 
 export const refCenter = ref => sim =>

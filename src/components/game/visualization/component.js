@@ -45,18 +45,22 @@ class Visualization extends Component {
   }
 }
 
-const Vix = ({ links, cMap, }) => (
-  <g className="linkVis">
-    {links.map((link, i) => (
-      <Link link={link} key={i} id={`link${i}`}
+const Vix = ({ links, onMount, cMap, simulation, }) => {
+  // console.log('simulation', simulation);
+  const l = 0;
 
-        stroke={ cMap.get(link.source.player)
+  // onMount();
+  return (
+    <g className="linkVis">
+      {links.map((link, i) => (
+        <Link link={link} key={i} id={`link${i}`} simulation={simulation}/>
 
-        }/>
+      )
+      )}
+    </g>
+  );
+};
 
-    )
-    )}
-  </g>
-);
+export default (Vix);
 
-export default connect(mapStateToProps)(Vix);
+// export default connect(mapStateToProps)(Vix);

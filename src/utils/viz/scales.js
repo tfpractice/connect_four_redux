@@ -65,11 +65,7 @@ export const pColorRange = players =>
     pColorDomain(players).range(range);
 
 export const setContainer = (drag = d3.drag()) => {
-  console.log('drag', drag);
-  const d = drag.container();
-
-  console.log('d3.select(\'.boardVis\').node()', d3.select('.boardVis').node());
-  console.log('d', d);
+  const d = drag.container(d3.select('.boardVis').node());
   
   return drag;
 };

@@ -4,7 +4,7 @@ import { connect, } from 'react-redux';
 import Button from 'material-ui/Button';
 import Card, { CardActions, CardContent, CardHeader, } from 'material-ui/Card';
 
-import { boardLinks, loadGameGraph, simInit, tickLinks, } from '../../utils/viz';
+import { boardLinks, simInit, tickLinks, } from '../../utils/viz';
 import { GameActs, } from '../../modules';
 import Board from './board';
 import Players from './players';
@@ -16,7 +16,6 @@ class Game extends Component {
   }
   componentDidUpdate(a, b) {
 
-    // loadGameGraph(this.props.game);
   }
   render() {
     const { start, game, resetGame, clearGame, } = this.props;
