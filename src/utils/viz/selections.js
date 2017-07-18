@@ -2,12 +2,10 @@ import * as d3 from 'd3';
 import { boardLinks, cIDs, graphLinks, playerLinks, userLinks, } from './links';
 import { Compare, Filter, Node as GdNode, Grid, } from 'game_grid';
 import { boardScaleX, boardScaleY, getBox, selectorScaleX, selectorScaleY,
-  setContainer, } from './scales';
+  setContainer,} from './scales';
 
 const { byCol, } = Filter;
 
-export const gameX = x => boardScaleX()(getBox('.boardVis'))(x);
-export const gameY = y => boardScaleY()(getBox('.boardVis'))(y);
 
 export const nodeSelect = nArr =>
   d3.select('.boardVis')
@@ -31,7 +29,7 @@ export const linkSelect = links =>
 
 export const updateNodes = (domNodes = d3.selectAll('.nodeCircle')) => sim =>
   domNodes
-    .attr('r', 2)
+    // .attr('r', 2)
     .attr('cx', sim.force('x').x())
     .attr('cy', sim.force('y').y())
   ;
@@ -39,9 +37,9 @@ export const updateNodes = (domNodes = d3.selectAll('.nodeCircle')) => sim =>
 export const updateLinks = (domLinks = d3.selectAll('.linkLine')) => (sim) => {
   const a = 0;
 
-  console.log('sim', sim.force('players'));
+  // console.log('sim', sim.force('players').links().length);
   
-  return domLinks.selectAll('.linkLine')
+  return domLinks
 
     // .append('line')
     // .classed('linkLine', true)
@@ -81,6 +79,7 @@ export const updateSimNodes = nodes => sim => () => {
 
 export const updateSimLinks = links => sim => () => {
   // console.log('linkss', links);
-  console.log('updateSimLinks', sim.force('players').links());
+const a =0
+  // console.log('updateSimLinks', sim.force('players').links());
   updateLinks(linkSelect(links))(sim);
 };

@@ -11,7 +11,7 @@ const stateToProps = ({ game: { players, }, }, { node: { player, ...nrest }, }) 
 
 const Node = ({ node: { column, row, id, }, fill, }) => (
   <g className="node" id={id}>
-    <circle cx={column} cy={row} fill={fill} id={id} className="nodeCircle" />
+    <circle cx={column} cy={row} fill={fill} id={id} r='10' className="nodeCircle" />
   </g>
 );
 

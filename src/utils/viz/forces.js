@@ -1,14 +1,18 @@
 import * as d3 from 'd3';
 import { getBox, } from './scales';
 import { boardLinks, userLinks, } from './links';
-import { gameX, gameY, } from './selections';
+import { gameX, gameY, } from './scales';
+
 
 export const nodeInit = game => d3.forceSimulation(game.nodes);
 
 export const manyBody = sim => sim.force('charge', d3.forceManyBody());
 
-export const fCenter = sim =>
-  sim.force('center', d3.forceCenter(getBox('.boardVis').height / 2, getBox('.boardVis').height / 2));
+// export const fCenter = sim =>
+  // sim.force('center', d3.forceCenter(getBox('.boardVis').height / 2, getBox('.boardVis').height / 2));
+  
+  export const fCenter = sim =>
+    sim.force('center', d3.forceCenter(50,50));
 
 export const fLink = links => sim => sim.force('link',
   d3.forceLink(links).id((d, i) => d.id)

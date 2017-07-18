@@ -14,7 +14,8 @@ const mapStateToProps = ({ game, }) => {
 
   const links = simulation.force('players').links();
   const omniLinks = simulation.force('board').links();
-
+const ms=  mountSimulation(game)(simulation);
+// console.log("ms",ms)
   return ({
     links, nodes: game.nodes, simulation, game, cMap: colorMap()(game.players),
   });
@@ -41,7 +42,7 @@ class Visualization extends Component {
     return (
       <g className="linkVis">
         {links.map((link, i) => (
-          <Link link={link} {...link} key={i} id={`link${i}`}
+          <Link link={link} simulation={simulation} key={i} id={`link${i}`}
             stroke={ cMap.get(link.source.player)
 
             }/>

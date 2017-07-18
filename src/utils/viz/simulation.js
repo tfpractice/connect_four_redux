@@ -5,7 +5,6 @@ import { Compare, Filter, Node as GdNode, Grid, } from 'game_grid';
 import { boardScaleX, boardScaleY, getBox, selectorScaleX, selectorScaleY,
   setContainer, } from './scales';
 import { boardLinks, cIDs, graphLinks, playerLinks, userLinks, } from './links';
-import { gameX, gameY, linkSelect, nodeSelect, updateLinks, updateNodes, updateSim, } from './selections';
 import { boardForce, fCenter, fLink, manyBody, nodeInit,
   playerForce, xForce, yForce, } from './forces';
 import { dragEnded,
@@ -35,6 +34,7 @@ export const simInit = game => [
 
 export const mountSimulation = game => (sim) => {
   console.log('game', userLinks(game));
+  console.log("sim",sim)
   console.log('sim.force(', sim.force('players').links());
   console.log('sim.force(', sim.force('players').links(userLinks(game)).links());
   console.log('userLinks(game)', userLinks(game));

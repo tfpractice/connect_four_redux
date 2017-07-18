@@ -14,17 +14,16 @@ const y2 = ({ target, }) => gameY(target.y) || target.row;
 // const y2 = ({ target, }) => target.row;
 
 // const stateToProps= ({})
-const Link = ({ link, source, target, stroke, }) => {
-  // console.log('rest', link.source, link.target);
+const Link = ({ link, simulation, stroke, }) => {
   const a = 0;
 
   return (
     <line className="linkLine"
 
-      x1={x1(link)}
-      y1={y1(link)}
-      x2={x2(link)}
-      y2={y2(link)}
+      // x1={x1(link)}
+      // y1={y1(link)}
+      // x2={x2(link)}
+      // y2={y2(link)}
       stroke={stroke}
       strokeWidth={0.2}
     />
