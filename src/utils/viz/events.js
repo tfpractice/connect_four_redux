@@ -7,20 +7,18 @@ import { playerLinks, } from './links';
 export const dragStarted = sim => (d) => {
   if (!d3.event.active) sim.alphaTarget(0.3).restart();
   d.fx = d.x;
-
   d.fy = d.y;
 };
 
 export const dragged = sim => (d) => {
   d.fx = d3.event.sourceEvent.x;
-
   d.fy = d3.event.sourceEvent.y;
 };
 
 export const dragEnded = sim => (d) => {
   if (!d3.event.active) sim.alphaTarget(0.3);
-  d.fx = sim.force('col').x()(d);
-  d.fy = sim.force('row').y()(d);
+  d.fx = null; // sim.force('col').x()(d);
+  d.fy = null; // sim.force('row').y()(d);
 };
 
 export const dragStartedC = sim => (d) => {
@@ -36,7 +34,7 @@ export const draggedC = sim => (d) => {
 };
 
 export const dragEndedC = sim => (d) => {
-  if (!d3.event.active) sim.alphaTarget(0.3);
+  if (!d3.event.active) sim.alphaTarget(0.8);
   d3.event.subject.fx = null;
   d3.event.subject.fy = null;
 };
@@ -81,7 +79,7 @@ export const ticked = sim =>
 
 export const simTickNode = nodes => sim =>
   sim.on('tick.node', updateSimNodes(sim.nodes())(sim));
-  
+null; //
 export const simTickLink = links => sim =>
   sim.on('tick.link', updateSimLinks(links)(sim));
 

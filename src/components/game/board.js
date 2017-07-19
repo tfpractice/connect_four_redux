@@ -27,56 +27,31 @@ const stateToProps = ({ game, }) => {
 class Board extends Component {
   constructor(props) {
     super(props);
-
+    this.state = { mountRef: null, };
     this.setRef = this.setRef.bind(this);
     this.showBoard = this.showBoard.bind(this);
   }
-
-  // componentDidMount() {
-  //   // d3.select('.boardVis')
-  //   //   .append('g')
-  //   //   .classed('linkVis', true)
-  //   //   .selectAll('g')
-  //   //   .classed('linkGroup', true)
-  //   //   .data(this.props.links)
-  //   //   .append('line')
-  //   //   .classed('linkLine', true);
-  //   // this.showBoard();
-  // }
-
-  // Component
-
-  // shouldComponentUpdate(nextProps) {
-  //   return true;
-  // 
-  //   // return nextProps.links !== this.props.links;
-  // }
+  
   showBoard() {
-    this.mountRef && mountRefSimulation(this.mountRef)(this.props.game)(this.props.simulation);
+    this.state.mountRef && mountRefSimulation(this.state.mountRef)(this.props.game)(this.props.simulation);
   }
 
   setRef(ref1) {
-    this.mountRef = ref1;
-
-    mountRefSimulation(this.mountRef)(this.props.game)(this.props.simulation);
+    this.setState({ mountRef: ref1, });
   }
   
   render() {
     const { nodes, actions, game, cols, links, colIDs, active, simulation, winner, } = this.props;
-    const element = null;
 
-    // simulation.restart();
+    this.showBoard();
 
-    // this.showBoard();
     return (
       <Grid container justify="center" className="board">
         <Grid item xs={10} className="boardGrid">
           <svg ref={this.setRef} viewBox="0,0,120,120" className="boardVis" >
-            {/* <Visualization links={links} simulation={simulation}/> */}
+            {colIDs.map(id => <Column key={id} id={id} />) }
             {links.map(link => <Link link={link} simulation={simulation} key={link.index}/>)}
 
-            {cols.map(id => <Column key={id} id={id} />) }
-            
           </svg>
         </Grid>
       </Grid>
@@ -84,25 +59,17 @@ class Board extends Component {
   }
 }
 
-//         <svg height="700" width="700" ref={showLinks} viewBox="0,0,100,100" className="boardVis">
-
-const PureBoard = ({ nodes, actions, game, links, colIDs, active, simulation, winner, }) => {
+const PureBoard = ({ nodes, game, links, colIDs, simulation, }) => {
   const showLinks = (ref) => {
-    const mSim = !!ref && mountRefSimulation(ref)(game)(simulation);
-
-    console.log('mSim', mSim);
+    ref && mountRefSimulation(ref)(game)(simulation);
   };
 
   return (
     <Grid container justify="center" className="board">
       <Grid item xs={10} className="boardGrid">
-        <svg ref={showLinks} viewBox="0,0,120,120" className="boardVis" >
-
-          {/* <Visualization links={links} simulation={simulation}/> */}
-
+        <svg ref={showLinks} viewBox="0,0,100,100" className="boardVis" >
           {colIDs.map(id => <Column key={id} id={id} />) }
           {links.map(link => <Link link={link} simulation={simulation} key={link.index}/>)}
-
         </svg>
       </Grid>
     </Grid>
