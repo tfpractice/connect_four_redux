@@ -71,12 +71,20 @@ export const setContainer = (drag = d3.drag()) => {
 };
 export const refScaleX = ref => d3.scaleLinear()
   .domain([ 0, refBox(ref).width * 0.9, ])
-  .range([ 0, 100, ]);
+  .range([ 5, 95, ]);
   
 export const refScaleY = ref => d3.scaleLinear()
   .domain([ 0, refBox(ref).height * 0.9, ])
-  .range([ 0, 100, ]);
+  .range([ 5, 95, ]);
   
+export const colScale = ref => d3.scaleLinear()
+  .domain([ 0, refBox(ref).width * 0.9, ])
+  .range([ 10, 80, ]);
+    
+export const rowScale = ref => d3.scaleLinear()
+  .domain([ 0, refBox(ref).height * 0.9, ])
+  .range([ 10, 70, ]);
+    
 export const gameX = x => (x);
 export const gameY = y => (y);
 
