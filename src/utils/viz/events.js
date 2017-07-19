@@ -47,22 +47,14 @@ export const dragNodes = nodes => (sim) => {
       .on('start', dragStarted(sim))
       .on('drag', dragged(sim))
       .on('end', dragEnded(sim)));
-
-  // const canvas = d3.select('canvas');
-  // 
-  // canvas.call(d3.drag()
-  //   .container(canvas)
-  //   .subject(dragsubject)
-  //   .on('start', dragStarted(sim))
+  
   //   .on('drag', dragged(sim))
-  //   .on('end', dragEnded(sim)));
 
   return sim;
 };
 export const canvasDrag = ref => (sim) => {
   const canvas = ref;
 
-  //  d3.select('canvas');
   nodeSelect(sim.nodes())
     .call(setContainer(d3.drag())
       .on('start', dragStarted(sim))
@@ -87,24 +79,15 @@ export const tickNodes = nodes => sim => sim
 export const ticked = sim =>
   sim.on('tick', updateSim(sim));
 
-export const simTickNode = nodes => (sim) => {
+export const simTickNode = nodes => sim =>
   sim.on('tick.node', updateSimNodes(sim.nodes())(sim));
-    
-  return sim;
-};
-export const simTickLink = links => (sim) => {
-  const a = 0;
   
+export const simTickLink = links => sim =>
   sim.on('tick.link', updateSimLinks(links)(sim));
-
-  return sim;
-};
 
 function dragsubject(ref) {
   return sim => () => sim.find(d3.event.x - ref.width / 2, d3.event.y - ref.height / 2);
 }
-
-// d3.event.x - width / 2, d3.event.y - height / 2)
 
 export const gameTick = ref => game => (sim) => {
   console.log('ref', ref);
@@ -112,12 +95,8 @@ export const gameTick = ref => game => (sim) => {
   const showCanvas = ref => (sim) => {
     const canvas = ref;
 
-    //  d3.select('canvas');
-
-    //  document.querySelector("canvas"),
     const context = canvas.getContext('2d');
 
-    // const context = d3.select('canvas');
     const width = getBox('canvas').width;
     const height = getBox('canvas').height;
 
@@ -153,8 +132,6 @@ export const gameTick = ref => game => (sim) => {
 
   sim.on('tick.node', updateSimNodes(sim.nodes())(sim));
   sim.on('tick', showCanvas(ref)(sim));
-
-  // sim.on('tick.link', showCanvas(ref)(sim));
 
   sim.on('tick.player', updateSimLinks(playerLinks(game))(sim));
 

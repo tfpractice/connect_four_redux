@@ -4,23 +4,6 @@ import { cIDs, } from './links';
 
 const { byCol, } = Filter;
 
-export const generalLink = (lArr) => {
-  let link = d3.select('.boardVis')
-    .select('.linkVis')
-    .selectAll('.linkGroup')
-    .data(lArr, (d, i) => {
-      console.log('d', d);
-      return i;
-    });
-
-  // 
-  link = link.exit().remove();
-
-  link = link.enter()
-    .append('line').classed('linkLine', true)
-    .merge(link);
-  return link;
-};
 export const nodeSelect = nArr =>
   d3.select('.boardVis')
     .selectAll('.column')
@@ -45,42 +28,12 @@ export const linkSelect2 = links =>
     .append('line')
     .classed('linkLine', true);
       
-export const linkSelect = (links) => {
-  let link;
+export const linkSelect = links => d3.selectAll('.linkLine').data(links)
 
-  // let link = d3.select('.boardVis')
-  //   .select('.linkVis')
-  //   .selectAll('.linkGroup')
-  //   .data(links);
-  // 
-  // // link = link.exit().remove();
-  // 
-  // // 
-  // link = link.enter()
-  //   .append('g')
-  //   .classed('linkGroup', true)
-  //   .append('line')
-  //   .classed('linkLine', true)
-  //   .merge(link);
-
-  link = d3.selectAll('.linkLine')
-    .data(links);
-
-  // link = link.enter()
-  //   .append('line')
-  //   .classed('linkLine', true)
-  //   .merge(link);
-
-  // link = link.select('.linkLine')
-  
-  // link = link.select('.linkLine');
-
-  return link;
-};
+;
 
 export const updateNodes = (domNodes = d3.selectAll('.nodeCircle')) => (sim) => {
   domNodes
-
     .attr('cx', sim.force('x').x())
     .attr('cy', sim.force('y').y());
 };
@@ -100,7 +53,8 @@ export const updateSim = sim => () => {
   updateLinks()(sim);
 };
 
-export const updateSimNodes = nodes => sim => () => updateNodes(nodeSelect(nodes))(sim);
+export const updateSimNodes = nodes => sim => () =>
+  updateNodes(nodeSelect(nodes))(sim);
 
 export const updateSimLinks = links => sim => () => {
   const a = 0;

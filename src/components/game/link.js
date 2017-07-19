@@ -27,11 +27,7 @@ const Link = ({ link, simulation: sim, stroke, }) => {
   return (
 
     <line className="linkLine" id={`link${link.index}`}
-
-      x1={(link.source.x)}
-      y1={(link.target.y)}
-      x2={(link.source.x)}
-      y2={(link.target.y)}
+      
       stroke={stroke}
       strokeWidth={0.2}
     />
