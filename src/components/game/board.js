@@ -1,13 +1,13 @@
 import React, { Component, } from 'react';
 import * as d3 from 'd3';
-import Column from './column';
 import { connect, } from 'react-redux';
 import { Filter, } from 'game_grid';
 import { withState, } from 'recompose';
-
 import Grid from 'material-ui/Grid';
-import { colorMap, mountRefSimulation, mountSimulation, playerLinks, refSimulation, simInit, } from '../../utils/viz';
+
+import { colorMap, mountSimulation, playerLinks, simInit, } from '../../utils/viz';
 import Link from './link';
+import Column from './column';
 
 const { cIDs, } = Filter;
 
@@ -37,19 +37,21 @@ class Board extends Component {
   showBoard() {
     const { mountRef, } = this.state;
     const { simulation, } = this.props;
-    
+
     mountRef && mountSimulation(mountRef)(simulation);
   }
   
   setRef(ref1) {
-    console.log('ref1', ref1);
+    const { simulation, } = this.state;
+
     this.setState({ mountRef: ref1, });
-    this.showBoard();
+
+    // this.showBoard();
   }
   
   render() {
     const { game, cols, links, simulation, } = this.props;
-    
+
     return (
       <Grid container justify="center" className="board">
         <Grid item xs={10} className="boardGrid">
@@ -68,7 +70,7 @@ const PureBoard = ({ nodes, setRef, game, mountRef, links, colIDs, simulation, }
   };
   
   const mount = (...arg) => {
-    mountRef && mountRefSimulation(mountRef)(game)(simulation);
+    mountRef && mountSimulation(mountRef)(simulation);
   };
   
   const load = ref => ref && setRef(ref, mount);
