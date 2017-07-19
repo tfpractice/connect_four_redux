@@ -3,24 +3,26 @@ import * as d3 from 'd3';
 import Column from './column';
 import { connect, } from 'react-redux';
 import { Filter, } from 'game_grid';
+import { withState, } from 'recompose';
 
 import Grid from 'material-ui/Grid';
 import { colorMap, mountRefSimulation, mountSimulation, playerLinks, refSimulation, simInit, } from '../../utils/viz';
 import Link from './link';
 
 const { cIDs, } = Filter;
+
+const withRef = withState('mountRef', 'setRef', null);
+
 const stateToProps = ({ game, }) => {
   const simulation = simInit(game);
-
+  
   const links = simulation.force('players').links(playerLinks(game)).links();
-
+  
   return {
     links,
     simulation,
     game,
-    nodes: game.nodes,
     cols: cIDs(game.nodes),
-    colIDs: [ ...new Set(game.nodes.map(n => n.column)), ],
   };
 };
 
@@ -33,25 +35,27 @@ class Board extends Component {
   }
   
   showBoard() {
-    this.state.mountRef && mountRefSimulation(this.state.mountRef)(this.props.game)(this.props.simulation);
+    const { mountRef, } = this.state;
+    const { simulation, } = this.props;
+    
+    mountRef && mountSimulation(mountRef)(simulation);
   }
-
+  
   setRef(ref1) {
+    console.log('ref1', ref1);
     this.setState({ mountRef: ref1, });
+    this.showBoard();
   }
   
   render() {
-    const { nodes, actions, game, cols, links, colIDs, active, simulation, winner, } = this.props;
-
-    this.showBoard();
-
+    const { game, cols, links, simulation, } = this.props;
+    
     return (
       <Grid container justify="center" className="board">
         <Grid item xs={10} className="boardGrid">
-          <svg ref={this.setRef} viewBox="0,0,120,120" className="boardVis" >
-            {colIDs.map(id => <Column key={id} id={id} />) }
+          <svg ref={this.setRef} viewBox="0,0,100,100" className="boardVis" >
+            {cols.map(id => <Column key={id} id={id} />) }
             {links.map(link => <Link link={link} simulation={simulation} key={link.index}/>)}
-
           </svg>
         </Grid>
       </Grid>
@@ -59,15 +63,20 @@ class Board extends Component {
   }
 }
 
-const PureBoard = ({ nodes, game, links, colIDs, simulation, }) => {
+const PureBoard = ({ nodes, setRef, game, mountRef, links, colIDs, simulation, }) => {
   const showLinks = (ref) => {
-    ref && mountRefSimulation(ref)(game)(simulation);
   };
-
+  
+  const mount = (...arg) => {
+    mountRef && mountRefSimulation(mountRef)(game)(simulation);
+  };
+  
+  const load = ref => ref && setRef(ref, mount);
+  
   return (
     <Grid container justify="center" className="board">
       <Grid item xs={10} className="boardGrid">
-        <svg ref={showLinks} viewBox="0,0,100,100" className="boardVis" >
+        <svg ref={load} viewBox="0,0,100,100" className="boardVis" >
           {colIDs.map(id => <Column key={id} id={id} />) }
           {links.map(link => <Link link={link} simulation={simulation} key={link.index}/>)}
         </svg>
@@ -76,4 +85,4 @@ const PureBoard = ({ nodes, game, links, colIDs, simulation, }) => {
   );
 };
 
-export default connect(stateToProps)(PureBoard);
+export default connect(stateToProps)((Board));
