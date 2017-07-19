@@ -19,8 +19,8 @@ export const dragged = sim => (d) => {
 
 export const dragEnded = sim => (d) => {
   if (!d3.event.active) sim.alphaTarget(0.3);
-  d.fx = null; // sim.force('col').x()(d);
-  d.fy = null; // sim.force('row').y()(d);
+  d.fx = sim.force('col').x()(d);
+  d.fy = sim.force('row').y()(d);
 };
 
 export const dragStartedC = sim => (d) => {

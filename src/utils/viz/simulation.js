@@ -30,13 +30,15 @@ export const mountRefSimulation = ref => game => (sim) => {
 
   return [ refCenter(ref), xRefForce(ref), yRefForce(ref),
     colForce(ref), rowForce(ref),
-    gameTick(ref)(game),
 
-    // simTickNode(sim.nodes()),
-    // simTickLink(sim.force('players').links()),
-    canvasDrag(ref),
+    // gameTick(ref)(game),
 
-    // dragNodes(sim.nodes()),
+    simTickNode(sim.nodes()),
+    simTickLink(sim.force('players').links()),
+
+    // canvasDrag(ref),
+
+    dragNodes(sim.nodes()),
 
   ].reduce((s, fn) => fn(s), sim);
 };

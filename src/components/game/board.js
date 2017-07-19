@@ -3,9 +3,10 @@ import * as d3 from 'd3';
 import Column from './column';
 import { connect, } from 'react-redux';
 import { Filter, } from 'game_grid';
-import Visualization from './visualization';
+
 import Grid from 'material-ui/Grid';
 import { colorMap, mountRefSimulation, mountSimulation, playerLinks, refSimulation, simInit, } from '../../utils/viz';
+import Link from './link';
 
 const { cIDs, } = Filter;
 const stateToProps = ({ game, }) => {
@@ -71,7 +72,9 @@ class Board extends Component {
       <Grid container justify="center" className="board">
         <Grid item xs={10} className="boardGrid">
           <svg ref={this.setRef} viewBox="0,0,120,120" className="boardVis" >
-            <Visualization links={links} simulation={simulation}/>
+            {/* <Visualization links={links} simulation={simulation}/> */}
+            {links.map(link => <Link link={link} simulation={simulation} key={link.index}/>)}
+
             {cols.map(id => <Column key={id} id={id} />) }
             
           </svg>
@@ -84,21 +87,23 @@ class Board extends Component {
 //         <svg height="700" width="700" ref={showLinks} viewBox="0,0,100,100" className="boardVis">
 
 const PureBoard = ({ nodes, actions, game, links, colIDs, active, simulation, winner, }) => {
-  const showLinks = ref => ref && mountRefSimulation(ref)(game)(simulation);
+  const showLinks = (ref) => {
+    const mSim = !!ref && mountRefSimulation(ref)(game)(simulation);
+
+    console.log('mSim', mSim);
+  };
 
   return (
     <Grid container justify="center" className="board">
       <Grid item xs={10} className="boardGrid">
-        <canvas height="700" width="700" ref={showLinks} viewBox="0,0,100,100" className="boardVis">
-          {/* <canvas height="700" width="700"> */}
+        <svg ref={showLinks} viewBox="0,0,120,120" className="boardVis" >
 
-          {/* </canvas> */}
-          <Visualization links={links} simulation={simulation}/>
+          {/* <Visualization links={links} simulation={simulation}/> */}
 
           {colIDs.map(id => <Column key={id} id={id} />) }
+          {links.map(link => <Link link={link} simulation={simulation} key={link.index}/>)}
 
-        </canvas>
-        {/* </svg> */}
+        </svg>
       </Grid>
     </Grid>
   );

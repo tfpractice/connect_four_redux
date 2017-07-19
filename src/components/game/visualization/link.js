@@ -22,10 +22,10 @@ const stateToProps = ({ game, }, { link, simulation: sim, }) => ({ stroke: color
 const Link = ({ link, simulation: sim, stroke, }) => {
   const a = 0;
 
-  const x1 = ({ source, }) => sim.force('x') ? sim.force('x')(link.source) : source.column;
-  const y1 = ({ source, }) => sim.force('y') ? sim.force('y')(link.target) : source.row;
-  const x2 = ({ target, }) => sim.force('x') ? sim.force('x')(link.source) : target.column;
-  const y2 = ({ target, }) => sim.force('y') ? sim.force('y')(link.target) : target.row;
+  const x1 = ({ source, }) => sim.force('x') ? sim.force('x')(link.source) : source.fx;
+  const y1 = ({ source, }) => sim.force('y') ? sim.force('y')(link.target) : source.fy;
+  const x2 = ({ target, }) => sim.force('x') ? sim.force('x')(link.source) : target.fx;
+  const y2 = ({ target, }) => sim.force('y') ? sim.force('y')(link.target) : target.fy;
 
   // 
   // sim.restart();
@@ -55,17 +55,19 @@ const Link = ({ link, simulation: sim, stroke, }) => {
   // console.log('LINK simulation', sim.force('x'));
 
   return (
-    <g className="linkGroup">
-      <line className="linkLine" id={`link${link.index}`}
 
-        x1={x1(link)}
-        y1={y1(link)}
-        x2={x2(link)}
-        y2={y2(link)}
-        stroke={stroke}
-        strokeWidth={0.2}
-      />
-    </g>
+    // <g className="linkGroup">
+    <line className="linkLine" id={`link${link.index}`}
+
+      x1={(link.source.fx)}
+      y1={(link.source.fy)}
+      x2={(link.target.fx)}
+      y2={(link.target.fy)}
+      stroke={stroke}
+      strokeWidth={0.2}
+    />
+
+    // </g>
   );
 };
 

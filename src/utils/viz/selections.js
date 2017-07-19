@@ -33,7 +33,7 @@ export const nodeSelect = nArr =>
 ;
 
 export const linkSelect2 = links =>
-  d3.select('.linkVis')
+  d3.select('.boardVis')
     
     .selectAll('g')
     .classed('linkGroup', true)
@@ -46,21 +46,35 @@ export const linkSelect2 = links =>
     .classed('linkLine', true);
       
 export const linkSelect = (links) => {
-  let link = d3.select('.boardVis')
-    .select('.linkVis')
-    .selectAll('.linkGroup')
-    .data(links);
-  
-  // link = link.exit().remove();
+  let link;
 
+  // let link = d3.select('.boardVis')
+  //   .select('.linkVis')
+  //   .selectAll('.linkGroup')
+  //   .data(links);
   // 
-  link = link.enter()
-    .append('g')
-    .classed('linkGroup', true)
-    .append('line')
-    .classed('linkLine', true)
-    .merge(link);
-  link = link.select('.linkLine');
+  // // link = link.exit().remove();
+  // 
+  // // 
+  // link = link.enter()
+  //   .append('g')
+  //   .classed('linkGroup', true)
+  //   .append('line')
+  //   .classed('linkLine', true)
+  //   .merge(link);
+
+  link = d3.selectAll('.linkLine')
+    .data(links);
+
+  // link = link.enter()
+  //   .append('line')
+  //   .classed('linkLine', true)
+  //   .merge(link);
+
+  // link = link.select('.linkLine')
+  
+  // link = link.select('.linkLine');
+
   return link;
 };
 
@@ -78,9 +92,7 @@ export const updateLinks = (domLinks = d3.selectAll('.linkLine')) => (sim) => {
     .attr('x1', d => sim.force('x').x()(d.source))
     .attr('y1', d => sim.force('y').y()(d.source))
     .attr('x2', d => sim.force('x').x()(d.target))
-    .attr('y2', d => sim.force('y').y()(d.target))
-    .attr('stroke', '#fff')
-    .attr('stroke-width', 0.2);
+    .attr('y2', d => sim.force('y').y()(d.target));
 };
 
 export const updateSim = sim => () => {
