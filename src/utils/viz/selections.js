@@ -105,7 +105,5 @@ export const updateSimNodes = nodes => sim => () => updateNodes(nodeSelect(nodes
 export const updateSimLinks = links => sim => () => {
   const a = 0;
 
-  // console.log('updateSimLinkslinks', links);
-  // console.log('updateLinks', sim.force('players').links());
   return updateLinks(linkSelect(links))(sim);
 };
