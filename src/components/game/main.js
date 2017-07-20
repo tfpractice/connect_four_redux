@@ -4,7 +4,6 @@ import { connect, } from 'react-redux';
 import Button from 'material-ui/Button';
 import Card, { CardActions, CardContent, CardHeader, } from 'material-ui/Card';
 
-import { boardLinks, simInit, tickLinks, } from '../../utils/viz';
 import { GameActs, } from '../../modules';
 import Board from './board';
 import Players from './players';
@@ -12,11 +11,6 @@ import Players from './players';
 const stateToProps = ({ game, }) => ({ game, });
 
 class Game extends Component {
-  componentDidMount() {
-  }
-  componentDidUpdate(a, b) {
-
-  }
   render() {
     const { start, game, resetGame, clearGame, } = this.props;
     

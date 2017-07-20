@@ -5,7 +5,7 @@ import { Filter, } from 'game_grid';
 import { withState, } from 'recompose';
 import Grid from 'material-ui/Grid';
 
-import { colorMap, mountSimulation, playerLinks, simInit, } from '../../utils/viz';
+import { applyTicks, mountSimulation, playerLinks, simInit, } from '../../utils/viz';
 import Link from './link';
 import Column from './column';
 
@@ -15,13 +15,13 @@ const withRef = withState('mountRef', 'setRef', null);
 
 const stateToProps = ({ game, }) => {
   const simulation = simInit(game);
-  
-  const links = simulation.force('players').links(playerLinks(game)).links();
+  const links = simulation.force('players').links();
   
   return {
     links,
     simulation,
     game,
+    nodes: game.nodes,
     cols: cIDs(game.nodes),
   };
 };
@@ -29,33 +29,85 @@ const stateToProps = ({ game, }) => {
 class Board extends Component {
   constructor(props) {
     super(props);
-    this.state = { mountRef: null, };
+    console.log('this.mountRef', this.mountRef);
+    this.state = {
+      mountRef: null,
+      simulation: props.simulation,
+      nodes: props.simulation.nodes(),
+    };
     this.setRef = this.setRef.bind(this);
     this.showBoard = this.showBoard.bind(this);
   }
   
+  componentDidMount() {
+    const { mountRef, simulation, } = this.state;
+  
+    //   const { nodes, } = this.props;
+    // 
+    //   // const col2Y = simulation.force('col2Y').y();
+    //   const setFX = n => Object.assign(n, { fx: 10 * n.column, fy: 10 * n.row, });
+    // 
+    //   console.log('nodes', nodes);
+    //   console.log('this.nodes.map(setFX)', nodes.map(setFX));
+    //   console.log('simulation.force(\'x\')', simulation.force('col2Y'));
+  
+    this.showBoard();
+  }
+  
   showBoard() {
-    const { mountRef, } = this.state;
-    const { simulation, } = this.props;
+    const { mountRef, simulation: sim, nodes, } = this.state;
+    
+    if (this.mountRef) {
+      // const setFX = n =>
+      //   Object.assign(n, { x: sim.force('col2X').x()(n), y: sim.force('row2Y').y()(n), });
+      // const newNodes = nodes.map(setFX);
+      // 
+      // this.setState({ nodes: newNodes, simulation: applyTicks(sim), });
+      // applyTicks(sim);
 
-    mountRef && mountSimulation(mountRef)(simulation);
+      // (sim).nodes(newNodes).restart();
+    }
   }
   
   setRef(ref1) {
-    const { simulation, } = this.state;
+    const { simulation: sim, nodes, } = this.state;
+    
+    this.mountRef = ref1;
 
-    this.setState({ mountRef: ref1, });
+    // ref1 && this.setState({
+    //   mountRef: this.mountRef,
+    //   simulation: mountSimulation(this.mountRef)(simulation),
+    // });
+    if (this.mountRef) {
+      const newSim = mountSimulation(this.mountRef)(sim);
+      const setFX = n =>
+        Object.assign(n, { x: newSim.force('col2X').x()(n), y: newSim.force('row2Y').y()(n), });
+      const newNodes = nodes.map(setFX);
 
-    // this.showBoard();
+      this.setState({
+        mountRef: this.mountRef,
+        simulation: newSim,
+        nodes: newNodes,
+
+        // simulation: applyTicks(sim),
+      });
+
+      // (sim).nodes(newNodes).restart();
+    }
+
+    this.showBoard();
   }
   
   render() {
-    const { game, cols, links, simulation, } = this.props;
+    const { game, cols, links, } = this.props;
+    const { simulation, } = this.state;
+
+    this.showBoard();
 
     return (
       <Grid container justify="center" className="board">
         <Grid item xs={10} className="boardGrid">
-          <svg ref={this.setRef} viewBox="0,0,100,100" className="boardVis" >
+          <svg ref={this.setRef} viewBox="-5,-5,70,60" preserveAspectRatio="xMidYMid" className="boardVis" >
             {cols.map(id => <Column key={id} id={id} />) }
             {links.map(link => <Link link={link} simulation={simulation} key={link.index}/>)}
           </svg>
