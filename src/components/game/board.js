@@ -21,7 +21,7 @@ const stateToProps = ({ game, }) => {
     links,
     simulation,
     game,
-    nodes: game.nodes,
+    nodes: simulation.nodes(),
     cols: cIDs(game.nodes),
   };
 };
@@ -29,81 +29,51 @@ const stateToProps = ({ game, }) => {
 class Board extends Component {
   constructor(props) {
     super(props);
-    console.log('this.mountRef', this.mountRef);
-    this.state = {
-      mountRef: null,
-      simulation: props.simulation,
-      nodes: props.simulation.nodes(),
-    };
+    this.state = { simulation: props.simulation, };
     this.setRef = this.setRef.bind(this);
     this.showBoard = this.showBoard.bind(this);
   }
   
-  componentDidMount() {
-    const { mountRef, simulation, } = this.state;
-  
-    //   const { nodes, } = this.props;
-    // 
-    //   // const col2Y = simulation.force('col2Y').y();
-    //   const setFX = n => Object.assign(n, { fx: 10 * n.column, fy: 10 * n.row, });
-    // 
-    //   console.log('nodes', nodes);
-    //   console.log('this.nodes.map(setFX)', nodes.map(setFX));
-    //   console.log('simulation.force(\'x\')', simulation.force('col2Y'));
-  
-    this.showBoard();
-  }
+  // 
+  // componentDidMount() {
+  //   const { mountRef, simulation: sim, } = this.state;
+  // // 
+  // // 
+  //   this.showBoard();
+  // // 
+  // //   // const setFX = n =>
+  // //   //   Object.assign(n, { x: newSim.force('col2X').x()(n), y: newSim.force('row2Y').y()(n), });
+  // //   // const newNodes = nodes.map(setFX);
+  // }
   
   showBoard() {
-    const { mountRef, simulation: sim, nodes, } = this.state;
+    const { simulation: sim, nodes, } = this.state;
     
     if (this.mountRef) {
-      // const setFX = n =>
-      //   Object.assign(n, { x: sim.force('col2X').x()(n), y: sim.force('row2Y').y()(n), });
-      // const newNodes = nodes.map(setFX);
-      // 
-      // this.setState({ nodes: newNodes, simulation: applyTicks(sim), });
-      // applyTicks(sim);
-
+      applyTicks(sim.restart());
+      
+      
       // (sim).nodes(newNodes).restart();
     }
   }
   
   setRef(ref1) {
-    const { simulation: sim, nodes, } = this.state;
+    if (ref1) {
+      console.log('ref1', ref1);
+      this.mountRef = ref1;
+      this.setState((prevState, props) =>
+        ({ simulation: mountSimulation(ref1)(props.simulation), }),
     
-    this.mountRef = ref1;
-
-    // ref1 && this.setState({
-    //   mountRef: this.mountRef,
-    //   simulation: mountSimulation(this.mountRef)(simulation),
-    // });
-    if (this.mountRef) {
-      const newSim = mountSimulation(this.mountRef)(sim);
-      const setFX = n =>
-        Object.assign(n, { x: newSim.force('col2X').x()(n), y: newSim.force('row2Y').y()(n), });
-      const newNodes = nodes.map(setFX);
-
-      this.setState({
-        mountRef: this.mountRef,
-        simulation: newSim,
-        nodes: newNodes,
-
-        // simulation: applyTicks(sim),
-      });
-
-      // (sim).nodes(newNodes).restart();
+      ()=>this.showBoard());
     }
-
-    this.showBoard();
   }
   
   render() {
-    const { game, cols, links, } = this.props;
-    const { simulation, } = this.state;
-
-    this.showBoard();
-
+    const { game, cols, simulation,links  } = this.props;
+    // const links= this.state.simulation.force('players').links(playerLinks(game)).links()
+    console.log("links",links)
+    // this.showBoard();
+//
     return (
       <Grid container justify="center" className="board">
         <Grid item xs={10} className="boardGrid">

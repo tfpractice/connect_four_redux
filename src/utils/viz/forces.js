@@ -1,9 +1,9 @@
 import * as d3 from 'd3';
-
+import { spread } from 'fenugreek-collections';
 import { boardLinks, playerLinks, userLinks, } from './links';
 import { colScale, gameX, gameY, getBox, refBox, refScaleX, refScaleY, rowScale, } from './scales';
-
-export const nodeInit = game => d3.forceSimulation(game.nodes);
+import { Node } from 'connect_four_functional';
+export const nodeInit = game => d3.forceSimulation(spread(game.nodes).map(Node.copy));
 
 export const manyBody = sim => sim.force('charge', d3.forceManyBody());
 
@@ -19,26 +19,28 @@ export const deltaCol = ({ column: x0, }) => ({ column: x1, }) => delta(x0)(x1);
 export const deltaRow = ({ row: y0, }) => ({ row: y1, }) => delta(y0)(y1);
 
 export const boardDelta = ({ source, target, }) =>
-  [ deltaCol(source)(target), deltaRow(source)(target), ];
+  [deltaCol(source)(target), deltaRow(source)(target),];
 
 export const linkDelta = ({ source, target, }) =>
-  [ deltaX(source)(target), deltaY(source)(target), ];
+  [deltaX(source)(target), deltaY(source)(target),];
 
 export const boardForce = game => (sim) => {
   const a = 0;
   const dist = link => 10 * Math.hypot(...boardDelta(link));
-  
+  const { players } = game;
+  const nodes = sim.nodes();
   return sim.force('board',
-    d3.forceLink(boardLinks(game)).id(d => d.id).distance(dist)
+    d3.forceLink(boardLinks({ players, nodes })).id(d => d.id).distance(dist)
 
   );
 };
 
-export const playerForce = game => (sim) => {
+export const playerForce = (game) => (sim) => {
   const dist = link => 10 * Math.hypot(...linkDelta(link));
-  
+  const { players } = game;
+  const nodes = sim.nodes();
   return sim.force('players',
-    d3.forceLink(playerLinks(game)).id(d => d.id).distance(dist)
+    d3.forceLink(playerLinks({ players, nodes })).id(d => d.id).distance(dist)
 
   );
 };

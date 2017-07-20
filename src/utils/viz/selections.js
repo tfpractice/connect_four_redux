@@ -33,16 +33,17 @@ export const updateNodes = (domNodes = d3.selectAll('.nodeCircle')) => sim =>
     
 export const updateLinks = (domLinks = d3.selectAll('.linkLine')) => sim =>
   domLinks
+  // .data(sim.force('players').links()).merge(domLinks)
 
-    .attr('x1', d => sim.force('x').x()(d.source))
-    .attr('y1', d => sim.force('y').y()(d.source))
-    .attr('x2', d => sim.force('x').x()(d.target))
-    .attr('y2', d => sim.force('y').y()(d.target));
+    // .attr('x1', d => sim.force('x').x()(d.source))
+    // .attr('y1', d => sim.force('y').y()(d.source))
+    // .attr('x2', d => sim.force('x').x()(d.target))
+    // .attr('y2', d => sim.force('y').y()(d.target));
     
-// .attr('x1', d => sim.force('col2X').x()(d.source))
-// .attr('y1', d => sim.force('row2Y').y()(d.source))
-// .attr('x2', d => sim.force('col2X').x()(d.target))
-// .attr('y2', d => sim.force('row2Y').y()(d.target));
+.attr('x1', d => sim.force('col').x()(d.source))
+.attr('y1', d => sim.force('row').y()(d.source))
+.attr('x2', d => sim.force('col').x()(d.target))
+.attr('y2', d => sim.force('row').y()(d.target));
 
 // 
 export const updateSim = sim => () => {
