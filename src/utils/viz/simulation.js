@@ -7,7 +7,7 @@ export const simInit = game => [
   nodeInit, manyBody, collide, playerForce(game), boardForce(game),
 ].reduce((sim, fn) => fn(sim), game);
 
-export const applyTicks = sim => [ 
+export const applyTicks = sim => [
   simTickNode(sim.nodes()),
   simTickLink(sim.force('players').links()),
   dragNodes(sim.nodes()), ]
@@ -19,7 +19,7 @@ export const mountSimulation = ref => (sim) => {
   console.log('ref', ref);
   return [ refCenter(ref), xRefForce(ref), yRefForce(ref),
     colForce(ref), rowForce(ref),
-    col2X(ref), row2Y(ref),
+    col2X(ref), row2Y(ref), applyTicks,
   ].reduce((s, fn) => fn(s), sim);
 };
   
