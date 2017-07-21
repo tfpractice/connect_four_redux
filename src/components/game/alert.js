@@ -12,11 +12,11 @@ export default class AlertDialog extends Component {
     super(props);
     this.state = { open: false };
   }
-  
+
   handleRequestClose() {
     this.setState({ open: false });
   }
-  
+
   render() {
     return (
       <div>

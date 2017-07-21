@@ -23,7 +23,7 @@ module.exports = {
     },
     sourceType: 'module',
   },
-  plugins: ['react', 'jsx-a11y', 'import', 'prettier', 'babel'],
+  plugins: ['react', 'jsx-a11y', 'import', 'prettier'],
   rules: {
     // Ignore Rules
     'space-infix-ops': 2,
@@ -55,7 +55,7 @@ module.exports = {
     'no-empty-character-class': 2,
     'no-self-compare': 2,
     'valid-typeof': 2,
-    'no-unused-vars': 2,
+    'no-unused-vars': 1,
     'no-multi-spaces': [
       2,
       {
@@ -153,13 +153,14 @@ module.exports = {
         allowSingleLine: true,
       },
     ],
+
     'comma-dangle': [
-      'warn',
+      'error',
       {
-        arrays: 'always',
-        objects: 'always',
-        imports: 'always',
-        exports: 'always',
+        arrays: 'always-multiline',
+        objects: 'always-multiline',
+        imports: 'always-multiline',
+        exports: 'always-multiline',
         functions: 'ignore',
       },
     ],
@@ -174,6 +175,7 @@ module.exports = {
         memberSyntaxSortOrder: ['none', 'single', 'all', 'multiple'],
       },
     ],
+
     //  Plugin rules
     'jsx-quotes': 1,
     'jsx-a11y/href-no-hash': 0,
@@ -192,16 +194,29 @@ module.exports = {
     'react/jsx-equals-spacing': [2, 'never'],
 
     // prettier
-    'prettier/prettier': 'warn',
-
+    // 'prettier/prettier': 'off',
+    'prettier/prettier': [
+      'off',
+      {
+        trailingComma: 'all',
+        bracketSpacing: false,
+        jsxBracketSameLine: true,
+        // parser: 'babylon',
+      },
+    ],
     // imports-plugins
-
     'import/order': [
       'error',
       {
-        groups: [['builtin', 'external'], 'index', 'parent', 'sibling'],
+        'newlines-between': 'always',
+        groups: [
+          ['builtin', 'external'],
+          ['internal', 'index'],
+          ['parent', 'sibling'],
+        ],
       },
     ],
+
     'import/no-extraneous-dependencies': [
       'error',
       {

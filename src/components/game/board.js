@@ -1,10 +1,12 @@
-import React, { Component } from 'react';
 import * as d3 from 'd3';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Filter } from 'game_grid';
 import { withState } from 'recompose';
 import Grid from 'material-ui/Grid';
 
+import Link from './link';
+import Column from './column';
 import {
   applyTicks,
   colBand,
@@ -14,8 +16,6 @@ import {
   simInit,
   updateSimLinks,
 } from '../../utils/viz';
-import Link from './link';
-import Column from './column';
 
 const { cIDs } = Filter;
 
