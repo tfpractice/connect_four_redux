@@ -1,5 +1,4 @@
-/* eslint-disable no-undef, no-console */
-import React, { Component, } from 'react';
+import React, { Component } from 'react';
 import Button from 'material-ui/Button';
 import Dialog, {
   DialogActions,
@@ -9,24 +8,29 @@ import Dialog, {
 } from 'material-ui/Dialog';
 
 export default class AlertDialog extends Component {
-  state = { open: false, }
+  constructor(props) {
+    super(props);
+    this.state = { open: false };
+  }
   
-  handleRequestClose = () => {
-    this.setState({ open: false, });
+  handleRequestClose() {
+    this.setState({ open: false });
   }
   
   render() {
     return (
       <div>
-        <Button onClick={() => this.setState({ open: true, })}>Open alert dialog</Button>
+        <Button onClick={() => this.setState({ open: true })}>
+          Open alert dialog
+        </Button>
         <Dialog open={this.state.open} onRequestClose={this.handleRequestClose}>
           <DialogTitle>
-            {'Use Google\'s location service?'}
+            {"Use Google's location service?"}
           </DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Let Google help apps determine location. This means sending anonymous location data to
-              Google, even when no apps are running.
+              Let Google help apps determine location. This means sending
+              anonymous location data to Google, even when no apps are running.
             </DialogContentText>
           </DialogContent>
           <DialogActions>
