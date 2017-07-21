@@ -1,5 +1,5 @@
 module.exports = {
-    extends: [ 'airbnb-base', 'react-app' ],
+    extends: [ 'react-app', 'airbnb', ],
     settings: {
       'import/resolver': {
         'babel-module': {},
@@ -13,15 +13,15 @@ module.exports = {
     },
     parser: 'babel-eslint',
     parserOptions: {
+      ecmaVersion:7,
         ecmaFeatures: {
             experimentalObjectRestSpread: true,
             jsx: true,
-            modules: true,
           },
         sourceType: 'module',
       },
     plugins: [
-        'react', 'jsx-a11y', 'import',
+        'react', 'jsx-a11y', 'import', 'babel',
     ],
     rules: {
         // Ignore Rules
@@ -54,7 +54,7 @@ module.exports = {
         ],
         // Errors
         'func-call-spacing': [ 'error', 'never' ],
-        'no-undef': 2,
+        'no-undef': 0,
         'no-dupe-keys': 2,
         'no-empty-character-class': 2,
         'no-self-compare': 2,
@@ -142,7 +142,7 @@ module.exports = {
         'jsx-quotes': 1,
         'jsx-a11y/href-no-hash': 0,
         'react/jsx-href-no-hash': 0,
-        'react/jsx-no-undef': 1,
+        // 'react/jsx-no-undef': 0,
         'react/jsx-uses-react': 1,
         'react/jsx-uses-vars': 1,
         'react/no-did-mount-set-state': 1,

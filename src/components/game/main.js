@@ -3,7 +3,7 @@ import Grid from 'material-ui/Grid';
 import { connect, } from 'react-redux';
 import Button from 'material-ui/Button';
 import Card, { CardActions, CardContent, CardHeader, } from 'material-ui/Card';
-
+import Alert from './alert';
 import { GameActs, } from '../../modules';
 import Board from './board';
 import Players from './players';
