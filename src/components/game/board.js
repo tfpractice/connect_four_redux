@@ -5,7 +5,8 @@ import { Filter, } from 'game_grid';
 import { withState, } from 'recompose';
 import Grid from 'material-ui/Grid';
 
-import { applyTicks, mountSimulation, playerLinks, simInit, updateSimLinks, } from '../../utils/viz';
+import { applyTicks, colBand,
+  mountSimulation, playerLinks, rowBand, simInit, updateSimLinks, } from '../../utils/viz';
 import Link from './link';
 import Column from './column';
 
@@ -28,6 +29,7 @@ class Board extends Component {
     this.state = {
       mounted: false,
       forceBox: null,
+      simulation: props.simulation,
     };
     this.setRef = this.setRef.bind(this);
     this.showBoard = this.showBoard.bind(this);
@@ -40,17 +42,19 @@ class Board extends Component {
   componentDidUpdate(prevProps, prevState) {
     const { simulation, links, } = this.props;
 
-    // simulation.on('tick.p', updateSimLinks(links)(simulation));
-
-    // this.showBoard();
+    this.showBoard();
   }
   
   showBoard() {
-    const { forceBox, mounted, } = this.state;
+    const { forceBox, mounted, simulation: sim1, } = this.state;
     const { simulation: sim, } = this.props;
 
     if (mounted) {
       applyTicks(mountSimulation(forceBox)(sim));
+
+      // applyTicks(sim1);
+
+      // (applyTicks(sim1).restart());
     }
   }
   
@@ -59,12 +63,16 @@ class Board extends Component {
     this.setState((prevState, props) => ({
       mounted: !!ref,
       forceBox: ref,
-    }), () => this.showBoard());
+      simulation: applyTicks(mountSimulation(ref)(props.simulation)),
+    }), () => this.showBoard()
+    );
   }
   
   render() {
     const { game, cols, simulation, links, } = this.props;
-    
+
+    this.showBoard();
+
     return (
       <Grid container justify="center" className="board">
         <Grid item xs={10} className="boardGrid">

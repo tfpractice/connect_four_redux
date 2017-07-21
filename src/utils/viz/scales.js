@@ -42,11 +42,11 @@ export const setContainer = (drag = d3.drag()) => {
 };
 
 export const refScaleX = ref => d3.scaleLinear()
-  .domain([ 0, refBox(ref).width * 0.9, ])
+  .domain([ 0, refBox(ref).width, ])
   .range([ 0, 70, ]);
   
 export const refScaleY = ref => d3.scaleLinear()
-  .domain([ 0, refBox(ref).height * 0.9, ])
+  .domain([ 0, refBox(ref).height, ])
   .range([ 0, 60, ]);
   
 export const reverseScaleX = ref => refScaleX(ref).invert;
@@ -59,6 +59,23 @@ export const colScale = ref => d3.scaleLinear()
 export const rowScale = ref => d3.scaleLinear()
   .domain([ 0, refBox(ref).height * 0.9, ])
   .range([ 0, 60, ]);
+  
+const split = factor => num => d3.range(factor).map(x => x / factor).map(x => x * num);
 
+export const colBand = ref => d3.scaleBand()
+  .domain(split(7)(7))
+  .range([ 0, refBox(ref).width, ])
+
+  .paddingInner([ 0.1, ])
+  .paddingOuter([ 0.3, ])
+  .align([ 0.5, ]);
+  
+export const rowBand = ref => d3.scaleBand()
+  .domain(split(6)(6))
+  .range([ 0, refBox(ref).height, ])
+
+  .paddingInner([ 0.1, ])
+  .paddingOuter([ 0.3, ])
+  .align([ 0.5, ]);
 export const gameX = x => (x);
 export const gameY = y => (y);

@@ -3,9 +3,10 @@ import { setContainer, } from './scales';
 import { linkSelect, nodeSelect, updateLinks, updateNodes, updateSim, updateSimLinks, updateSimNodes, } from './selections';
 
 export const dragStarted = sim => (d) => {
-  if (!d3.event.active) sim.alphaTarget(0.3);
+  if (!d3.event.active) sim.alphaTarget(0.1).restart();
 
   // .restart();
+
   d.fx = d.x;
   d.fy = d.y;
 };
@@ -16,15 +17,13 @@ export const dragged = sim => (d) => {
 };
 
 export const dragEnded = sim => (d) => {
-  if (!d3.event.active) sim.alphaTarget(0.3).restart();
-  d.fx = null; d.x = sim.force('col2X').x()(d);
-  d.fy = null; d.y = sim.force('row2Y').y()(d);
+  if (!d3.event.active) sim.alphaTarget(0.5);
+  d.fx = null;
+  d.fy = null;
 };
 
 export const dragNodes = nodes => (sim) => {
   nodeSelect(nodes)
-    .attr('cx', sim.force('col2X').x())
-    .attr('cy', sim.force('row2Y').y())
     .call(setContainer(d3.drag())
       .on('start', dragStarted(sim))
       .on('drag', dragged(sim))
@@ -45,4 +44,4 @@ export const simTickNode = nodes => sim =>
   sim.on('tick.node', updateSimNodes(sim.nodes())(sim));
 
 export const simTickLink = links => sim =>
-  sim.on('tick.player', updateSimLinks(links)(sim));
+  sim.on('tick.link', updateSimLinks(links)(sim));

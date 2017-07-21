@@ -1,10 +1,11 @@
 import { boardForce, col2X, colForce, collide, manyBody, nodeInit,
   playerForce, refCenter, row2Y,
-  rowForce, xRefForce, yRefForce, } from './forces';
+  rowForce, xBand, xRefForce, yBand,
+  yRefForce, } from './forces';
 import { dragNodes, simTickLink, simTickNode, } from './events';
 
 export const simInit = game => [
-  nodeInit, manyBody, collide, playerForce(game), boardForce(game),
+  nodeInit, manyBody, playerForce(game), boardForce(game), collide,
 ].reduce((sim, fn) => fn(sim), game);
 
 export const applyTicks = sim => [
@@ -13,13 +14,11 @@ export const applyTicks = sim => [
   dragNodes(sim.nodes()), ]
   .reduce((a, fn) => fn(a), sim);
   
-export const mountSimulation = ref => (sim) => {
-  const a = 0;
-
-  console.log('ref', ref);
-  return [ refCenter(ref), xRefForce(ref), yRefForce(ref),
-    colForce(ref), rowForce(ref),
-    col2X(ref), row2Y(ref), applyTicks,
-  ].reduce((s, fn) => fn(s), sim);
-};
+export const mountSimulation = ref => sim => [
+  refCenter(ref),
+  xRefForce(ref), yRefForce(ref),
+  colForce(ref), rowForce(ref),
+  xBand(ref), yBand(ref),
+  col2X(ref), row2Y(ref),
+].reduce((s, fn) => fn(s), sim);
   

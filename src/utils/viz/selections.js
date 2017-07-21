@@ -22,6 +22,7 @@ export const linkSelect = links => d3.selectAll('.linkLine')
 
 export const updateNodes = (domNodes = d3.selectAll('.nodeCircle')) => sim =>
   domNodes
+
     .attr('cx', sim.force('x').x())
     .attr('cy', sim.force('y').y());
 
@@ -51,7 +52,18 @@ export const updateSim = sim => () => {
 };
 
 export const updateSimNodes = nodes => sim => () =>
-  updateNodes(nodeSelect(nodes))(sim);
 
+  // const bNodes = sim.nodes()
+  // .map(n => ({
+  //   ...n,
+  // x: sim.force('xBand').x()(n),
+  // y: sim.force('yBand').y()(n),
+  // }));
+// 
+  // .attr('cx', sim.force('xBand').x())
+  // .attr('cy', sim.force('yBand').y());
+
+  updateNodes(nodeSelect(nodes))(sim)
+;
 export const updateSimLinks = links => sim => () =>
   updateLinks(linkSelect(links))(sim);
