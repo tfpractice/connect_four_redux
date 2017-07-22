@@ -50,7 +50,7 @@ module.exports = {
     'newline-per-chained-call': ['error', { ignoreChainWithDepth: 3 }],
     // Errors
     'func-call-spacing': ['error', 'never'],
-    'no-undef': 2,
+    'no-undef': 'off',
     'no-dupe-keys': 2,
     'no-empty-character-class': 2,
     'no-self-compare': 2,
@@ -192,7 +192,7 @@ module.exports = {
     'react/jsx-wrap-multilines': 1,
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
     'react/jsx-equals-spacing': [2, 'never'],
-
+    'react-app/no-undef': 0,
     // prettier
     // 'prettier/prettier': 'off',
     'prettier/prettier': [

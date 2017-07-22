@@ -4,7 +4,9 @@ import { connect } from 'react-redux';
 import { Filter } from 'game_grid';
 import { withState } from 'recompose';
 import Grid from 'material-ui/Grid';
+import { Game } from 'connect_four_functional';
 
+import Alert from './alert';
 import Link from './link';
 import Column from './column';
 import {
@@ -19,6 +21,7 @@ import {
 
 const { cIDs } = Filter;
 
+const { winner } = Game;
 const withRef = withState('mountRef', 'setRef', null);
 
 const stateToProps = ({ game }) => {
@@ -37,17 +40,26 @@ const stateToProps = ({ game }) => {
 class Board extends Component {
   constructor(props) {
     super(props);
+
+    const simulation = simInit(props.game);
+    const links = simulation.force('players').links();
+    const nodes = simulation.nodes();
+
     this.state = {
       mounted: false,
       forceBox: null,
-      simulation: props.simulation,
+      simulation,
+      links,
+      nodes,
     };
     this.setRef = this.setRef.bind(this);
     this.showBoard = this.showBoard.bind(this);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.links.length !== this.props.links.length;
+    const newLinks = nextState.links.length !== this.state.links.length;
+
+    return newLinks;
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -61,11 +73,9 @@ class Board extends Component {
     const { simulation: sim } = this.props;
 
     if (mounted) {
-      applyTicks(mountSimulation(forceBox)(sim));
+      // applyTicks(sim1.nodes);
 
-      // applyTicks(sim1);
-
-      // (applyTicks(sim1).restart());
+      applyTicks(mountSimulation(forceBox)(sim1));
     }
   }
 
@@ -75,19 +85,22 @@ class Board extends Component {
       (prevState, props) => ({
         mounted: !!ref,
         forceBox: ref,
-        simulation: applyTicks(mountSimulation(ref)(props.simulation)),
+        simulation: applyTicks(mountSimulation(ref)(prevState.simulation)),
       }),
-      () => this.showBoard()
+      () => null // this.showBoard()
     );
   }
 
   render() {
     const { game, cols, simulation, links } = this.props;
 
-    this.showBoard();
+    // this.showBoard();
 
     return (
       <Grid container justify="center" className="board">
+        <Grid item xs={10} className="GameGrid">
+          <Alert />
+        </Grid>
         <Grid item xs={10} className="boardGrid">
           <svg
             ref={this.setRef}
@@ -96,9 +109,7 @@ class Board extends Component {
             className="boardVis"
           >
             {cols.map(id => <Column key={id} id={id} />)}
-            {links.map(link =>
-              <Link link={link} simulation={simulation} key={link.index} />
-            )}
+            {links.map(link => <Link link={link} key={link.index} />)}
           </svg>
         </Grid>
       </Grid>
@@ -115,7 +126,7 @@ const PureBoard = ({
   colIDs,
   simulation,
 }) => {
-  const showLinks = ref => {};
+  const showLinks = (ref) => {};
 
   const mount = (...arg) => {
     mountRef && mountSimulation(mountRef)(simulation);
