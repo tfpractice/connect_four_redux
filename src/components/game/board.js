@@ -11,18 +11,14 @@ import Link from './link';
 import Column from './column';
 import {
   applyTicks,
-  colBand,
+  linkForces,
   mountSimulation,
-  playerLinks,
-  rowBand,
   simInit,
-  updateSimLinks,
 } from '../../utils/viz';
 
-const { cIDs } = Filter;
+const { cIDs, byCol } = Filter;
 
 const { winner } = Game;
-const withRef = withState('mountRef', 'setRef', null);
 
 const stateToProps = ({ game }) => {
   const simulation = simInit(game);
@@ -41,60 +37,50 @@ class Board extends Component {
   constructor(props) {
     super(props);
 
-    const simulation = simInit(props.game);
-    const links = simulation.force('players').links();
-    const nodes = simulation.nodes();
-
     this.state = {
       mounted: false,
       forceBox: null,
-      simulation,
-      links,
-      nodes,
+      simulation: props.simulation,
     };
     this.setRef = this.setRef.bind(this);
     this.showBoard = this.showBoard.bind(this);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const newLinks = nextState.links.length !== this.state.links.length;
+    const newLinks = nextProps.links.length !== this.props.links.length;
 
     return newLinks;
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { simulation, links } = this.props;
-
     this.showBoard();
   }
 
   showBoard() {
     const { forceBox, mounted, simulation: sim1 } = this.state;
-    const { simulation: sim } = this.props;
+    const { simulation: sim, game } = this.props;
 
     if (mounted) {
-      // applyTicks(sim1.nodes);
-
-      applyTicks(mountSimulation(forceBox)(sim1));
+      applyTicks(mountSimulation(forceBox)(sim));
     }
   }
 
-  setRef(ref) {
-    this.mountRef = ref;
-    this.setState(
-      (prevState, props) => ({
-        mounted: !!ref,
-        forceBox: ref,
-        simulation: applyTicks(mountSimulation(ref)(prevState.simulation)),
-      }),
-      () => null // this.showBoard()
-    );
+  setRef(forceBox) {
+    if (forceBox) {
+      this.setState((prevState, props) => ({
+        forceBox,
+        mounted: !!forceBox,
+        simulation: applyTicks(
+          mountSimulation(forceBox)(linkForces(props.game)(props.simulation))
+        ),
+      }));
+    }
   }
 
   render() {
-    const { game, cols, simulation, links } = this.props;
+    const { game, cols, links } = this.props;
 
-    // this.showBoard();
+    this.showBoard();
 
     return (
       <Grid container justify="center" className="board">
@@ -116,36 +102,5 @@ class Board extends Component {
     );
   }
 }
-
-const PureBoard = ({
-  nodes,
-  setRef,
-  game,
-  mountRef,
-  links,
-  colIDs,
-  simulation,
-}) => {
-  const showLinks = (ref) => {};
-
-  const mount = (...arg) => {
-    mountRef && mountSimulation(mountRef)(simulation);
-  };
-
-  const load = ref => ref && setRef(ref, mount);
-
-  return (
-    <Grid container justify="center" className="board">
-      <Grid item xs={10} className="boardGrid">
-        <svg ref={load} viewBox="0,0,100,100" className="boardVis">
-          {colIDs.map(id => <Column key={id} id={id} />)}
-          {links.map(link =>
-            <Link link={link} simulation={simulation} key={link.index} />
-          )}
-        </svg>
-      </Grid>
-    </Grid>
-  );
-};
 
 export default connect(stateToProps)(Board);

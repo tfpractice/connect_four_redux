@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Button from 'material-ui/Button';
+import Grid from 'material-ui/Grid';
 import Dialog, {
   DialogActions,
   DialogContent,
@@ -35,28 +36,29 @@ const stateToProps = ({ game }, { toggle, ...rest }) => {
 };
 
 const WinnerDialog = ({ game, open, toggle, negate, winner }) =>
-  open &&
-  <div>
-    <Button onClick={toggle}>Open alert dialog</Button>
-    <Dialog open={open} onRequestClose={negate(toggle)}>
-      <DialogTitle>
-        {winner && `The Game is over, the winner is ${winner.name}`}
-      </DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-          Let Google help apps determine location. This means sending anonymous
-          location data to Google, even when no apps are running.
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={toggle} color="primary">
-          Disagree
-        </Button>
-        <Button onClick={toggle} color="primary">
-          Agree
-        </Button>
-      </DialogActions>
-    </Dialog>
-  </div>;
+  (<Grid container>
+    <Grid item xs>
+      <Button onClick={toggle}>Open alert dialog</Button>
+      <Dialog open={open} onRequestClose={negate(toggle)}>
+        <DialogTitle>
+          {winner && `The Game is over, the winner is ${winner.name}`}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Let Google help apps determine location. This means sending
+            anonymous location data to Google, even when no apps are running.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={toggle} color="primary">
+            Disagree
+          </Button>
+          <Button onClick={toggle} color="primary">
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Grid>
+  </Grid>);
 
 export default connect(stateToProps)(withSwitch(WinnerDialog));
