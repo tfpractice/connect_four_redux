@@ -2,8 +2,13 @@ import * as d3 from 'd3';
 import { spread } from 'fenugreek-collections';
 import { boardLinks, playerLinks, userLinks } from './links';
 import {
+  boxScaleX,
+  boxScaleY,
   colBand,
+  colBoxBand,
+  colBoxScale,
   colScale,
+  colScaleBox,
   gameX,
   gameY,
   getBox,
@@ -11,7 +16,10 @@ import {
   refScaleX,
   refScaleY,
   rowBand,
+  rowBoxBand,
+  rowBoxScale,
   rowScale,
+  rowScaleBox,
 } from './scales';
 import { Node } from 'connect_four_functional';
 
@@ -96,29 +104,45 @@ export const playerForce = game => (sim) => {
 export const refCenter = ref => sim =>
   sim.force(
     'center',
-    d3.forceCenter(0.9 * refBox(ref).width / 2, 0.9 * refBox(ref).height / 2)
+    d3.forceCenter(0.9 * ref.width / 2, 0.9 * ref.height / 2)
   );
 
 export const xRefForce = ref => sim =>
-  sim.force('x', d3.forceX(d => refScaleX(ref)(d.x)));
+  sim.force('x', d3.forceX(d => boxScaleX(ref)(d.x)));
+
+// sim.force('x', d3.forceX(d => refScaleX(ref)(d.x)));
 
 export const yRefForce = ref => sim =>
-  sim.force('y', d3.forceY(d => refScaleY(ref)(d.y)));
+  sim.force('y', d3.forceY(d => boxScaleY(ref)(d.y)));
+
+// sim.force('y', d3.forceY(d => refScaleY(ref)(d.y)));
 
 export const xBand = ref => sim =>
-  sim.force('xBand', d3.forceX(d => colBand(ref)(d.column)).strength(0.3));
+  sim.force('xBand', d3.forceX(d => colBoxBand(ref)(d.column)).strength(0.3));
+
+// sim.force('xBand', d3.forceX(d => colBand(ref)(d.column)).strength(0.3));
 
 export const yBand = ref => sim =>
-  sim.force('yBand', d3.forceY(d => rowBand(ref)(d.row)).strength(0.3));
+  sim.force('yBand', d3.forceY(d => rowBoxBand(ref)(d.row)).strength(0.3));
+
+// sim.force('yBand', d3.forceY(d => rowBand(ref)(d.row)).strength(0.3));
 
 export const col2X = ref => sim =>
-  sim.force('col2X', d3.forceX(d => refScaleX(ref).invert(d.column)));
+  sim.force('col2X', d3.forceX(d => boxScaleX(ref).invert(d.column)));
+
+// sim.force('col2X', d3.forceX(d => refScaleX(ref).invert(d.column)));
 
 export const row2Y = ref => sim =>
-  sim.force('row2Y', d3.forceY(d => refScaleY(ref).invert(d.row)));
+  sim.force('row2Y', d3.forceY(d => boxScaleY(ref).invert(d.row)));
+
+// sim.force('row2Y', d3.forceY(d => refScaleY(ref).invert(d.row)));
 
 export const colForce = ref => sim =>
-  sim.force('col', d3.forceX(d => colScale(ref)(d.x)));
+  sim.force('col', d3.forceX(d => colScaleBox(ref)(d.x)));
+
+// sim.force('col', d3.forceX(d => colScale(ref)(d.x)));
 
 export const rowForce = ref => sim =>
-  sim.force('row', d3.forceY(d => rowScale(ref)(d.y)));
+  sim.force('row', d3.forceY(d => rowScaleBox(ref)(d.y)));
+
+// sim.force('row', d3.forceY(d => rowScale(ref)(d.y)));

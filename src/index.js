@@ -13,7 +13,7 @@ import {
 
 import Home from './components';
 import getStore from './store';
-import { styleManager, theme } from './utils';
+import { theme } from './utils';
 import './index.css';
 
 injectTapEventPlugin();
@@ -26,7 +26,7 @@ onlineHandler(store);
 
 ReactDOM.render(
   <Provider store={store}>
-    <MuiThemeProvider theme={theme} styleManager={styleManager}>
+    <MuiThemeProvider theme={theme}>
       <BrowserRouter>
         <Route component={Home} />
       </BrowserRouter>

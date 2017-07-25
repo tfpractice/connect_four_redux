@@ -14,6 +14,7 @@ import {
   applyTicks,
   linkForces,
   mountSimulation,
+  refBox,
   simInit,
 } from '../../utils/viz';
 
@@ -59,8 +60,9 @@ class Board extends Component {
     if (window.Worker) {
       // ler MyWorker=
       console.log('window worker exists');
-      this.worker = new Worker('/worker.js');
-      this.worker.onmessage = m => this.setState({ data: m.data });
+      this.worker = new Worker('/worker2.js');
+
+      // this.worker.onmessage = m => this.setState({ data: m.data });
 
       console.log('this.worker', this.worker);
     }
@@ -78,12 +80,16 @@ class Board extends Component {
 
   showBoard() {
     const { forceBox, mounted, simulation: lSim } = this.state;
-    const { simulation: sim } = this.props;
+    const { simulation: sim, game } = this.props;
 
-    if (mounted) {
-      const next = applyTicks(mountSimulation(forceBox)(sim));
+    console.log('forceBox', forceBox);
 
-      this.worker.postMessage(this.props.game);
+    // const { width, height } = forceBox;
+
+    if (mounted && forceBox) {
+      // const next = applyTicks(mountSimulation(forceBox)(sim));
+
+      this.worker.postMessage({ game, forceBox: { ...forceBox }});
     }
   }
   update(num = 0) {
@@ -92,11 +98,17 @@ class Board extends Component {
 
   setRef(forceBox) {
     if (forceBox) {
+      console.log(
+        'forceBox.getBoundingClientRect()',
+        forceBox.getBoundingClientRect()
+      );
       this.setState((prevState, props) => ({
-        forceBox,
+        forceBox: forceBox.getBoundingClientRect(),
         mounted: !!forceBox,
         simulation: applyTicks(
-          mountSimulation(forceBox)(linkForces(props.game)(props.simulation))
+          mountSimulation(forceBox.getBoundingClientRect())(
+            linkForces(props.game)(props.simulation)
+          )
         ),
       }));
     }
