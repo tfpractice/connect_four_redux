@@ -7,59 +7,32 @@ import Alert from './alert';
 import { GameActs } from '../../modules';
 import Board from './board';
 import Players from './players';
+import { Game } from 'connect_four_functional';
+
+const { winner } = Game;
+const isOver = game => game.players.length > 1 && winner(game);
 
 const stateToProps = ({ game }) => ({ game });
 
-class Game extends Component {
-  render() {
-    const { start, game, resetGame, clearGame } = this.props;
-
-    return (
-      <Grid container align="center" justify="center">
-        <Grid item xs={10} className="GameGrid">
-          <Board />
-        </Grid>
-        <Grid item xs={11} className="GameGrid">
-          <Card>
-            <CardHeader title={`in play?${game.inPlay}`} />
-            <CardContent>
-              <Players />
-            </CardContent>
-            <CardActions>
-              <Button onClick={start}>Start game</Button>
-              <Button onClick={clearGame}>clearGame game</Button>
-              <Button onClick={() => resetGame(game)}>Reset game</Button>
-            </CardActions>
-          </Card>
-        </Grid>
-      </Grid>
-    );
-  }
-}
-
-const PureGame = ({ start, game, resetGame, clearGame }) => {
-  console.log('gmae', game);
-
-  return (
-    <Grid container align="center" justify="center">
-      <Grid item xs={10} className="GameGrid">
-        <Board />
-      </Grid>
-      <Grid item xs={11} className="GameGrid">
-        <Card>
-          <CardHeader title={`in play?${game.inPlay}`} />
-          <CardContent>
-            <Players />
-          </CardContent>
-          <CardActions>
-            <Button onClick={start}>Start game</Button>
-            <Button onClick={clearGame}>clearGame game</Button>
-            <Button onClick={() => resetGame(game)}>Reset game</Button>
-          </CardActions>
-        </Card>
-      </Grid>
+const GameComponent = ({ start, game, resetGame, clearGame }) =>
+  (<Grid container align="center" justify="center">
+    <Grid item xs={11} className="Alert">
+      {isOver(game) ? <Alert open={isOver(game)} /> : <Board />}
     </Grid>
-  );
-};
+    
+    <Grid item xs={11} className="GameGrid">
+      <Card>
+        <CardHeader title={`in play?${game.inPlay}`} />
+        <CardContent>
+          <Players />
+        </CardContent>
+        <CardActions>
+          <Button onClick={start}>Start game</Button>
+          <Button onClick={clearGame}>clearGame game</Button>
+          <Button onClick={() => resetGame(game)}>Reset game</Button>
+        </CardActions>
+      </Card>
+    </Grid>
+  </Grid>);
 
-export default connect(stateToProps, GameActs)(Game);
+export default connect(stateToProps, GameActs)(GameComponent);

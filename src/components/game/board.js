@@ -57,8 +57,8 @@ class Board extends Component {
   }
 
   showBoard() {
-    const { forceBox, mounted, simulation: sim1 } = this.state;
-    const { simulation: sim, game } = this.props;
+    const { forceBox, mounted, simulation: lSim } = this.state;
+    const { simulation: sim } = this.props;
 
     if (mounted) {
       applyTicks(mountSimulation(forceBox)(sim));
@@ -84,9 +84,6 @@ class Board extends Component {
 
     return (
       <Grid container justify="center" className="board">
-        <Grid item xs={10} className="GameGrid">
-          <Alert />
-        </Grid>
         <Grid item xs={10} className="boardGrid">
           <svg
             ref={this.setRef}

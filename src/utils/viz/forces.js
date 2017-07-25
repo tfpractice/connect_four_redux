@@ -89,7 +89,7 @@ export const playerForce = game => (sim) => {
       .forceLink(playerLinks({ players, nodes }))
       .id(d => d.id)
       .distance(dist)
-      .iterations(2)
+      .iterations(1)
   );
 };
 
@@ -106,10 +106,10 @@ export const yRefForce = ref => sim =>
   sim.force('y', d3.forceY(d => refScaleY(ref)(d.y)));
 
 export const xBand = ref => sim =>
-  sim.force('xBand', d3.forceX(d => colBand(ref)(d.column)).strength(0.6));
+  sim.force('xBand', d3.forceX(d => colBand(ref)(d.column)).strength(0.3));
 
 export const yBand = ref => sim =>
-  sim.force('yBand', d3.forceY(d => rowBand(ref)(d.row)).strength(0.6));
+  sim.force('yBand', d3.forceY(d => rowBand(ref)(d.row)).strength(0.3));
 
 export const col2X = ref => sim =>
   sim.force('col2X', d3.forceX(d => refScaleX(ref).invert(d.column)));

@@ -7,6 +7,7 @@ import Dialog, {
   DialogContentText,
   DialogTitle,
 } from 'material-ui/Dialog';
+import { GameActs } from '../../modules';
 
 import { compose, withHandlers, withState } from 'recompose';
 import { connect } from 'react-redux';
@@ -18,24 +19,25 @@ const withSwitch = compose(
   withState('open', 'turn', ({ open }) => !!open),
   withHandlers({ toggle: ({ turn }) => () => turn(x => !x) })
 );
-const invert = fn => () => {
-  console.log('INVERITNG');
-  return fn(x => !x);
-};
+const invert = fn => () => fn(x => !x);
 
-const stateToProps = ({ game }, { toggle, ...rest }) => {
-  console.log('winner(game)', winner(game));
+const stateToProps = ({ game }) => ({
+  game,
+  winner: isOver(game),
+  negate: invert,
+  open: !!isOver(game),
+});
 
-  console.log('isOver(game)', isOver(game));
-  return {
-    game,
-    winner: isOver(game),
-    negate: invert,
-    open: !!isOver(game),
-  };
-};
-
-const WinnerDialog = ({ game, open, toggle, negate, winner }) =>
+const WinnerDialog = ({
+  game,
+  open,
+  toggle,
+  negate,
+  winner,
+  start,
+  resetGame,
+  clearGame,
+}) =>
   (<Grid container>
     <Grid item xs>
       <Button onClick={toggle}>Open alert dialog</Button>
@@ -45,20 +47,20 @@ const WinnerDialog = ({ game, open, toggle, negate, winner }) =>
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Let Google help apps determine location. This means sending
-            anonymous location data to Google, even when no apps are running.
+            Reset the game to play against your oppnonent once more. Or clear
+            the game to log out and let others play
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={toggle} color="primary">
-            Disagree
+          <Button onClick={() => clearGame() && toggle()}>
+            clearGame game
           </Button>
-          <Button onClick={toggle} color="primary">
-            Agree
+          <Button onClick={() => resetGame(game) && toggle()}>
+            Reset game
           </Button>
         </DialogActions>
       </Dialog>
     </Grid>
   </Grid>);
 
-export default connect(stateToProps)(withSwitch(WinnerDialog));
+export default connect(stateToProps, GameActs)(withSwitch(WinnerDialog));

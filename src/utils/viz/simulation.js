@@ -37,10 +37,12 @@ export const mountSimulation = ref => sim =>
     refCenter(ref),
     xRefForce(ref),
     yRefForce(ref),
+
     colForce(ref),
     rowForce(ref),
     xBand(ref),
     yBand(ref),
+
     col2X(ref),
     row2Y(ref),
   ].reduce((s, fn) => fn(s), sim);
