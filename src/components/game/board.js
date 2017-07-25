@@ -6,6 +6,7 @@ import { withState } from 'recompose';
 import Grid from 'material-ui/Grid';
 import { Game } from 'connect_four_functional';
 
+// import * as name from '../../../public/worker';
 import Alert from './alert';
 import Link from './link';
 import Column from './column';
@@ -38,6 +39,7 @@ class Board extends Component {
     super(props);
 
     this.state = {
+      data: 0,
       mounted: false,
       forceBox: null,
       simulation: props.simulation,
@@ -45,11 +47,29 @@ class Board extends Component {
     this.setRef = this.setRef.bind(this);
     this.showBoard = this.showBoard.bind(this);
   }
+  componentDidMount() {
+    const { forceBox, mounted, simulation: lSim } = this.state;
+    const { simulation: sim } = this.props;
+
+    if (mounted) {
+      this.worker.postMessage(applyTicks(mountSimulation(forceBox)(sim)));
+    }
+  }
+  componentWillMount() {
+    if (window.Worker) {
+      // ler MyWorker=
+      console.log('window worker exists');
+      this.worker = new Worker('/worker.js');
+      this.worker.onmessage = m => this.setState({ data: m.data });
+
+      console.log('this.worker', this.worker);
+    }
+  }
 
   shouldComponentUpdate(nextProps, nextState) {
     const newLinks = nextProps.links.length !== this.props.links.length;
 
-    return newLinks;
+    return newLinks || nextState.data;
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -61,8 +81,13 @@ class Board extends Component {
     const { simulation: sim } = this.props;
 
     if (mounted) {
-      applyTicks(mountSimulation(forceBox)(sim));
+      const next = applyTicks(mountSimulation(forceBox)(sim));
+
+      this.worker.postMessage(this.props.game);
     }
+  }
+  update(num = 0) {
+    this.worker.postMessage(num);
   }
 
   setRef(forceBox) {
@@ -80,11 +105,21 @@ class Board extends Component {
   render() {
     const { game, cols, links } = this.props;
 
+    console.log('this.worker', this.worker);
+
+    const { data } = this.state;
+
+    console.log('this.state.data', this.state.data);
+
     this.showBoard();
 
     return (
       <Grid container justify="center" className="board">
         <Grid item xs={10} className="boardGrid">
+          <button onClick={() => this.worker.postMessage(null)}> Up </button>
+          <p>
+            {data}
+          </p>
           <svg
             ref={this.setRef}
             viewBox="-5,-5,70,60"
