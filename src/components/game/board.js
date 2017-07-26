@@ -11,7 +11,6 @@ import Link from './link';
 import Column from './column';
 import {
   applyTicks,
-  applyTicks2,
   linkForces,
   mountSimulation,
   playerLinks,
@@ -46,6 +45,7 @@ class Board extends Component {
     this.state = {
       mounted: false,
       forceBox: null,
+      simulation: simInit(props.game),
     };
     this.setRef = this.setRef.bind(this);
     this.showBoard = this.showBoard.bind(this);
@@ -61,9 +61,27 @@ class Board extends Component {
     const newLinks =
       playerLinks(game).length !== playerLinks(this.props.game).length;
 
-    const { forceBox: { width, height }, mounted } = this.state;
+    const { forceBox: { width, height }, simulation, mounted } = this.state;
+    const safeBox = { width, height };
 
     this.worker.postMessage({ game, forceBox: { width, height }});
+    console.log('playerLinks(game)', playerLinks(game));
+
+    // if (mounted) {
+    //   console.log('this.state.simulation', this.state.simulation);
+    if (simulation.force('players')) {
+      // const next = simulation.force('players').links(playerLinks(game));
+
+      const next = linkForces(game)(simulation);
+
+      this.setState({ simulation: next });
+    } else {
+      const next = mountSimulation(safeBox)(simInit(game));
+
+      this.setState({ simulation: next });
+    }
+
+    // }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -73,10 +91,13 @@ class Board extends Component {
   }
 
   showBoard() {
-    const { forceBox, mounted } = this.state;
+    const { forceBox, mounted, simulation } = this.state;
 
+    console.log('this', this);
+    console.log('simulation', simulation);
     if (mounted) {
-      this.props.display(forceBox);
+      // this.props.display(forceBox);
+      applyTicks(mountSimulation(forceBox)(simInit(this.props.game)));
     }
   }
 
@@ -84,7 +105,21 @@ class Board extends Component {
     if (ref) {
       const forceBox = ref.getBoundingClientRect();
 
-      this.setState({ forceBox, mounted: !!forceBox }, this.showBoard);
+      // const simulation = applyTicks(
+      //   mountSimulation(forceBox)(simInit(this.props.game))
+      // );
+
+      console.log('setting state');
+      this.setState(
+        (prevState, props) => ({
+          forceBox,
+          mounted: !!forceBox,
+          simulation: applyTicks(
+            mountSimulation(forceBox)(simInit(props.game))
+          ),
+        }),
+        this.showBoard
+      );
     }
   }
 
