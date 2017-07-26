@@ -17356,12 +17356,8 @@ const dragNodes = ref => (sim) => {
 /* harmony export (immutable) */ __webpack_exports__["c"] = dragNodes;
 
 
-const tickLinks = links => sim =>
-  sim.on('tick.link', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__selections__["b" /* updateLinks */])(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__selections__["c" /* linkSelect */])(links)));
-/* unused harmony export tickLinks */
-
 const tickNodes = nodes => sim =>
-  sim.on('tick.node', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__selections__["d" /* updateNodes */])(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__selections__["a" /* nodeSelect */])(nodes)));
+  sim.on('tick.node', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__selections__["b" /* updateNodes */])(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__selections__["a" /* nodeSelect */])(nodes)));
 /* unused harmony export tickNodes */
 
 const stopNodes = sim => sim.on('tick.node', null);
@@ -17370,14 +17366,18 @@ const stopNodes = sim => sim.on('tick.node', null);
 const stopLinks = sim => sim.on('tick.link', null);
 /* unused harmony export stopLinks */
 
-const ticked = sim => sim.on('tick', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__selections__["e" /* updateSim */])(sim));
+const ticked = sim => sim.on('tick', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__selections__["c" /* updateSim */])(sim));
 /* unused harmony export ticked */
 
 
 const simTickNode = nodes => sim =>
-  sim.on('tick.node', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__selections__["f" /* updateSimNodes */])(sim.nodes())(sim));
+  sim.on('tick.node', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__selections__["d" /* updateSimNodes */])(sim.nodes())(sim));
 /* harmony export (immutable) */ __webpack_exports__["a"] = simTickNode;
 
+
+const tickLinks = links => sim =>
+  sim.on('tick.link', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__selections__["e" /* updateLinks */])(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__selections__["f" /* linkSelect */])(links)));
+/* unused harmony export tickLinks */
 
 const simTickLink = links => sim =>
   sim.on('tick.link', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__selections__["g" /* updateSimLinks */])(links)(sim));
@@ -17527,12 +17527,12 @@ const yBand = ref => sim =>
 
 const col2X = ref => sim =>
   sim.force('col2X', __WEBPACK_IMPORTED_MODULE_0_d3__["forceX"](d => __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__scales__["a" /* boxScaleX */])(ref).invert(d.column)));
-/* unused harmony export col2X */
+/* harmony export (immutable) */ __webpack_exports__["k"] = col2X;
 
 
 const row2Y = ref => sim =>
   sim.force('row2Y', __WEBPACK_IMPORTED_MODULE_0_d3__["forceY"](d => __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__scales__["b" /* boxScaleY */])(ref).invert(d.row)));
-/* unused harmony export row2Y */
+/* harmony export (immutable) */ __webpack_exports__["l"] = row2Y;
 
 
 const colForce = ref => sim =>
@@ -17573,12 +17573,12 @@ const nodeSelect = nArr =>
 
 
 const linkSelect = links => __WEBPACK_IMPORTED_MODULE_0_d3__["selectAll"]('.linkLine').data(links);
-/* harmony export (immutable) */ __webpack_exports__["c"] = linkSelect;
+/* harmony export (immutable) */ __webpack_exports__["f"] = linkSelect;
 
 
 const updateNodes = (domNodes = __WEBPACK_IMPORTED_MODULE_0_d3__["selectAll"]('.nodeCircle')) => sim =>
   domNodes.attr('cx', sim.force('x').x()).attr('cy', sim.force('y').y());
-/* harmony export (immutable) */ __webpack_exports__["d"] = updateNodes;
+/* harmony export (immutable) */ __webpack_exports__["b"] = updateNodes;
 
 
 const updateLinks = (domLinks = __WEBPACK_IMPORTED_MODULE_0_d3__["selectAll"]('.linkLine')) => sim =>
@@ -17587,23 +17587,23 @@ const updateLinks = (domLinks = __WEBPACK_IMPORTED_MODULE_0_d3__["selectAll"]('.
     .attr('y1', d => sim.force('y').y()(d.source))
     .attr('x2', d => sim.force('x').x()(d.target))
     .attr('y2', d => sim.force('y').y()(d.target));
-/* harmony export (immutable) */ __webpack_exports__["b"] = updateLinks;
+/* harmony export (immutable) */ __webpack_exports__["e"] = updateLinks;
+
+
+const updateSimNodes = nodes => sim => () =>
+  updateNodes(nodeSelect(nodes))(sim);
+/* harmony export (immutable) */ __webpack_exports__["d"] = updateSimNodes;
+
+const updateSimLinks = links => sim => () =>
+  updateLinks(linkSelect(links))(sim);
+/* harmony export (immutable) */ __webpack_exports__["g"] = updateSimLinks;
 
 
 const updateSim = sim => () => {
   updateNodes(nodeSelect(sim.nodes()))(sim);
   updateLinks()(sim);
 };
-/* harmony export (immutable) */ __webpack_exports__["e"] = updateSim;
-
-
-const updateSimNodes = nodes => sim => () =>
-  updateNodes(nodeSelect(nodes))(sim);
-/* harmony export (immutable) */ __webpack_exports__["f"] = updateSimNodes;
-
-const updateSimLinks = links => sim => () =>
-  updateLinks(linkSelect(links))(sim);
-/* harmony export (immutable) */ __webpack_exports__["g"] = updateSimLinks;
+/* harmony export (immutable) */ __webpack_exports__["c"] = updateSim;
 
 
 
@@ -17665,7 +17665,10 @@ onmessage = function({ data }) {
   const simulation = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__src_utils_viz__["a" /* mountSimulation */])(data.forceBox)(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__src_utils_viz__["b" /* simInit */])(data.game));
   const links = simulation.force('players').links();
 
+  //
   // postMessage({ links, nodes: simulation.nodes() });
+  //
+  //
 
   simulation.on('tick.worker', (a, ...rest) => {
     postMessage({ links, nodes: simulation.nodes() });
@@ -17692,7 +17695,17 @@ const simInit = game =>
 
 
 const linkForces = game => sim =>
-  [ __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__forces__["c" /* playerForce */])(game) ].reduce((s, fn) => fn(s), sim);
+  [
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__forces__["c" /* playerForce */])(game),
+
+    // (s) => {
+    //   console.log('s', s);
+    //   const before = simTickLink(s.force('players').links())(s);
+    //
+    //   console.log('before', before);
+    //   return before;
+    // },
+  ].reduce((s, fn) => fn(s), sim);
 /* unused harmony export linkForces */
 
 
@@ -17705,18 +17718,14 @@ const applyTicks = sim =>
 /* unused harmony export applyTicks */
 
 
-const applyTicks2 = links => sim =>
-  [
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__events__["a" /* simTickNode */])(sim.nodes()),
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__events__["b" /* simTickLink */])(sim.force('players').links(links).links()),
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__events__["c" /* dragNodes */])(sim.nodes()),
-  ].reduce((a, fn) => fn(a), sim);
-/* unused harmony export applyTicks2 */
+const resetLinks = links => (sim) => {
+  const getLinks = s => s.force('players').links(links).links();
 
-const resetLinks = links => sim =>
-  __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__events__["b" /* simTickLink */])(sim.force('players').links())(sim);
+  return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__events__["b" /* simTickLink */])(getLinks(sim))(sim);
+
+  // return result;
+};
 /* unused harmony export resetLinks */
-
 
 const mountSimulation = ref => sim =>
   [
@@ -17729,8 +17738,8 @@ const mountSimulation = ref => sim =>
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__forces__["i" /* xBand */])(ref),
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__forces__["j" /* yBand */])(ref),
 
-    // col2X(ref),
-    // row2Y(ref),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__forces__["k" /* col2X */])(ref),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__forces__["l" /* row2Y */])(ref),
   ].reduce((s, fn) => fn(s), sim);
 /* harmony export (immutable) */ __webpack_exports__["a"] = mountSimulation;
 

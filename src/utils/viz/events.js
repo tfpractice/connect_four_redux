@@ -39,8 +39,6 @@ export const dragNodes = ref => (sim) => {
   return sim;
 };
 
-export const tickLinks = links => sim =>
-  sim.on('tick.link', updateLinks(linkSelect(links)));
 export const tickNodes = nodes => sim =>
   sim.on('tick.node', updateNodes(nodeSelect(nodes)));
 export const stopNodes = sim => sim.on('tick.node', null);
@@ -50,5 +48,7 @@ export const ticked = sim => sim.on('tick', updateSim(sim));
 export const simTickNode = nodes => sim =>
   sim.on('tick.node', updateSimNodes(sim.nodes())(sim));
 
+export const tickLinks = links => sim =>
+  sim.on('tick.link', updateLinks(linkSelect(links)));
 export const simTickLink = links => sim =>
   sim.on('tick.link', updateSimLinks(links)(sim));

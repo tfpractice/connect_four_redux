@@ -25,12 +25,12 @@ export const updateLinks = (domLinks = d3.selectAll('.linkLine')) => sim =>
     .attr('x2', d => sim.force('x').x()(d.target))
     .attr('y2', d => sim.force('y').y()(d.target));
 
-export const updateSim = sim => () => {
-  updateNodes(nodeSelect(sim.nodes()))(sim);
-  updateLinks()(sim);
-};
-
 export const updateSimNodes = nodes => sim => () =>
   updateNodes(nodeSelect(nodes))(sim);
 export const updateSimLinks = links => sim => () =>
   updateLinks(linkSelect(links))(sim);
+
+export const updateSim = sim => () => {
+  updateNodes(nodeSelect(sim.nodes()))(sim);
+  updateLinks()(sim);
+};

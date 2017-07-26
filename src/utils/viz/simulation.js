@@ -23,10 +23,7 @@ export const simInit = game =>
   );
 
 export const linkForces = game => sim =>
-  [ playerForce(game), s => simTickLink(s.force('players').links())(s) ].reduce(
-    (s, fn) => fn(s),
-    sim
-  );
+  [ playerForce(game) ].reduce((s, fn) => fn(s), sim);
 
 export const applyTicks = sim =>
   [
@@ -35,20 +32,16 @@ export const applyTicks = sim =>
     dragNodes(sim.nodes()),
   ].reduce((a, fn) => fn(a), sim);
 
-export const resetLinks = links => sim =>
-  simTickLink(sim.force('players').links())(sim);
+export const resetLinks = links => (sim) => {
+  const getLinks = s => s.force('players').links(links).links();
 
+  return simTickLink(getLinks(sim))(sim);
+};
 export const mountSimulation = ref => sim =>
   [
     refCenter(ref),
     xRefForce(ref),
     yRefForce(ref),
-
-    // colForce(ref),
-    // rowForce(ref),
     xBand(ref),
     yBand(ref),
-
-    // col2X(ref),
-    // row2Y(ref),
   ].reduce((s, fn) => fn(s), sim);

@@ -11,6 +11,8 @@ onmessage = function({ data }) {
   const links = simulation.force('players').links();
 
   // postMessage({ links, nodes: simulation.nodes() });
+  //
+  //
 
   simulation.on('tick.worker', (a, ...rest) => {
     postMessage({ links, nodes: simulation.nodes() });
