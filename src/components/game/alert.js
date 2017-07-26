@@ -7,20 +7,21 @@ import Dialog, {
   DialogContentText,
   DialogTitle,
 } from 'material-ui/Dialog';
-import { GameActs } from '../../modules';
-
 import { compose, withHandlers, withState } from 'recompose';
 import { connect } from 'react-redux';
 import { Game } from 'connect_four_functional';
 
+import { GameActs } from '../../modules';
+
 const { winner } = Game;
+
 const isOver = game => game.players.length > 1 && winner(game);
 const withSwitch = compose(
   withState('open', 'turn', ({ open }) => !!open),
   withHandlers({ toggle: ({ turn }) => () => turn(x => !x) })
 );
-const invert = fn => () => fn(x => !x);
 
+const invert = fn => () => fn(x => !x);
 const stateToProps = ({ game }) => ({
   game,
   winner: isOver(game),
