@@ -17336,15 +17336,15 @@ const dragged = sim => (d) => {
 
 
 const dragEnded = sim => (d) => {
-  if (!__WEBPACK_IMPORTED_MODULE_0_d3__["event"].active) sim.alphaTarget(0.3);
+  if (!__WEBPACK_IMPORTED_MODULE_0_d3__["event"].active) sim.alphaTarget(0.3).restart();
   d.fx = null;
   d.fy = null;
 };
 /* unused harmony export dragEnded */
 
 
-const dragNodes = nodes => (sim) => {
-  __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__selections__["a" /* nodeSelect */])(nodes).call(
+const dragNodes = ref => (sim) => {
+  __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__selections__["a" /* nodeSelect */])(sim.nodes()).call(
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__scales__["g" /* setContainer */])(__WEBPACK_IMPORTED_MODULE_0_d3__["drag"]())
       .on('start', dragStarted(sim))
       .on('drag', dragged(sim))
@@ -17517,32 +17517,32 @@ const yRefForce = ref => sim =>
 
 const xBand = ref => sim =>
   sim.force('xBand', __WEBPACK_IMPORTED_MODULE_0_d3__["forceX"](d => __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__scales__["c" /* colBoxBand */])(ref)(d.column)).strength(0.3));
-/* harmony export (immutable) */ __webpack_exports__["k"] = xBand;
+/* harmony export (immutable) */ __webpack_exports__["i"] = xBand;
 
 
 const yBand = ref => sim =>
   sim.force('yBand', __WEBPACK_IMPORTED_MODULE_0_d3__["forceY"](d => __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__scales__["d" /* rowBoxBand */])(ref)(d.row)).strength(0.3));
-/* harmony export (immutable) */ __webpack_exports__["l"] = yBand;
+/* harmony export (immutable) */ __webpack_exports__["j"] = yBand;
 
 
 const col2X = ref => sim =>
   sim.force('col2X', __WEBPACK_IMPORTED_MODULE_0_d3__["forceX"](d => __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__scales__["a" /* boxScaleX */])(ref).invert(d.column)));
-/* harmony export (immutable) */ __webpack_exports__["m"] = col2X;
+/* unused harmony export col2X */
 
 
 const row2Y = ref => sim =>
   sim.force('row2Y', __WEBPACK_IMPORTED_MODULE_0_d3__["forceY"](d => __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__scales__["b" /* boxScaleY */])(ref).invert(d.row)));
-/* harmony export (immutable) */ __webpack_exports__["n"] = row2Y;
+/* unused harmony export row2Y */
 
 
 const colForce = ref => sim =>
   sim.force('col', __WEBPACK_IMPORTED_MODULE_0_d3__["forceX"](d => __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__scales__["e" /* colScaleBox */])(ref)(d.x)));
-/* harmony export (immutable) */ __webpack_exports__["i"] = colForce;
+/* unused harmony export colForce */
 
 
 const rowForce = ref => sim =>
   sim.force('row', __WEBPACK_IMPORTED_MODULE_0_d3__["forceY"](d => __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__scales__["f" /* rowScaleBox */])(ref)(d.y)));
-/* harmony export (immutable) */ __webpack_exports__["j"] = rowForce;
+/* unused harmony export rowForce */
 
 
 
@@ -17724,13 +17724,13 @@ const mountSimulation = ref => sim =>
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__forces__["g" /* xRefForce */])(ref),
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__forces__["h" /* yRefForce */])(ref),
 
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__forces__["i" /* colForce */])(ref),
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__forces__["j" /* rowForce */])(ref),
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__forces__["k" /* xBand */])(ref),
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__forces__["l" /* yBand */])(ref),
+    // colForce(ref),
+    // rowForce(ref),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__forces__["i" /* xBand */])(ref),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__forces__["j" /* yBand */])(ref),
 
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__forces__["m" /* col2X */])(ref),
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__forces__["n" /* row2Y */])(ref),
+    // col2X(ref),
+    // row2Y(ref),
   ].reduce((s, fn) => fn(s), sim);
 /* harmony export (immutable) */ __webpack_exports__["a"] = mountSimulation;
 
