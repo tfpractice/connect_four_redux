@@ -1,8 +1,4 @@
-const i = 0;
-
-import 'babel-polyfill';
-
-// const viz = require('src/utils/viz');
+import * as d3 from 'd3';
 import {
   applyTicks,
   linkForces,
@@ -10,26 +6,11 @@ import {
   simInit,
 } from '../src/utils/viz';
 
-// self.importScripts('../src/utils/viz');
+onmessage = function({ data }) {
+  const simulation = mountSimulation(data.forceBox)(simInit(data.game));
+  const links = simulation.force('players').links();
 
-// console.log('viz', viz);
-
-// onmessage = function(event) {
-//   postMessage(calculatorService.calculate(event.data));
-// };
-// self.importScripts('babel-polyfill');
-postMessage(i);
-
-// onmessage = function(e) {
-//   postMessage(++i);
-// };
-
-//
-
-onmessage = function(event) {
-  console.log('event.data', event.data);
-  console.log('public worker');
-  applyTicks(simInit(game));
-
-  // postMessage(++i);
+  simulation.on('tick.worker', (a, ...rest) => {
+    postMessage({ links, nodes: simulation.nodes() });
+  });
 };

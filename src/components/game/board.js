@@ -1,19 +1,20 @@
 import * as d3 from 'd3';
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { connect, connectAdvanced } from 'react-redux';
 import { Filter } from 'game_grid';
 import { withState } from 'recompose';
 import Grid from 'material-ui/Grid';
 import { Game } from 'connect_four_functional';
 
-// import * as name from '../../../public/worker';
 import Alert from './alert';
 import Link from './link';
 import Column from './column';
 import {
   applyTicks,
+  applyTicks2,
   linkForces,
   mountSimulation,
+  playerLinks,
   refBox,
   simInit,
 } from '../../utils/viz';
@@ -22,116 +23,110 @@ const { cIDs, byCol } = Filter;
 
 const { winner } = Game;
 
-const stateToProps = ({ game }) => {
+const stateToProps = ({ game }, own) => {
   const simulation = simInit(game);
   const links = simulation.force('players').links();
-
-  return {
+  const prev = {
     links,
     simulation,
     game,
-    nodes: simulation.nodes(),
+    display: ref => ref && applyTicks(mountSimulation(ref)(simulation)),
+
     cols: cIDs(game.nodes),
+  };
+
+  return ({ game: nextGame, ...args }, o2) => {
+    const simulation2 = simInit(nextGame);
+    const links2 = simulation2.force('players').links();
+    const diffLinks = links.length !== links2.length;
+
+    const next = {
+      ...prev,
+      links: links2,
+      simulation: simulation2,
+      game: nextGame,
+      display: ref => ref && applyTicks(mountSimulation(ref)(simulation2)),
+    };
+
+    return diffLinks ? next : prev;
   };
 };
 
 class Board extends Component {
   constructor(props) {
     super(props);
+    const simulation = simInit(props.game);
+    const links = simulation.force('players').links();
 
     this.state = {
       data: 0,
       mounted: false,
       forceBox: null,
-      simulation: props.simulation,
+      simulation,
+      links,
     };
     this.setRef = this.setRef.bind(this);
+    console.log('this', this.props);
     this.showBoard = this.showBoard.bind(this);
-  }
-  componentDidMount() {
-    const { forceBox, mounted, simulation: lSim } = this.state;
-    const { simulation: sim } = this.props;
-
-    if (mounted) {
-      this.worker.postMessage(applyTicks(mountSimulation(forceBox)(sim)));
-    }
   }
   componentWillMount() {
     if (window.Worker) {
-      // ler MyWorker=
-      console.log('window worker exists');
       this.worker = new Worker('/worker2.js');
-
-      // this.worker.onmessage = m => this.setState({ data: m.data });
-
-      console.log('this.worker', this.worker);
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    const newLinks = nextProps.links.length !== this.props.links.length;
+  shouldComponentUpdate(nextProps) {
+    return (
+      playerLinks(nextProps.game).length !== playerLinks(this.props.game).length
+    );
+  }
+  componentWillReceiveProps({ game }) {
+    const newLinks =
+      playerLinks(game).length !== playerLinks(this.props.game).length;
 
-    return newLinks || nextState.data;
+    const { forceBox, mounted, simulation: stateSim } = this.state;
+    const { simulation: sim } = this.props;
+    const { width, height } = forceBox;
+
+    newLinks && this.worker.postMessage({ game, forceBox: { width, height }});
   }
 
   componentDidUpdate(prevProps, prevState) {
+    console.log('this.props', this.props);
     this.showBoard();
   }
 
   showBoard() {
-    const { forceBox, mounted, simulation: lSim } = this.state;
+    const { forceBox, mounted, simulation: stateSim } = this.state;
     const { simulation: sim, game } = this.props;
 
-    console.log('forceBox', forceBox);
+    if (mounted) {
+      const { width, height } = forceBox;
 
-    // const { width, height } = forceBox;
-
-    if (mounted && forceBox) {
-      // const next = applyTicks(mountSimulation(forceBox)(sim));
-
-      this.worker.postMessage({ game, forceBox: { ...forceBox }});
+      this.props.display(forceBox);
     }
   }
-  update(num = 0) {
-    this.worker.postMessage(num);
-  }
 
-  setRef(forceBox) {
-    if (forceBox) {
-      console.log(
-        'forceBox.getBoundingClientRect()',
-        forceBox.getBoundingClientRect()
+  setRef(ref) {
+    if (ref) {
+      const forceBox = ref.getBoundingClientRect();
+
+      this.setState(
+        (prevState, props) => ({
+          forceBox,
+          mounted: !!forceBox,
+        }),
+        this.showBoard
       );
-      this.setState((prevState, props) => ({
-        forceBox: forceBox.getBoundingClientRect(),
-        mounted: !!forceBox,
-        simulation: applyTicks(
-          mountSimulation(forceBox.getBoundingClientRect())(
-            linkForces(props.game)(props.simulation)
-          )
-        ),
-      }));
     }
   }
 
   render() {
-    const { game, cols, links } = this.props;
-
-    console.log('this.worker', this.worker);
-
-    const { data } = this.state;
-
-    console.log('this.state.data', this.state.data);
-
-    this.showBoard();
+    const { cols, links } = this.props;
 
     return (
       <Grid container justify="center" className="board">
-        <Grid item xs={10} className="boardGrid">
-          <button onClick={() => this.worker.postMessage(null)}> Up </button>
-          <p>
-            {data}
-          </p>
+        <Grid ref={'grid'} item xs={10} className="boardGrid">
           <svg
             ref={this.setRef}
             viewBox="-5,-5,70,60"
@@ -147,4 +142,11 @@ class Board extends Component {
   }
 }
 
-export default connect(stateToProps)(Board);
+export default connect(stateToProps, null, null, {
+  renderCountProp: 'numRenders',
+  withRef: true,
+  areStatePropsEqual: ({ links }, { links: nextLinks }) =>
+    links.length === nextLinks.length,
+})(Board);
+
+// export default connectAdvanced(factory, { withRef: true })(Board);

@@ -35,23 +35,19 @@ const nCount = ({ column: c, row: r }) => {
   const rNabes = d3.range(6).filter(isBeside(r)).length;
 
   return cNabes * rNabes - 1;
-
-  // .concat(d3.range(6).filter(isBeside(r))).length;
 };
 
-export const nodeInit = game =>
-  d3.forceSimulation(spread(game.nodes).map(Node.copy));
+export const nodeInit = (game) => {
+  console.log('initialisibg');
+  return d3.forceSimulation(spread(game.nodes).map(Node.copy)).alpha(0.8);
+};
 
-export const manyBody = sim =>
-  sim.force(
-    'charge',
-    d3.forceManyBody()
+export const manyBody = sim => sim.force('charge', d3.forceManyBody());
 
-    // .distanceMin(40)
-  );
+// .distanceMin(20));
 
 export const collide = sim =>
-  sim.force('collide', d3.forceCollide(d => nCount(d)).strength(0.1));
+  sim.force('collide', d3.forceCollide(d => nCount(d)).strength(0.01));
 
 export const delta = a => b => a - b;
 
@@ -80,7 +76,7 @@ export const boardForce = game => (sim) => {
     'board',
     d3
       .forceLink(boardLinks({ players, nodes }))
-      .strength(0.2)
+      .strength(0.02)
       .id(d => d.id)
       .distance(dist)
   );
@@ -97,7 +93,7 @@ export const playerForce = game => (sim) => {
       .forceLink(playerLinks({ players, nodes }))
       .id(d => d.id)
       .distance(dist)
-      .iterations(1)
+      .iterations(2)
   );
 };
 

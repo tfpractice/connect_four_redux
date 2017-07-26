@@ -32,6 +32,13 @@ export const applyTicks = sim =>
     dragNodes(sim.nodes()),
   ].reduce((a, fn) => fn(a), sim);
 
+export const applyTicks2 = links => sim =>
+  [
+    simTickNode(sim.nodes()),
+    simTickLink(sim.force('players').links(links).links()),
+    dragNodes(sim.nodes()),
+  ].reduce((a, fn) => fn(a), sim);
+
 export const mountSimulation = ref => sim =>
   [
     refCenter(ref),
