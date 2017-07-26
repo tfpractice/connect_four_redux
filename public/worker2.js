@@ -17418,18 +17418,14 @@ const nCount = ({ column: c, row: r }) => {
   return cNabes * rNabes - 1;
 };
 
-const nodeInit = (game) => {
-  console.log('initialisibg');
-  return __WEBPACK_IMPORTED_MODULE_0_d3__["forceSimulation"](__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_fenugreek_collections__["spread"])(game.nodes).map(__WEBPACK_IMPORTED_MODULE_4_connect_four_functional__["Node"].copy)).alpha(0.8);
-};
+const nodeInit = game =>
+  __WEBPACK_IMPORTED_MODULE_0_d3__["forceSimulation"](__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_fenugreek_collections__["spread"])(game.nodes).map(__WEBPACK_IMPORTED_MODULE_4_connect_four_functional__["Node"].copy)).alpha(0.8);
 /* harmony export (immutable) */ __webpack_exports__["a"] = nodeInit;
 
 
 const manyBody = sim => sim.force('charge', __WEBPACK_IMPORTED_MODULE_0_d3__["forceManyBody"]());
 /* harmony export (immutable) */ __webpack_exports__["b"] = manyBody;
 
-
-// .distanceMin(20));
 
 const collide = sim =>
   sim.force('collide', __WEBPACK_IMPORTED_MODULE_0_d3__["forceCollide"](d => nCount(d)).strength(0.01));
@@ -17493,6 +17489,7 @@ const playerForce = game => (sim) => {
     'players',
     __WEBPACK_IMPORTED_MODULE_0_d3__["forceLink"](__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__links__["b" /* playerLinks */])({ players, nodes }))
       .id(d => d.id)
+      .strength(0.03)
       .distance(dist)
       .iterations(2)
   );
@@ -17513,56 +17510,40 @@ const xRefForce = ref => sim =>
 /* harmony export (immutable) */ __webpack_exports__["g"] = xRefForce;
 
 
-// sim.force('x', d3.forceX(d => refScaleX(ref)(d.x)));
-
 const yRefForce = ref => sim =>
   sim.force('y', __WEBPACK_IMPORTED_MODULE_0_d3__["forceY"](d => __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__scales__["b" /* boxScaleY */])(ref)(d.y)));
 /* harmony export (immutable) */ __webpack_exports__["h"] = yRefForce;
 
-
-// sim.force('y', d3.forceY(d => refScaleY(ref)(d.y)));
 
 const xBand = ref => sim =>
   sim.force('xBand', __WEBPACK_IMPORTED_MODULE_0_d3__["forceX"](d => __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__scales__["c" /* colBoxBand */])(ref)(d.column)).strength(0.3));
 /* harmony export (immutable) */ __webpack_exports__["k"] = xBand;
 
 
-// sim.force('xBand', d3.forceX(d => colBand(ref)(d.column)).strength(0.3));
-
 const yBand = ref => sim =>
   sim.force('yBand', __WEBPACK_IMPORTED_MODULE_0_d3__["forceY"](d => __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__scales__["d" /* rowBoxBand */])(ref)(d.row)).strength(0.3));
 /* harmony export (immutable) */ __webpack_exports__["l"] = yBand;
 
-
-// sim.force('yBand', d3.forceY(d => rowBand(ref)(d.row)).strength(0.3));
 
 const col2X = ref => sim =>
   sim.force('col2X', __WEBPACK_IMPORTED_MODULE_0_d3__["forceX"](d => __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__scales__["a" /* boxScaleX */])(ref).invert(d.column)));
 /* harmony export (immutable) */ __webpack_exports__["m"] = col2X;
 
 
-// sim.force('col2X', d3.forceX(d => refScaleX(ref).invert(d.column)));
-
 const row2Y = ref => sim =>
   sim.force('row2Y', __WEBPACK_IMPORTED_MODULE_0_d3__["forceY"](d => __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__scales__["b" /* boxScaleY */])(ref).invert(d.row)));
 /* harmony export (immutable) */ __webpack_exports__["n"] = row2Y;
 
-
-// sim.force('row2Y', d3.forceY(d => refScaleY(ref).invert(d.row)));
 
 const colForce = ref => sim =>
   sim.force('col', __WEBPACK_IMPORTED_MODULE_0_d3__["forceX"](d => __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__scales__["e" /* colScaleBox */])(ref)(d.x)));
 /* harmony export (immutable) */ __webpack_exports__["i"] = colForce;
 
 
-// sim.force('col', d3.forceX(d => colScale(ref)(d.x)));
-
 const rowForce = ref => sim =>
   sim.force('row', __WEBPACK_IMPORTED_MODULE_0_d3__["forceY"](d => __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__scales__["f" /* rowScaleBox */])(ref)(d.y)));
 /* harmony export (immutable) */ __webpack_exports__["j"] = rowForce;
 
-
-// sim.force('row', d3.forceY(d => rowScale(ref)(d.y)));
 
 
 /***/ }),
@@ -17684,6 +17665,8 @@ onmessage = function({ data }) {
   const simulation = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__src_utils_viz__["a" /* mountSimulation */])(data.forceBox)(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__src_utils_viz__["b" /* simInit */])(data.game));
   const links = simulation.force('players').links();
 
+  // postMessage({ links, nodes: simulation.nodes() });
+
   simulation.on('tick.worker', (a, ...rest) => {
     postMessage({ links, nodes: simulation.nodes() });
   });
@@ -17729,6 +17712,10 @@ const applyTicks2 = links => sim =>
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__events__["c" /* dragNodes */])(sim.nodes()),
   ].reduce((a, fn) => fn(a), sim);
 /* unused harmony export applyTicks2 */
+
+const resetLinks = links => sim =>
+  __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__events__["b" /* simTickLink */])(sim.force('players').links())(sim);
+/* unused harmony export resetLinks */
 
 
 const mountSimulation = ref => sim =>

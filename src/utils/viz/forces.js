@@ -37,14 +37,10 @@ const nCount = ({ column: c, row: r }) => {
   return cNabes * rNabes - 1;
 };
 
-export const nodeInit = (game) => {
-  console.log('initialisibg');
-  return d3.forceSimulation(spread(game.nodes).map(Node.copy)).alpha(0.8);
-};
+export const nodeInit = game =>
+  d3.forceSimulation(spread(game.nodes).map(Node.copy)).alpha(0.8);
 
 export const manyBody = sim => sim.force('charge', d3.forceManyBody());
-
-// .distanceMin(20));
 
 export const collide = sim =>
   sim.force('collide', d3.forceCollide(d => nCount(d)).strength(0.01));
@@ -92,6 +88,7 @@ export const playerForce = game => (sim) => {
     d3
       .forceLink(playerLinks({ players, nodes }))
       .id(d => d.id)
+      .strength(0.03)
       .distance(dist)
       .iterations(2)
   );
@@ -106,39 +103,23 @@ export const refCenter = ref => sim =>
 export const xRefForce = ref => sim =>
   sim.force('x', d3.forceX(d => boxScaleX(ref)(d.x)));
 
-// sim.force('x', d3.forceX(d => refScaleX(ref)(d.x)));
-
 export const yRefForce = ref => sim =>
   sim.force('y', d3.forceY(d => boxScaleY(ref)(d.y)));
-
-// sim.force('y', d3.forceY(d => refScaleY(ref)(d.y)));
 
 export const xBand = ref => sim =>
   sim.force('xBand', d3.forceX(d => colBoxBand(ref)(d.column)).strength(0.3));
 
-// sim.force('xBand', d3.forceX(d => colBand(ref)(d.column)).strength(0.3));
-
 export const yBand = ref => sim =>
   sim.force('yBand', d3.forceY(d => rowBoxBand(ref)(d.row)).strength(0.3));
-
-// sim.force('yBand', d3.forceY(d => rowBand(ref)(d.row)).strength(0.3));
 
 export const col2X = ref => sim =>
   sim.force('col2X', d3.forceX(d => boxScaleX(ref).invert(d.column)));
 
-// sim.force('col2X', d3.forceX(d => refScaleX(ref).invert(d.column)));
-
 export const row2Y = ref => sim =>
   sim.force('row2Y', d3.forceY(d => boxScaleY(ref).invert(d.row)));
-
-// sim.force('row2Y', d3.forceY(d => refScaleY(ref).invert(d.row)));
 
 export const colForce = ref => sim =>
   sim.force('col', d3.forceX(d => colScaleBox(ref)(d.x)));
 
-// sim.force('col', d3.forceX(d => colScale(ref)(d.x)));
-
 export const rowForce = ref => sim =>
   sim.force('row', d3.forceY(d => rowScaleBox(ref)(d.y)));
-
-// sim.force('row', d3.forceY(d => rowScale(ref)(d.y)));

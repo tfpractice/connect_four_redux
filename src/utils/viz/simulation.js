@@ -38,6 +38,8 @@ export const applyTicks2 = links => sim =>
     simTickLink(sim.force('players').links(links).links()),
     dragNodes(sim.nodes()),
   ].reduce((a, fn) => fn(a), sim);
+export const resetLinks = links => sim =>
+  simTickLink(sim.force('players').links())(sim);
 
 export const mountSimulation = ref => sim =>
   [
@@ -45,11 +47,11 @@ export const mountSimulation = ref => sim =>
     xRefForce(ref),
     yRefForce(ref),
 
-    colForce(ref),
-    rowForce(ref),
+    // colForce(ref),
+    // rowForce(ref),
     xBand(ref),
     yBand(ref),
 
-    col2X(ref),
-    row2Y(ref),
+    // col2X(ref),
+    // row2Y(ref),
   ].reduce((s, fn) => fn(s), sim);

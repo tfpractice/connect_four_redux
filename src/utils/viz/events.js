@@ -23,13 +23,13 @@ export const dragged = sim => (d) => {
 };
 
 export const dragEnded = sim => (d) => {
-  if (!d3.event.active) sim.alphaTarget(0.3);
+  if (!d3.event.active) sim.alphaTarget(0.3).restart();
   d.fx = null;
   d.fy = null;
 };
 
-export const dragNodes = nodes => (sim) => {
-  nodeSelect(nodes).call(
+export const dragNodes = ref => (sim) => {
+  nodeSelect(sim.nodes()).call(
     setContainer(d3.drag())
       .on('start', dragStarted(sim))
       .on('drag', dragged(sim))

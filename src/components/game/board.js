@@ -16,45 +16,26 @@ import {
   mountSimulation,
   playerLinks,
   refBox,
+  resetLinks,
   simInit,
 } from '../../utils/viz';
 
 const { cIDs, byCol } = Filter;
 
 const { winner } = Game;
-
-const stateToProps = ({ game }, own) => {
+const stateToProps = ({ game, ...rest }, own) => {
   const simulation = simInit(game);
   const links = simulation.force('players').links();
-  const prev = {
+
+  return {
     links,
     simulation,
     game,
     display: ref => ref && applyTicks(mountSimulation(ref)(simulation)),
     cols: cIDs(game.nodes),
-  };
 
-  console.log('own', own);
-  return ({ game: nextGame, ...args }, ...o2) => {
-    console.log('args', args);
-    console.log('o2', o2);
-    const simulation2 = simInit(nextGame);
-    const links2 = simulation2.force('players').links();
-    const diffLinks = playerLinks(game).length !== playerLinks(nextGame).length;
-
-    const next = {
-      ...prev,
-      links: links2,
-      simulation: simulation2,
-      game: nextGame,
-      display: ref => ref && applyTicks(mountSimulation(ref)(simulation2)),
-    };
-
-    console.log('playerLinks(game).length', playerLinks(game).length);
-    console.log('playerLinks(nextGame).length', playerLinks(nextGame).length);
-    console.log('diffLinks', diffLinks);
-
-    return diffLinks ? next : prev;
+    // restart: ref => applyTicks(mountSimulation(ref)(simulation.restart())),
+    // repeat: l => resetLinks(l)(simulation),
   };
 };
 
@@ -69,27 +50,25 @@ class Board extends Component {
     this.setRef = this.setRef.bind(this);
     this.showBoard = this.showBoard.bind(this);
   }
+
   componentWillMount() {
     if (window.Worker) {
       this.worker = new Worker('/worker2.js');
     }
   }
 
-  // shouldComponentUpdate(nextProps) {
-  //   return (
-  //     playerLinks(nextProps.game).length !== playerLinks(this.props.game).length
-  //   );
-  // }
   componentWillReceiveProps({ game }) {
     const newLinks =
       playerLinks(game).length !== playerLinks(this.props.game).length;
 
     const { forceBox: { width, height }, mounted } = this.state;
 
-    newLinks && this.worker.postMessage({ game, forceBox: { width, height }});
+    this.worker.postMessage({ game, forceBox: { width, height }});
   }
 
   componentDidUpdate(prevProps, prevState) {
+    const { forceBox: { width, height }} = this.state;
+
     this.showBoard();
   }
 
@@ -105,13 +84,7 @@ class Board extends Component {
     if (ref) {
       const forceBox = ref.getBoundingClientRect();
 
-      this.setState(
-        (prevState, props) => ({
-          forceBox,
-          mounted: !!forceBox,
-        }),
-        this.showBoard
-      );
+      this.setState({ forceBox, mounted: !!forceBox }, this.showBoard);
     }
   }
 
@@ -137,10 +110,10 @@ class Board extends Component {
 }
 
 export default connect(stateToProps, null, null, {
-  renderCountProp: 'numRenders',
+  renderCountProp: 'rCount',
   withRef: true,
   areStatesEqual: ({ game }, { game: nextGame }) =>
-    playerLinks(game).length !== playerLinks(nextGame).length,
+    playerLinks(game).length === playerLinks(nextGame).length,
   areStatePropsEqual: ({ links }, { links: nextLinks }) =>
     links.length === nextLinks.length,
 })(Board);
