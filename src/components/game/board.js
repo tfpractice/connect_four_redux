@@ -26,14 +26,13 @@ const getLinks = s => s.force('players').links();
 
 const stateToProps = ({ game, ...rest }, own) => {
   const simulation = simInit(game);
-  const links = simulation.force('players').links();
 
   return {
-    links,
-    simulation,
     game,
-    display: ref => ref && applyTicks(mountSimulation(ref)(simulation)),
+    simulation,
     cols: cIDs(game.nodes),
+    links: getLinks(simulation),
+    display: ref => ref && applyTicks(mountSimulation(ref)(simulation)),
   };
 };
 
@@ -80,14 +79,7 @@ class Board extends Component {
     if (ref) {
       const forceBox = ref.getBoundingClientRect();
 
-      console.log('setting state');
-      this.setState(
-        (prevState, props) => ({
-          forceBox,
-          mounted: !!forceBox,
-        }),
-        this.showBoard
-      );
+      this.setState({ forceBox, mounted: !!forceBox }, this.showBoard);
     }
   }
 

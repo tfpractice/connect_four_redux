@@ -52,9 +52,7 @@ const WinnerDialog = ({
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => clearGame() && toggle()}>
-            clearGame game
-          </Button>
+          <Button onClick={() => clearGame() && toggle()}>Clear game</Button>
           <Button onClick={() => resetGame(game) && toggle()}>
             Reset game
           </Button>
