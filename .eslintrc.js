@@ -57,7 +57,7 @@ module.exports = {
     'no-empty-character-class': 2,
     'no-self-compare': 2,
     'valid-typeof': 2,
-    'no-unused-vars': 1,
+    'no-unused-vars': 2,
     'no-multi-spaces': [
       2,
       {

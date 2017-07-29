@@ -1,5 +1,7 @@
 import * as d3 from 'd3';
 import { spread } from 'fenugreek-collections';
+import { Node } from 'connect_four_functional';
+
 import { boardLinks, playerLinks, userLinks } from './links';
 import {
   boxScaleX,
@@ -21,7 +23,6 @@ import {
   rowScale,
   rowScaleBox,
 } from './scales';
-import { Node } from 'connect_four_functional';
 
 const linkHas = ({ id }) => ({ source: s, target: t }) =>
   t.id === id || s.id == id;

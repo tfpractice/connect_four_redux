@@ -29,16 +29,7 @@ const stateToProps = ({ game }) => ({
   open: !!isOver(game),
 });
 
-const WinnerDialog = ({
-  game,
-  open,
-  toggle,
-  negate,
-  winner,
-  start,
-  resetGame,
-  clearGame,
-}) =>
+const WinnerDialog = ({ game, open, toggle, negate, resetGame, clearGame }) =>
   (<Grid container>
     <Grid item xs>
       <Button onClick={toggle}>Open alert dialog</Button>

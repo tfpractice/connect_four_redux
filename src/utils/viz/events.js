@@ -11,7 +11,7 @@ import {
 } from './selections';
 
 export const dragStarted = sim => (d) => {
-  if (!d3.event.active) sim.alphaTarget(0.03).restart();
+  if (!d3.event.active) sim.alphaTarget(0.03);
 
   d.fx = d.x;
   d.fy = d.y;
@@ -23,7 +23,7 @@ export const dragged = sim => (d) => {
 };
 
 export const dragEnded = sim => (d) => {
-  if (!d3.event.active) sim.alphaTarget(0.3).restart();
+  if (!d3.event.active) sim.alphaTarget(0.3);
   d.fx = null;
   d.fy = null;
 };
