@@ -23,7 +23,9 @@ module.exports = {
     },
     sourceType: 'module',
   },
-  plugins: ['react', 'jsx-a11y', 'import', 'prettier'],
+
+  plugins: ['react', 'jsx-a11y', 'import', 'prettier', 'import-order-autofix'],
+
   rules: {
     // Ignore Rules
     'space-infix-ops': 2,
@@ -143,7 +145,15 @@ module.exports = {
         ObjectPattern: { multiline: true },
       },
     ],
-    'newline-after-var': ['error', 'always'],
+    'padding-line-between-statements': [
+      'error',
+      { blankLine: 'always', prev: ['const', 'let', 'var'], next: '*' },
+      {
+        blankLine: 'any',
+        prev: ['const', 'let', 'var'],
+        next: ['const', 'let', 'var'],
+      },
+    ],
     // 'object-property-newline': ['error', { allowMultiplePropertiesPerLine: true }],
     'line-comment-position': ['error', { position: 'above' }],
     'brace-style': [
@@ -168,11 +178,11 @@ module.exports = {
     'no-multiple-empty-lines': ['error', { max: 1, maxEOF: 1 }],
     'rest-spread-spacing': ['error', 'never'],
     'sort-imports': [
-      'error',
+      'warn',
       {
         ignoreCase: true,
         ignoreMemberSort: false,
-        memberSyntaxSortOrder: ['none', 'single', 'all', 'multiple'],
+        memberSyntaxSortOrder: ['none', 'all', 'single', 'multiple'],
       },
     ],
 
@@ -186,13 +196,22 @@ module.exports = {
     'react/no-did-mount-set-state': 1,
     'react/no-did-update-set-state': 1,
     'react/no-multi-comp': 1,
-    'react/prop-types': 1,
+    'react/prop-types': 0,
     'react/react-in-jsx-scope': 1,
     'react/self-closing-comp': 1,
-    'react/jsx-wrap-multilines': 1,
+    'react/jsx-wrap-multilines': [
+      2,
+      {
+        arrow: true,
+        return: true,
+        assignment: true,
+        declaration: true,
+      },
+    ],
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
     'react/jsx-equals-spacing': [2, 'never'],
     'react-app/no-undef': 0,
+
     // prettier
     // 'prettier/prettier': 'off',
     'prettier/prettier': [
@@ -201,6 +220,7 @@ module.exports = {
         trailingComma: 'all',
         bracketSpacing: false,
         jsxBracketSameLine: true,
+        semi: true,
         // parser: 'babylon',
       },
     ],
@@ -211,12 +231,12 @@ module.exports = {
         'newlines-between': 'always',
         groups: [
           ['builtin', 'external'],
-          ['internal', 'index'],
-          ['parent', 'sibling'],
+          ['internal', 'index', 'parent', 'sibling'],
+          // ['parent', 'sibling'],
         ],
       },
     ],
-
+    'import-order-autofix/order': 'error',
     'import/no-extraneous-dependencies': [
       'error',
       {
