@@ -5,5 +5,5 @@ script: yarn build
 deploy:
   provider: surge
   project: ./build
-  domain: tfpconnect.surge.sh
+  domain: tfp-connect.surge.sh
   skip_cleanup: true
