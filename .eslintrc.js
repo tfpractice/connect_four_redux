@@ -208,7 +208,7 @@ module.exports = {
         declaration: true,
       },
     ],
-    'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
+    'react/jsx-filename-extension': [0, { extensions: ['.js', '.jsx'] }],
     'react/jsx-equals-spacing': [2, 'never'],
     'react-app/no-undef': 0,
 
