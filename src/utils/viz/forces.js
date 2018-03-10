@@ -2,25 +2,13 @@ import * as d3 from 'd3';
 import { spread } from 'fenugreek-collections';
 import { Node } from 'connect_four_functional';
 
-import { boardLinks, playerLinks, userLinks } from './links';
+import { boardLinks, playerLinks } from './links';
 import {
   boxScaleX,
   boxScaleY,
-  colBand,
   colBoxBand,
-  colBoxScale,
-  colScale,
   colScaleBox,
-  gameX,
-  gameY,
-  getBox,
-  refBox,
-  refScaleX,
-  refScaleY,
-  rowBand,
   rowBoxBand,
-  rowBoxScale,
-  rowScale,
   rowScaleBox,
 } from './scales';
 

@@ -1,27 +1,20 @@
-import * as d3 from 'd3';
 import React, { Component } from 'react';
-import { connect, connectAdvanced } from 'react-redux';
+import { connect } from 'react-redux';
 import { Filter } from 'game_grid';
 import { withState } from 'recompose';
 import Grid from 'material-ui/Grid';
-import { Game } from 'connect_four_functional';
 
-import Alert from './alert';
 import Link from './link';
 import Column from './column';
 import {
   applyTicks,
-  linkForces,
   mountSimulation,
   playerLinks,
-  refBox,
-  resetLinks,
   simInit,
 } from '../../utils/viz';
 
-const { cIDs, byCol } = Filter;
+const { cIDs } = Filter;
 
-const { winner } = Game;
 const getLinks = s => s.force('players').links();
 
 const stateToProps = ({ game, ...rest }, own) => {
@@ -98,8 +91,7 @@ class Board extends Component {
             ref={this.setRef}
             viewBox="-5,-5,70,60"
             preserveAspectRatio="xMidYMid"
-            className="boardVis"
-          >
+            className="boardVis">
             {cols.map(id => <Column key={id} id={id} />)}
             {links.map(link => <Link link={link} key={link.index} />)}
           </svg>

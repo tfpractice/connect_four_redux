@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
 import Dialog, {
@@ -29,8 +29,8 @@ const stateToProps = ({ game }) => ({
   open: !!isOver(game),
 });
 
-const WinnerDialog = ({ game, open, toggle, negate, resetGame, clearGame }) =>
-  (<Grid container>
+const WinnerDialog = ({ game, open, toggle, negate, resetGame, clearGame }) => (
+  <Grid container>
     <Grid item xs>
       <Button onClick={toggle}>Open alert dialog</Button>
       <Dialog open={open} onRequestClose={negate(toggle)}>
@@ -51,6 +51,7 @@ const WinnerDialog = ({ game, open, toggle, negate, resetGame, clearGame }) =>
         </DialogActions>
       </Dialog>
     </Grid>
-  </Grid>);
+  </Grid>
+);
 
 export default connect(stateToProps, GameActs)(withSwitch(WinnerDialog));
