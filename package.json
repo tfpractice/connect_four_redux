@@ -40,7 +40,7 @@
     "prettier": "^1.5.3",
     "prettier-eslint": "^8.8.1",
     "prettier-eslint-cli": "^4.1.1",
-    "react-scripts": "1.0.10"
+    "react-scripts": "1.1.1"
   },
   "dependencies": {
     "connect_four_functional": "^2.0.2-3",
@@ -50,17 +50,16 @@
     "game_grid": "^4.0.2",
     "graph-curry": "^2.1.0",
     "material-ui": "^1.0.0-beta.36",
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
     "react-redux": "^5.0.5",
     "react-router-dom": "^4.1.2",
-    "react-tap-event-plugin": "^2.0.1",
-    "recompose": "^0.24.0",
+    "recompose": "^0.26.0",
     "redux": "^3.7.2",
     "redux-form": "^7.0.3",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
-    "surge": "^0.19.0"
+    "surge": "^0.20.1"
   },
   "scripts": {
     "start": "react-scripts start",
