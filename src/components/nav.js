@@ -9,7 +9,7 @@ import { LoginForm } from './auth';
 const Nav = props =>
   (<AppBar>
     <Toolbar>
-      <Grid container justify="space-between" align="center">
+      <Grid container justify="space-between" alignContent="center">
         <Grid item>
           <Link to="/">
             <Text type="headline" color="secondary">
