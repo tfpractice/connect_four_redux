@@ -4,10 +4,11 @@ import Toolbar from 'material-ui/Toolbar';
 import Text from 'material-ui/Typography';
 import Grid from 'material-ui/Grid';
 import { Link } from 'react-router-dom';
+
 import { LoginForm } from './auth';
 
-const Nav = props =>
-  (<AppBar>
+const Nav = props => (
+  <AppBar>
     <Toolbar>
       <Grid container justify="space-between" alignContent="center">
         <Grid item>
@@ -18,10 +19,11 @@ const Nav = props =>
           </Link>
         </Grid>
         <Grid item>
-          <LoginForm formID={'mainLogin'} />
+          <LoginForm formID="mainLogin" />
         </Grid>
       </Grid>
     </Toolbar>
-  </AppBar>);
+  </AppBar>
+);
 
 export default Nav;

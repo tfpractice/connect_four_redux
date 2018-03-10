@@ -1,6 +1,6 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
 import Grid from 'material-ui/Grid';
+import { Route } from 'react-router-dom';
 
 import Game from './game';
 import Nav from './nav';
