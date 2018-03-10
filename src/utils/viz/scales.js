@@ -1,6 +1,4 @@
 import * as d3 from 'd3';
-import { Board, Game, Node } from 'connect_four_functional';
-import { flattenBin as flatten, spread } from 'fenugreek-collections';
 
 export const color = d3
   .scaleOrdinal()
@@ -47,40 +45,73 @@ export const setContainer = (drag = d3.drag()) => {
 };
 
 export const refScaleX = ref =>
-  d3.scaleLinear().domain([ 0, refBox(ref).width ]).range([ 0, 70 ]);
+  d3
+    .scaleLinear()
+    .domain([ 0, refBox(ref).width ])
+    .range([ 0, 70 ]);
 
 export const refScaleY = ref =>
-  d3.scaleLinear().domain([ 0, refBox(ref).height ]).range([ 0, 60 ]);
+  d3
+    .scaleLinear()
+    .domain([ 0, refBox(ref).height ])
+    .range([ 0, 60 ]);
 
 export const boxScaleX = box =>
-  d3.scaleLinear().domain([ 0, box.width ]).range([ 0, 70 ]);
+  d3
+    .scaleLinear()
+    .domain([ 0, box.width ])
+    .range([ 0, 70 ]);
 
 export const boxScaleY = box =>
-  d3.scaleLinear().domain([ 0, box.height ]).range([ 0, 60 ]);
+  d3
+    .scaleLinear()
+    .domain([ 0, box.height ])
+    .range([ 0, 60 ]);
 
 export const reverseScaleX = ref => refScaleX(ref).invert;
 export const reverseScaleY = ref => refScaleY(ref).invert;
 
 export const colScale = ref =>
-  d3.scaleLinear().domain([ 0, refBox(ref).width * 0.9 ]).range([ 0, 70 ]);
+  d3
+    .scaleLinear()
+    .domain([ 0, refBox(ref).width * 0.9 ])
+    .range([ 0, 70 ]);
 
 export const rowScale = ref =>
-  d3.scaleLinear().domain([ 0, refBox(ref).height * 0.9 ]).range([ 0, 60 ]);
+  d3
+    .scaleLinear()
+    .domain([ 0, refBox(ref).height * 0.9 ])
+    .range([ 0, 60 ]);
 
 export const colScaleBox = ref =>
-  d3.scaleLinear().domain([ 0, ref.width * 0.9 ]).range([ 0, 70 ]);
+  d3
+    .scaleLinear()
+    .domain([ 0, ref.width * 0.9 ])
+    .range([ 0, 70 ]);
 
 export const rowScaleBox = ref =>
-  d3.scaleLinear().domain([ 0, ref.height * 0.9 ]).range([ 0, 60 ]);
+  d3
+    .scaleLinear()
+    .domain([ 0, ref.height * 0.9 ])
+    .range([ 0, 60 ]);
 
 export const colBoxScale = box =>
-  d3.scaleLinear().domain([ 0, box.width * 0.9 ]).range([ 0, 70 ]);
+  d3
+    .scaleLinear()
+    .domain([ 0, box.width * 0.9 ])
+    .range([ 0, 70 ]);
 
 export const rowBoxScale = box =>
-  d3.scaleLinear().domain([ 0, box.height * 0.9 ]).range([ 0, 60 ]);
+  d3
+    .scaleLinear()
+    .domain([ 0, box.height * 0.9 ])
+    .range([ 0, 60 ]);
 
 const split = factor => num =>
-  d3.range(factor).map(x => x / factor).map(x => x * num);
+  d3
+    .range(factor)
+    .map(x => x / factor)
+    .map(x => x * num);
 
 export const colBand = ref =>
   d3

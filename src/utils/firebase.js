@@ -1,13 +1,13 @@
 import * as firebase from 'firebase';
-import { Game, } from 'connect_four_functional';
-import { GAME_ACTIONS, } from '../modules/game/constants';
+import { Game } from 'connect_four_functional';
+import { GAME_ACTIONS } from '../modules/game/constants';
 
 export const config = {
   apiKey: process.env.REACT_APP_C4REDUX_FIREBASE_KEY,
   authDomain: 'conn4redux.firebaseapp.com',
   databaseURL: 'https://conn4redux.firebaseio.com',
   storageBucket: 'conn4redux.appspot.com',
-  messagingSenderId: '353870376265',
+  messagingSenderId: '353870376265'
 };
 
 export const fireApp = firebase.initializeApp(config);
@@ -22,14 +22,14 @@ export const gameRef = db.ref('game');
 export const getPresRef = id => presenceRef.child(`${id}`);
 export const getOnlineRef = id => onlineRef.push(`${id}`);
 
-export const fireMid = ({ dispatch, getState, }) => next => (action) => {
+export const fireMid = ({ dispatch, getState }) => next => action => {
   const result = next(action);
-  
+
   if (GAME_ACTIONS.has(action.type)) {
     if (action.type !== 'UPDATE_GAME' && getState().game.players.length) {
       gameRef.set(getState().game);
     }
   }
-  
+
   return result;
 };

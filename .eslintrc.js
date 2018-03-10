@@ -1,87 +1,75 @@
-// extends: ['react-app', 'airbnb', 'prettier',  'prettier/react' ],
-
-module.exports = {
-  extends: ['react-app', 'airbnb', 'prettier', 'prettier/react'],
-  settings: {
-    'import/resolver': {
-      'babel-module': {},
-      'babel-module-alias': {},
-    },
-  },
-  env: {
-    node: true,
-    browser: true,
-    commonjs: true,
-    es6: true,
-  },
+const config = {
+  env: { browser: true, commonjs: true, es6: true, node: true },
+  extends: ['airbnb', 'prettier', 'prettier/react', 'react-app'],
   parser: 'babel-eslint',
   parserOptions: {
+    ecmaFeatures: { experimentalObjectRestSpread: true, jsx: true },
     ecmaVersion: 7,
-    ecmaFeatures: {
-      experimentalObjectRestSpread: true,
-      jsx: true,
-    },
     sourceType: 'module',
   },
-
-  plugins: ['react', 'jsx-a11y', 'import', 'prettier', 'import-order-autofix'],
-
+  plugins: [
+    'import',
+    'import-order-autofix',
+    'prettier',
+    'react',
+    'sort-imports-es6-autofix',
+  ],
+  settings: {
+    'import/resolver': { 'babel-module': {}, 'babel-module-alias': {} },
+  },
   rules: {
-    // Ignore Rules
-    'space-infix-ops': 2,
-    strict: 1,
-    'space-before-function-paren': 0,
-    'no-underscore-dangle': 0,
-    'no-mixed-requires': 0,
-    'no-process-exit': 0,
-    'no-warning-comments': 0,
-    curly: 0,
-    'no-confusing-arrow': 0,
-    'arrow-parens': [2, 'as-needed', { requireForBlockBody: true }],
-    'no-alert': 0,
-    // Warnings
-    'no-debugger': 1,
-    'no-empty': 1,
-    'no-invalid-regexp': 1,
-    'no-unused-expressions': 1,
-    'no-native-reassign': 1,
-    'no-fallthrough': 1,
-    'handle-callback-err': 1,
-    camelcase: 0,
-    'max-len': [2, 80],
-    'newline-per-chained-call': ['error', { ignoreChainWithDepth: 3 }],
-    // Errors
-    'func-call-spacing': ['error', 'never'],
-    'no-undef': 'off',
-    'no-dupe-keys': 2,
-    'no-empty-character-class': 2,
-    'no-self-compare': 2,
-    'valid-typeof': 2,
-    'no-unused-vars': 2,
-    'no-multi-spaces': [
+    'array-bracket-spacing': [
       2,
+      'always',
+      { arraysInArrays: false, objectsInArrays: false, singleValue: true },
+    ],
+    'arrow-parens': [2, 'as-needed', { requireForBlockBody: true }],
+    'brace-style': [2, '1tbs', { allowSingleLine: true }],
+    camelcase: 0,
+    'comma-dangle': [
+      1,
       {
-        exceptions: { Property: true },
+        arrays: 'always-multiline',
+        exports: 'always-multiline',
+        functions: 'ignore',
+        imports: 'always-multiline',
+        objects: 'always-multiline',
       },
     ],
-    //  "handle-callback-err": 2,
-    'no-shadow-restricted-names': 2,
-    'no-new-require': 2,
-    'no-mixed-spaces-and-tabs': 2,
-    // stylistic errors
-    'new-cap': 2,
-    'semi-spacing': 2,
-    'array-bracket-spacing': [
-      'error',
-      'always',
+    curly: 0,
+    'func-call-spacing': [2, 'never'],
+    'func-names': 0,
+    'handle-callback-err': 1,
+    'import-order-autofix/order': [
+      2,
       {
-        singleValue: true,
-        objectsInArrays: false,
-        arraysInArrays: false,
+        groups: [
+          ['builtin', 'external'],
+          ['index', 'internal', 'parent', 'sibling'],
+        ],
+        'newlines-between': 'always',
+      },
+    ],
+    'import/no-extraneous-dependencies': [
+      0,
+      {
+        devDependencies: true,
+        optionalDependencies: false,
+        peerDependencies: false,
+      },
+    ],
+    'import/order': [
+      2,
+      {
+        groups: [
+          ['builtin', 'external'],
+          ['index', 'internal', 'parent', 'sibling'],
+        ],
+        'newlines-between': 'always',
       },
     ],
     indent: [
-      'error',
+      2,
       2,
       {
         FunctionDeclaration: { body: 1, parameters: 'first' },
@@ -91,159 +79,128 @@ module.exports = {
         VariableDeclarator: 0,
       },
     ],
-    quotes: [
-      2,
-      'single',
-      {
-        avoidEscape: true,
-        allowTemplateLiterals: true,
-      },
-    ],
+    'jsx-a11y/href-no-hash': 0,
+    'jsx-quotes': 1,
     'key-spacing': [
       2,
       {
-        singleLine: {
-          beforeColon: false,
-          afterColon: true,
-          mode: 'minimum',
-        },
-        multiLine: {
-          beforeColon: false,
-          // afterColon: true,
-          mode: 'minimum',
-          // align: 'value',
-        },
+        multiLine: { beforeColon: false, mode: 'minimum' },
+        singleLine: { afterColon: true, beforeColon: false, mode: 'minimum' },
       },
     ],
+    'line-comment-position': [2, { position: 'above' }],
     'lines-around-comment': [
-      'error',
+      2,
       {
-        beforeBlockComment: true,
         afterBlockComment: false,
-        beforeLineComment: true,
         afterLineComment: false,
-        allowBlockStart: true,
-        allowBlockEnd: true,
-        allowObjectStart: true,
-        allowObjectEnd: true,
-        allowArrayStart: true,
         allowArrayEnd: true,
+        allowArrayStart: true,
+        allowBlockEnd: true,
+        allowBlockStart: true,
+        allowObjectEnd: true,
+        allowObjectStart: true,
+        beforeBlockComment: true,
+        beforeLineComment: true,
       },
     ],
-    'object-curly-spacing': [
-      'error',
-      'always',
-      {
-        arraysInObjects: false,
-        objectsInObjects: false,
-      },
-    ],
+    'max-len': [2, 80],
+    'new-cap': 2,
+    'newline-per-chained-call': [2, { ignoreChainWithDepth: 3 }],
+    'no-alert': 0,
+    'no-confusing-arrow': 0,
+    'no-debugger': 1,
+    'no-dupe-keys': 2,
+    'no-empty': 1,
+    'no-empty-character-class': 2,
+    'no-fallthrough': 1,
+    'no-invalid-regexp': 1,
+    'no-mixed-requires': 0,
+    'no-mixed-spaces-and-tabs': 2,
+    'no-multi-spaces': [2, { exceptions: { Property: true } }],
+    'no-multiple-empty-lines': [2, { max: 1, maxEOF: 1 }],
+    'no-native-reassign': 1,
+    'no-new-require': 2,
+    'no-process-exit': 0,
+    'no-self-compare': 2,
+    'no-shadow-restricted-names': 2,
+    'no-trailing-spaces': [2, { skipBlankLines: true }],
+    'no-undef': 'off',
+    'no-underscore-dangle': 0,
+    'no-unused-expressions': 1,
+    'no-unused-vars': 2,
+    'no-warning-comments': 0,
     'object-curly-newline': [
-      'error',
+      2,
       {
-        ObjectExpression: { multiline: true, minProperties: 5 },
+        ObjectExpression: { minProperties: 5, multiline: true },
         ObjectPattern: { multiline: true },
       },
     ],
+    'object-curly-spacing': [
+      2,
+      'always',
+      { arraysInObjects: false, objectsInObjects: false },
+    ],
     'padding-line-between-statements': [
-      'error',
-      { blankLine: 'always', prev: ['const', 'let', 'var'], next: '*' },
+      2,
+      { blankLine: 'always', next: '*', prev: ['const', 'let', 'var'] },
       {
         blankLine: 'any',
-        prev: ['const', 'let', 'var'],
         next: ['const', 'let', 'var'],
+        prev: ['const', 'let', 'var'],
       },
     ],
-    // 'object-property-newline': ['error', { allowMultiplePropertiesPerLine: true }],
-    'line-comment-position': ['error', { position: 'above' }],
-    'brace-style': [
-      'error',
-      '1tbs',
+    'prettier/prettier': [
+      0,
       {
-        allowSingleLine: true,
+        bracketSpacing: false,
+        jsxBracketSameLine: true,
+        semi: true,
+        trailingComma: 'all',
       },
     ],
-
-    'comma-dangle': [
-      'error',
-      {
-        arrays: 'always-multiline',
-        objects: 'always-multiline',
-        imports: 'always-multiline',
-        exports: 'always-multiline',
-        functions: 'ignore',
-      },
-    ],
-    'no-trailing-spaces': ['error', { skipBlankLines: true }],
-    'no-multiple-empty-lines': ['error', { max: 1, maxEOF: 1 }],
-    'rest-spread-spacing': ['error', 'never'],
-    'sort-imports': [
-      'warn',
-      {
-        ignoreCase: true,
-        ignoreMemberSort: false,
-        memberSyntaxSortOrder: ['none', 'all', 'single', 'multiple'],
-      },
-    ],
-
-    //  Plugin rules
-    'jsx-quotes': 1,
-    'jsx-a11y/href-no-hash': 0,
+    quotes: [2, 'single', { allowTemplateLiterals: true, avoidEscape: true }],
+    'react-app/no-undef': 0,
+    'react/jsx-equals-spacing': [2, 'never'],
+    'react/jsx-filename-extension': [0, { extensions: ['.js', '.jsx'] }],
     'react/jsx-href-no-hash': 0,
     'react/jsx-no-undef': 'off',
     'react/jsx-uses-react': 1,
     'react/jsx-uses-vars': 1,
+    'react/jsx-wrap-multilines': [
+      2,
+      { arrow: true, assignment: true, declaration: true, return: true },
+    ],
     'react/no-did-mount-set-state': 1,
     'react/no-did-update-set-state': 1,
     'react/no-multi-comp': 1,
     'react/prop-types': 0,
     'react/react-in-jsx-scope': 1,
     'react/self-closing-comp': 1,
-    'react/jsx-wrap-multilines': [
-      2,
+    'rest-spread-spacing': [2, 'never'],
+    'semi-spacing': 2,
+    'sort-imports': [
+      0,
       {
-        arrow: true,
-        return: true,
-        assignment: true,
-        declaration: true,
+        ignoreCase: true,
+        ignoreMemberSort: false,
+        memberSyntaxSortOrder: ['single', 'multiple', 'all', 'none'],
       },
     ],
-    'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
-    'react/jsx-equals-spacing': [2, 'never'],
-    'react-app/no-undef': 0,
-
-    // prettier
-    // 'prettier/prettier': 'off',
-    'prettier/prettier': [
-      'off',
+    'sort-imports-es6-autofix/sort-imports-es6': [
+      0,
       {
-        trailingComma: 'all',
-        bracketSpacing: false,
-        jsxBracketSameLine: true,
-        semi: true,
-        // parser: 'babylon',
+        ignoreCase: true,
+        ignoreMemberSort: false,
+        memberSyntaxSortOrder: ['single', 'multiple', 'all', 'none'],
       },
     ],
-    // imports-plugins
-    'import/order': [
-      'error',
-      {
-        'newlines-between': 'always',
-        groups: [
-          ['builtin', 'external'],
-          ['internal', 'index', 'parent', 'sibling'],
-          // ['parent', 'sibling'],
-        ],
-      },
-    ],
-    'import-order-autofix/order': 'error',
-    'import/no-extraneous-dependencies': [
-      'error',
-      {
-        devDependencies: true,
-        optionalDependencies: false,
-        peerDependencies: false,
-      },
-    ],
+    'space-before-function-paren': 0,
+    'space-infix-ops': 2,
+    strict: 1,
+    'valid-typeof': 2,
   },
 };
+
+module.exports = config;
