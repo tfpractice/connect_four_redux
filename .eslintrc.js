@@ -1,5 +1,3 @@
-const sortObject = require('sort-deep-object-arrays');
-
 const config = {
   env: { browser: true, commonjs: true, es6: true, node: true },
   extends: ['airbnb', 'prettier', 'prettier/react', 'react-app'],
@@ -204,6 +202,5 @@ const config = {
     'valid-typeof': 2,
   },
 };
-// const sorted = sortObject(conf2);
-// console.log('sorted', JSON.stringify(sorted));
+
 module.exports = config;
