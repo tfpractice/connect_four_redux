@@ -20,7 +20,7 @@ import { pSort } from '../../utils/viz';
 // const stateToProps = ({ game, }) => ({ players: pSort(Game.players(game)), });
 
 // const Players = ({ players, }) => (
-//   <Grid container align="center" justify="center">
+//   <Grid container alignContent="center" justify="center">
 //     {players.map((p, i) => (
 //       <Grid item xs sm={6} key={p.id}>
 //         <PlayerCard player={p}/>
@@ -43,7 +43,7 @@ const stateToProps = ({ game }) => ({
 });
 
 const GameComponent = ({ start, ended, game, resetGame, clearGame }) =>
-  (<Grid container align="center" justify="center">
+  (<Grid container alignContent="center" justify="center">
     {ended && <Alert open={ended} />}
     <Grid item xs={9} className="Alert">
       <Board />
