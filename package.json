@@ -77,7 +77,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "deploy": "yarn build && surge build tfp-connect.surge.sh",
+    "deploy": "yarn build && surge build tfpconnect.surge.sh",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "lint": "eslint -c .eslintrc.js --fix .",
