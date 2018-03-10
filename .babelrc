@@ -4,10 +4,7 @@
       "env",
       {
         "targets": {
-          "browsers": [
-            "last 2 versions",
-            "safari >= 7"
-          ]
+          "browsers": ["last 2 versions", "safari >= 7"]
         },
         "include": [
           "transform-es2015-arrow-functions",
@@ -25,7 +22,6 @@
         }
       }
     ],
-    "stage-1",
     "react"
   ],
   "plugins": [
@@ -34,9 +30,7 @@
     [
       "module-resolver",
       {
-        "root": [
-          "./src"
-        ],
+        "root": ["./src"],
         "alias": {
           "components": "./components",
           "modules": "./modules",
