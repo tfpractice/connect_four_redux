@@ -9,7 +9,7 @@ const config = {
   extends: [
     "react-app",
     "airbnb",
-    "plugin:react/recommended",
+    // "plugin:react/recommended",
     "prettier",
     "prettier/react",
   ],
@@ -22,7 +22,6 @@ const config = {
     ecmaVersion: 7,
     sourceType: "module",
   },
-  // )
   plugins: [
     "sort-imports-es6-autofix",
     "import",

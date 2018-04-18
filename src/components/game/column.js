@@ -16,13 +16,8 @@ const mergeProps = (s, { setColumn, ...d }, { id, ...o }) => ({
 });
 
 const Column = ({ id, nodes, select, setColumn }) => (
-  <g
-    id={`col_${id}`}
-    className="colGroup"
-    onClick={select}
-    onMouseOver={setColumn}
-  >
-    {nodes.map(n => <Node key={n.id} node={n} />)}
+  <g id={`col_${id}`} className="colGroup" onMouseOver={setColumn}>
+    {nodes.map(n => <Node onClick={select} key={n.id} {...n} />)}
   </g>
 );
 

@@ -40,7 +40,7 @@ const curDiscon = snap => isCurrent(snap) && noConn(snap);
 export const authHandler = store => {
   auth.onAuthStateChanged(user => {
     if (user) {
-      console.log(`AUTH:SIGNEDIN.`, user);
+      // console.log(`AUTH:SIGNEDIN.`, user);
     }
   });
 };
@@ -62,11 +62,11 @@ export const onlineHandler = store => {
 
   onlineRef.on(`child_changed`, snap => {
     if (curDiscon(snap)) {
-      console.log(`child_changed curDiscon(snap)`, snap.key, snap.val());
-
+      // console.log(`child_changed curDiscon(snap)`, snap.key, snap.val());
+      //
       store.dispatch(logout());
     } else if (noConn(snap)) {
-      console.log(`child_changed noConn(snap)`, snap.key, snap.val());
+      // console.log(`child_changed noConn(snap)`, snap.key, snap.val());
 
       snap.ref.remove();
     } else if (hasConn(snap)) {
@@ -97,8 +97,17 @@ export const gameHandler = store => {
   gameRef.on(`value`, snap => {
     if (hasVal(snap)) {
       snap.val().players.length && store.dispatch(updateGame(snap.val()));
-
-      // snap.hasChild('')
     }
   });
 };
+
+const applyHandlers = store => {
+  authHandler(store);
+  connHandler(store);
+  gameHandler(store);
+  onlineHandler(store);
+
+  return store;
+};
+
+export default applyHandlers;

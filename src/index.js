@@ -1,29 +1,20 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import { BrowserRouter, Route } from "react-router-dom";
 import { MuiThemeProvider } from "material-ui/styles";
 import { Provider } from "react-redux";
+import { render } from "react-dom";
 
 import "./index.css";
 
+import applyHandlers from "./handlers";
 import getStore from "./store";
 import Home from "./components";
-import {
-  authHandler,
-  connHandler,
-  gameHandler,
-  onlineHandler,
-} from "./handlers";
 import { theme } from "./utils";
 
-const store = getStore();
+const store = applyHandlers(getStore());
 
-authHandler(store);
-connHandler(store);
-gameHandler(store);
-onlineHandler(store);
-
-ReactDOM.render(
+window.getState = store.getState;
+render(
   <Provider store={store}>
     <MuiThemeProvider theme={theme}>
       <BrowserRouter>

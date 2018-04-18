@@ -14,8 +14,6 @@ import {
 
 const { cIDs } = Filter;
 
-// const { winner } = Game;
-
 const getLinks = s => s.force(`players`).links();
 
 const stateToProps = ({ game }) => {
@@ -44,7 +42,7 @@ class Board extends Component {
 
   componentWillMount() {
     if (window.Worker) {
-      this.worker = new Worker(`/worker2.js`);
+      // this.worker = new Worker(`/worker2.js`);
     }
   }
 
@@ -56,7 +54,7 @@ class Board extends Component {
       forceBox: { width, height },
     } = this.state;
 
-    newLinks && this.worker.postMessage({ game, forceBox: { width, height }});
+    // newLinks && this.worker.postMessage({ game, forceBox: { width, height }});
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -80,11 +78,14 @@ class Board extends Component {
   }
 
   render() {
-    let { cols, links } = this.props;
+    const { cols, links } = this.props;
 
-    this.worker.onmessage = ({ data }) => {
-      links = data.links;
-    };
+    //
+    // this.worker.onmessage = ({ data }) => {
+    //   // console.log(`message`, data);
+    //   console.log(`data.links`, data.links);
+    //   linkvals = data.links;
+    // };
 
     return (
       <Grid container justify="center" className="board">

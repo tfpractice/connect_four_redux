@@ -32,9 +32,10 @@ const WinnerDialog = ({
   <Grid container>
     <Grid item xs>
       <Button onClick={toggle}>Open alert dialog</Button>
-      <Dialog open={open} onRequestClose={negate(toggle)}>
+      <Dialog open={open}>
         <DialogTitle>
           {winner && `The Game is over, the winner is ${winner.name}`}
+          <Button onClick={toggle}>Close alert dialog</Button>
         </DialogTitle>
         <DialogContent>
           <DialogContentText>

@@ -73,18 +73,19 @@ export const login = ({ displayName } = { displayName: `` }) => dispatch =>
       .catch(loginFail)
   );
 
-export const logout = (user = authPlayer(auth)) => (dispatch, getState) => Promise.resolve(dispatch(logoutPend()))
-  .then(() => auth.currentUser)
-  .then(takeOffline)
-  .then(deleteU)
-  .then(u =>
-    Promise.all(
-      [
-        logoutSucc(),
-        removePlayer(getState().auth.user),
-        unsetCurrent(),
-        clearGame(),
-      ].map(dispatch)
+export const logout = (user = authPlayer(auth)) => (dispatch, getState) =>
+  Promise.resolve(dispatch(logoutPend()))
+    .then(() => auth.currentUser)
+    .then(takeOffline)
+    .then(deleteU)
+    .then(u =>
+      Promise.all(
+        [
+          logoutSucc(),
+          removePlayer(getState().auth.user),
+          unsetCurrent(),
+          clearGame(),
+        ].map(dispatch)
+      )
     )
-  )
-  .catch(e => dispatch(logoutFail(e.message)));
+    .catch(e => dispatch(logoutFail(e.message)));

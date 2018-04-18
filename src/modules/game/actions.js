@@ -44,13 +44,10 @@ export const setColumn = cID => ({
 
 export const resetGame = game => ({ type: RESET_GAME, curry: Game.resetGame });
 
-export const clearGame2 = game => ({ type: CLEAR_GAME, curry: clear });
+// export const clearGame2 = game => ({ type: CLEAR_GAME, curry: clear });
 
 export const clearGame = game => dispatch => {
   Promise.resolve()
-
-    // Promise.resolve(logout())
-    // .then(dispatch)
     .then(() => auth.currentUser)
     .then(u => u && u.delete())
     .then(() => onlineRef.remove())
