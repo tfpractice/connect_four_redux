@@ -1,10 +1,11 @@
+import { removeSet, spread } from "fenugreek-collections";
 
-import { removeSet, spread, } from 'fenugreek-collections';import { ADD_USER, REMOVE_USER, SET_USERS } from './constants'; import { fireUtils } from '../../utils';
- 
+import { ADD_USER, REMOVE_USER, SET_USERS } from "./constants";
+import { fireUtils } from "../../utils";
 
 const { getPresRef, onlineRef } = fireUtils;
 
-const hasID = arr => id => new Set(arr.map(n => n.id)).has(id);
+// const hasID = arr => id => new Set(arr.map(n => n.id)).has(id);
 
 const set = users => () => users;
 
@@ -21,21 +22,27 @@ export const removeUser = u => ({ type: REMOVE_USER, curry: remove(u) });
 
 export const checkConnections = id => getPresRef(id);
 
-export const addDiscon = ref => Promise.resolve(ref.onDisconnect())
-  .then(dRef => {
-    console.log(`conn`, ref.child(`connections`));
+export const addDiscon = ref =>
+  Promise.resolve(ref.onDisconnect())
+    .then(dRef => {
+      console.log(`conn`, ref.child(`connections`));
 
-    ref.child(`connections`).on(`value`, snap => {
-      console.log(`connection valu`, snap.val());
+      ref.child(`connections`).on(`value`, snap => {
+        console.log(`connection valu`, snap.val());
 
-      snap.hasChildren() === false ? dRef.remove() : dRef.update({ connections: ref.child(`connections`).push().key });
+        snap.hasChildren() === false
+          ? dRef.remove()
+          : dRef.update({ connections: ref.child(`connections`).push().key });
+      });
+      console.log(`dref removed`, dRef, ref.toJSON());
+
+      //
+      // dRef.update({ connections: ref.child('connections').push().key, });
+    })
+    .then(r => {
+      console.log(`addDiscon`, r, ref);
+      return ref;
     });
-    console.log(`dref removed`, dRef, ref.toJSON());
-
-    //
-    // dRef.update({ connections: ref.child('connections').push().key, });
-  })
-  .then(r => { console.log(`addDiscon`, r, ref); return ref; });
 
 // .update(
 //   { connections: ref.child('connections').push(), }, () =>
@@ -45,8 +52,12 @@ export const addDiscon = ref => Promise.resolve(ref.onDisconnect())
 
 export const catConn = ref =>
   Promise.resolve(ref.child(`connections`).push())
-    .then(pref => pref.onDisconnect().remove()
-      .then(() => pref.set(Date.now())))
+    .then(pref =>
+      pref
+        .onDisconnect()
+        .remove()
+        .then(() => pref.set(Date.now()))
+    )
     .then(() => ref);
 
 const updateRef = u => ref => ref.update(u).then(() => ref);
@@ -63,7 +74,5 @@ export const addOnline = u => dispatch =>
 
 export const goOffline = ({ id }) => {
   console.log(`going offline`, onlineRef.child(`${id}`));
-  return onlineRef.child(`${id}`).remove()
-  ;
+  return onlineRef.child(`${id}`).remove();
 };
-

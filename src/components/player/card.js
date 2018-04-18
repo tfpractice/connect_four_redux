@@ -1,9 +1,9 @@
-import Card, { CardHeader } from 'material-ui/Card';
-import React from 'react';
-import { connect } from 'react-redux';
-import { Game, Player } from 'connect_four_functional';
+import Card, { CardHeader } from "material-ui/Card";
+import React from "react";
+import { connect } from "react-redux";
+import { Game, Player } from "connect_four_functional";
 
-import { pColor, pColorRange } from '../../utils/viz';
+import { pColorRange } from "../../utils/viz";
 
 const range = [ `#fff`, `#C62828`, `#000` ];
 
@@ -23,11 +23,10 @@ const stateToProps = ({ game }, { player }) => ({
   color: colors(game)[player.id],
 });
 
-const pStyle = isActive => (isActive ? { backgroundColor: `#f0f` } : {});
-
-const PlayerCard = ({ player, isActive, color }) =>
-  (<Card style={{ backgroundColor: color }}>
+const PlayerCard = ({ player, isActive, color }) => (
+  <Card style={{ backgroundColor: color }}>
     <CardHeader title={player.name} subheader={player.id} />
-  </Card>);
+  </Card>
+);
 
 export default connect(stateToProps)(PlayerCard);

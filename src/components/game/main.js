@@ -1,25 +1,19 @@
-import Button from 'material-ui/Button';
-import Card, {
-  CardActions,
-  CardContent,
-  CardHeader,
-  CardMedia,
-} from 'material-ui/Card';
-import Grid from 'material-ui/Grid';
-import React from 'react';
-import { connect } from 'react-redux';
-import { Game } from 'connect_four_functional';
+import Button from "material-ui/Button";
+import Card, { CardActions, CardHeader } from "material-ui/Card";
+import Grid from "material-ui/Grid";
+import React from "react";
+import { connect } from "react-redux";
+import { Game } from "connect_four_functional";
 
 // import React from 'react';
 // import Grid from 'material-ui/Grid';
 // import { Game, } from 'connect_four_functional';
 // import { connect, } from 'react-redux';
-import Alert from './alert';
-import Board from './board';
-import Players from './players';
-import { GameActs } from '../../modules';
-import { PlayerCard } from '../player';
-import { pSort } from '../../utils/viz';
+import Alert from "./alert";
+import Board from "./board";
+import Players from "./players";
+import { GameActs } from "../../modules";
+import { pSort } from "../../utils/viz";
 
 const { winner, players: getPlrs } = Game;
 
@@ -33,8 +27,8 @@ const stateToProps = ({ game }) => ({
 
 const GameComponent = ({
   start, ended, game, resetGame, clearGame,
-}) =>
-  (<Grid container alignContent="center" justify="center">
+}) => (
+  <Grid container alignContent="center" justify="center">
     {ended && <Alert open={ended} />}
     <Grid item xs={9} className="Alert">
       <Board />
@@ -50,6 +44,7 @@ const GameComponent = ({
         </CardActions>
       </Card>
     </Grid>
-  </Grid>);
+  </Grid>
+);
 
 export default connect(stateToProps, GameActs)(GameComponent);

@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Filter } from "game_grid";
 
-import Alert from "./alert";
 import Column from "./column";
 import Link from "./link";
 import {
@@ -19,7 +18,7 @@ const { cIDs } = Filter;
 
 const getLinks = s => s.force(`players`).links();
 
-const stateToProps = ({ game }, own) => {
+const stateToProps = ({ game }) => {
   const simulation = simInit(game);
 
   return {
@@ -55,8 +54,6 @@ class Board extends Component {
 
     const {
       forceBox: { width, height },
-      simulation,
-      mounted,
     } = this.state;
 
     newLinks && this.worker.postMessage({ game, forceBox: { width, height }});
@@ -85,7 +82,6 @@ class Board extends Component {
   render() {
     let { cols, links } = this.props;
 
-    console.log(`this.props.rCount`, this.props.rCount);
     this.worker.onmessage = ({ data }) => {
       links = data.links;
     };
