@@ -12,12 +12,13 @@ import {
   rowScaleBox,
 } from "./scales";
 
-const linkHas = ({ id }) => ({ source: s, target: t }) =>
-  t.id === id || s.id == id;
+//
+// const linkHas = ({ id }) => ({ source: s, target: t }) =>
+//   t.id === id || s.id == id;
 
-const getLinks = links => node => links.filter(linkHas(node));
+// const getLinks = links => node => links.filter(linkHas(node));
 
-const simPLinks = sim => sim.force(`players`).links();
+// const simPLinks = sim => sim.force(`players`).links();
 
 const isBeside = a => b => Math.abs(a - b) < 2;
 
