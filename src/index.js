@@ -1,19 +1,20 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { MuiThemeProvider } from 'material-ui/styles';
-import { BrowserRouter, Route } from 'react-router-dom';
-import { Provider } from 'react-redux';
+import React from "react";
+import ReactDOM from "react-dom";
+import { BrowserRouter, Route } from "react-router-dom";
+import { MuiThemeProvider } from "material-ui/styles";
+import { Provider } from "react-redux";
 
+import "./index.css";
+
+import getStore from "./store";
+import Home from "./components";
 import {
   authHandler,
   connHandler,
   gameHandler,
   onlineHandler,
-} from './handlers';
-import Home from './components';
-import getStore from './store';
-import { theme } from './utils';
-import './index.css';
+} from "./handlers";
+import { theme } from "./utils";
 
 const store = getStore();
 
@@ -30,5 +31,5 @@ ReactDOM.render(
       </BrowserRouter>
     </MuiThemeProvider>
   </Provider>,
-  document.getElementById('root')
+  document.getElementById(`root`)
 );

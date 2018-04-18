@@ -5,11 +5,7 @@
     "type": "git",
     "url": "git+https://github.com/tfpractice/connect_four_redux.git"
   },
-  "keywords": [
-    "connect-four",
-    "functional-programming",
-    "graph-theory"
-  ],
+  "keywords": ["connect-four", "functional-programming", "graph-theory"],
   "author": "theory f practice <jackson.brebnor@gmail.com>",
   "license": "ISC",
   "homepage": ".",

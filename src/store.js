@@ -1,12 +1,14 @@
-import thunk from 'redux-thunk';
-import { createLogger } from 'redux-logger';
-import { applyMiddleware as applyMid, createStore } from 'redux';
+import thunk from "redux-thunk";
+import { applyMiddleware as applyMid, createStore } from "redux";
+import { createLogger } from "redux-logger";
 
-import { fireMid } from './utils/firebase';
-import rootR from './reducer';
+import rootR from "./reducer";
+import { fireMid } from "./utils/firebase";
 
 const predicate = (getState, action) => false;
+
 const collapsed = (getState, action) => action.type;
+
 const log = createLogger({ collapsed, predicate });
 
 export default state =>
