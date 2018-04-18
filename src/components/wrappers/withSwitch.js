@@ -5,6 +5,4 @@ const withSwitch = compose(
   withHandlers({ toggle: ({ turn }) => () => turn(x => !x) })
 );
 
-// const invert = fn => () => fn(x => !x);
-
 export default withSwitch;

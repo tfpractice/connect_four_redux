@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import { colorMap } from "../../utils/viz";
 
-const stateToProps = ({ game: { players }}, { player }) => ({
+const mapState = ({ game: { players }}, { player }) => ({
   fill: colorMap(`#fff`)(players).get(player),
 });
 
@@ -22,4 +22,4 @@ const Node = ({
   />
 );
 
-export default connect(stateToProps)(Node);
+export default connect(mapState)(Node);
