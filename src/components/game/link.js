@@ -1,12 +1,14 @@
-import React from 'react';
-import * as d3 from 'd3';
-import { connect } from 'react-redux';
-import { cMap, colorMap } from '../../utils/viz';
+import React from "react";
+import { connect } from "react-redux";
 
-const stateToProps = ({ game }, { link }) => ({ stroke: colorMap()(game.players).get(link.source.player) });
+import { colorMap } from "../../utils/viz";
 
-const Link = ({ link, stroke }) =>
-  (<line
+const stateToProps = ({ game }, { link }) => ({
+  stroke: colorMap()(game.players).get(link.source.player),
+});
+
+const Link = ({ link, stroke }) => (
+  <line
     className="linkLine"
     id={`link${link.index}`}
     x1={link.source.column * 10}
@@ -15,6 +17,7 @@ const Link = ({ link, stroke }) =>
     y2={link.target.row * 10}
     stroke={stroke}
     strokeWidth={0.2}
-  />);
+  />
+);
 
 export default connect(stateToProps)(Link);

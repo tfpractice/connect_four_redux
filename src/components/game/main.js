@@ -1,7 +1,3 @@
-import React from 'react';
-import Grid from 'material-ui/Grid';
-import { connect } from 'react-redux';
-import { Game } from 'connect_four_functional';
 import Button from 'material-ui/Button';
 import Card, {
   CardActions,
@@ -9,31 +5,24 @@ import Card, {
   CardHeader,
   CardMedia,
 } from 'material-ui/Card';
+import Grid from 'material-ui/Grid';
+import React from 'react';
+import { connect } from 'react-redux';
+import { Game } from 'connect_four_functional';
 
 // import React from 'react';
 // import Grid from 'material-ui/Grid';
 // import { Game, } from 'connect_four_functional';
 // import { connect, } from 'react-redux';
-import { PlayerCard } from '../player';
-import { pSort } from '../../utils/viz';
-
-// const stateToProps = ({ game, }) => ({ players: pSort(Game.players(game)), });
-
-// const Players = ({ players, }) => (
-//   <Grid container alignContent="center" justify="center">
-//     {players.map((p, i) => (
-//       <Grid item xs sm={6} key={p.id}>
-//         <PlayerCard player={p}/>
-//       </Grid>
-//     ))}
-//   </Grid>
-
-import { GameActs } from '../../modules';
 import Alert from './alert';
 import Board from './board';
 import Players from './players';
+import { GameActs } from '../../modules';
+import { PlayerCard } from '../player';
+import { pSort } from '../../utils/viz';
 
 const { winner, players: getPlrs } = Game;
+
 const isOver = game => game.players.length > 1 && winner(game);
 
 const stateToProps = ({ game }) => ({
@@ -42,7 +31,9 @@ const stateToProps = ({ game }) => ({
   players: pSort(getPlrs(game)),
 });
 
-const GameComponent = ({ start, ended, game, resetGame, clearGame }) =>
+const GameComponent = ({
+  start, ended, game, resetGame, clearGame,
+}) =>
   (<Grid container alignContent="center" justify="center">
     {ended && <Alert open={ended} />}
     <Grid item xs={9} className="Alert">

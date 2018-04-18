@@ -1,30 +1,25 @@
-import * as d3 from 'd3';
-import React, { Component } from 'react';
-import { connect, connectAdvanced } from 'react-redux';
-import { Filter } from 'game_grid';
-import { withState } from 'recompose';
-import Grid from 'material-ui/Grid';
-import { Game } from 'connect_four_functional';
+import Grid from "material-ui/Grid";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Filter } from "game_grid";
 
-import Alert from './alert';
-import Link from './link';
-import Column from './column';
+import Alert from "./alert";
+import Column from "./column";
+import Link from "./link";
 import {
   applyTicks,
-  linkForces,
   mountSimulation,
   playerLinks,
-  refBox,
-  resetLinks,
   simInit,
-} from '../../utils/viz';
+} from "../../utils/viz";
 
-const { cIDs, byCol } = Filter;
+const { cIDs } = Filter;
 
-const { winner } = Game;
-const getLinks = s => s.force('players').links();
+// const { winner } = Game;
 
-const stateToProps = ({ game, ...rest }, own) => {
+const getLinks = s => s.force(`players`).links();
+
+const stateToProps = ({ game }, own) => {
   const simulation = simInit(game);
 
   return {
@@ -50,7 +45,7 @@ class Board extends Component {
 
   componentWillMount() {
     if (window.Worker) {
-      this.worker = new Worker('/worker2.js');
+      this.worker = new Worker(`/worker2.js`);
     }
   }
 
@@ -58,7 +53,11 @@ class Board extends Component {
     const newLinks =
       playerLinks(game).length !== playerLinks(this.props.game).length;
 
-    const { forceBox: { width, height }, simulation, mounted } = this.state;
+    const {
+      forceBox: { width, height },
+      simulation,
+      mounted,
+    } = this.state;
 
     newLinks && this.worker.postMessage({ game, forceBox: { width, height }});
   }
@@ -86,7 +85,7 @@ class Board extends Component {
   render() {
     let { cols, links } = this.props;
 
-    console.log('this.props.rCount', this.props.rCount);
+    console.log(`this.props.rCount`, this.props.rCount);
     this.worker.onmessage = ({ data }) => {
       links = data.links;
     };
@@ -110,7 +109,7 @@ class Board extends Component {
 }
 
 export default connect(stateToProps, null, null, {
-  renderCountProp: 'rCount',
+  renderCountProp: `rCount`,
   withRef: true,
   areStatesEqual: ({ game }, { game: nextGame }) =>
     playerLinks(game).length === playerLinks(nextGame).length,

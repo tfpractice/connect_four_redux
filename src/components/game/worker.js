@@ -7,7 +7,7 @@ let i = 0;
 // importScripts('../../utils/viz.js');
 onmessage = function(event) {
   i++;
-  console.log('event.data', event.data);
+  console.log(`event.data`, event.data);
 
   postMessage(++i);
 };

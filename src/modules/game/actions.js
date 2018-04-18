@@ -1,6 +1,5 @@
-import { Game } from 'connect_four_functional';
-import { fireUtils } from '../../utils';
-import { logout, unsetCurrent } from '../auth/actions';
+import { Game } from "connect_four_functional";
+
 import {
   ADD_PLAYER,
   CLAIM_NEXT,
@@ -11,7 +10,9 @@ import {
   SET_NODES,
   START_GAME,
   UPDATE_GAME,
-} from './constants';
+} from "./constants";
+import { fireUtils } from "../../utils";
+import { unsetCurrent } from "../auth/actions";
 
 const { auth, gameRef, onlineRef } = fireUtils;
 
@@ -42,9 +43,10 @@ export const setColumn = cID => ({
 });
 
 export const resetGame = game => ({ type: RESET_GAME, curry: Game.resetGame });
+
 export const clearGame2 = game => ({ type: CLEAR_GAME, curry: clear });
 
-export const clearGame = game => (dispatch) => {
+export const clearGame = game => dispatch => {
   Promise.resolve()
 
     // Promise.resolve(logout())
@@ -60,6 +62,7 @@ export const clearGame = game => (dispatch) => {
 };
 
 export const start = () => ({ type: START_GAME, curry: Game.start });
+
 export const claimNext = () => ({ type: CLAIM_NEXT, curry: Game.claimNext });
 
 export const select = () => ({ type: START_GAME, curry: Game.select });

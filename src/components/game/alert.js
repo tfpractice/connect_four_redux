@@ -6,25 +6,20 @@ import Dialog, {
   DialogTitle,
 } from "material-ui/Dialog";
 import Grid from "material-ui/Grid";
-import React, { Component } from "react";
-import { compose, withHandlers, withState } from "recompose";
+import React from "react";
 import { connect } from "react-redux";
 import { Game } from "connect_four_functional";
 
 import { GameActs } from "../../modules";
+import { withSwitch } from "../wrappers";
 
 const { winner } = Game;
 
 const isOver = game => game.players.length > 1 && winner(game);
 
-const withSwitch = compose(
-  withState(`open`, `turn`, ({ open }) => !!open),
-  withHandlers({ toggle: ({ turn }) => () => turn(x => !x) })
-);
-
 const invert = fn => () => fn(x => !x);
 
-const stateToProps = ({ game }) => ({
+const mapState = ({ game }) => ({
   game,
   winner: isOver(game),
   negate: invert,
@@ -58,4 +53,4 @@ const WinnerDialog = ({
   </Grid>
 );
 
-export default connect(stateToProps, GameActs)(withSwitch(WinnerDialog));
+export default connect(mapState, GameActs)(withSwitch(WinnerDialog));

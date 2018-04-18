@@ -1,7 +1,8 @@
-import React from 'react';
 import Grid from 'material-ui/Grid';
-import { Game } from 'connect_four_functional';
+import React from 'react';
 import { connect } from 'react-redux';
+import { Game } from 'connect_four_functional';
+
 import { PlayerCard } from '../player';
 import { pSort } from '../../utils/viz';
 

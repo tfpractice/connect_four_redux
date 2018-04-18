@@ -1,8 +1,8 @@
-import React from 'react';
 import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
-import Text from 'material-ui/Typography';
 import Grid from 'material-ui/Grid';
+import React from 'react';
+import Text from 'material-ui/Typography';
+import Toolbar from 'material-ui/Toolbar';
 import { Link } from 'react-router-dom';
 
 import { LoginForm } from './auth';

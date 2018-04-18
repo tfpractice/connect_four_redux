@@ -1,5 +1,5 @@
-import React from 'react';
 import Grid from 'material-ui/Grid';
+import React from 'react';
 
 const Main = () => (
   <Grid container justify="center" alignContent="center" className="infoGrid">
