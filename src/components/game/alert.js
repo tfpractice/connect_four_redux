@@ -1,27 +1,29 @@
-import React, { Component } from 'react';
-import Button from 'material-ui/Button';
-import Grid from 'material-ui/Grid';
+import Button from "material-ui/Button";
 import Dialog, {
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-} from 'material-ui/Dialog';
-import { compose, withHandlers, withState } from 'recompose';
-import { connect } from 'react-redux';
-import { Game } from 'connect_four_functional';
+} from "material-ui/Dialog";
+import Grid from "material-ui/Grid";
+import React, { Component } from "react";
+import { compose, withHandlers, withState } from "recompose";
+import { connect } from "react-redux";
+import { Game } from "connect_four_functional";
 
-import { GameActs } from '../../modules';
+import { GameActs } from "../../modules";
 
 const { winner } = Game;
 
 const isOver = game => game.players.length > 1 && winner(game);
+
 const withSwitch = compose(
-  withState('open', 'turn', ({ open }) => !!open),
+  withState(`open`, `turn`, ({ open }) => !!open),
   withHandlers({ toggle: ({ turn }) => () => turn(x => !x) })
 );
 
 const invert = fn => () => fn(x => !x);
+
 const stateToProps = ({ game }) => ({
   game,
   winner: isOver(game),
@@ -29,8 +31,10 @@ const stateToProps = ({ game }) => ({
   open: !!isOver(game),
 });
 
-const WinnerDialog = ({ game, open, toggle, negate, resetGame, clearGame }) =>
-  (<Grid container>
+const WinnerDialog = ({
+  game, open, toggle, negate, resetGame, clearGame,
+}) => (
+  <Grid container>
     <Grid item xs>
       <Button onClick={toggle}>Open alert dialog</Button>
       <Dialog open={open} onRequestClose={negate(toggle)}>
@@ -51,6 +55,7 @@ const WinnerDialog = ({ game, open, toggle, negate, resetGame, clearGame }) =>
         </DialogActions>
       </Dialog>
     </Grid>
-  </Grid>);
+  </Grid>
+);
 
 export default connect(stateToProps, GameActs)(withSwitch(WinnerDialog));
