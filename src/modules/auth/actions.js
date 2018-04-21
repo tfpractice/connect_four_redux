@@ -1,12 +1,16 @@
-import { auth as fAuth } from "firebase";
-import { Player } from "connect_four_functional";
+import { auth as fAuth } from 'firebase';
+import { Player } from 'connect_four_functional';
 
-import { addOnline } from "../users/actions";
-import { addPlayer, clearGame, removePlayer } from "../game/actions";
-import { fireUtils, rqUtils } from "../../utils";
-import { LOGIN, LOGOUT, SET_CURRENT_USER } from "./constants";
+import { addOnline } from '../users/actions';
+import { addPlayer, clearGame, removePlayer } from '../game/actions';
+import { fireBase, rqUtils } from '../../utils';
+import { LOGIN, LOGOUT, SET_CURRENT_USER } from './constants';
 
-const { auth, onlineRef } = fireUtils;
+// const { addPlayer, clearGame, removePlayer } = gameActions;
+
+// const { addOnline } = UserActs;
+
+const { auth, onlineRef } = fireBase;
 
 const { rqActions } = rqUtils;
 
@@ -40,8 +44,7 @@ export const setCurrent = u => dispatch =>
 
 export const unsetCurrent = () => dispatch =>
   Promise.resolve(dispatch(setCurrentUser(null))).catch(err =>
-    console.error(err.message)
-  );
+    console.error(err.message));
 
 export const takeOffline = u =>
   onlineRef
@@ -61,17 +64,12 @@ export const login = ({ displayName } = { displayName: `` }) => dispatch =>
         u
           .updateProfile({ displayName: displayName || u.uid })
           .then(() =>
-            Promise.all(
-              [
-                loginSucc(u),
-                setCurrent(createPlayer(u)),
-                addPlayer(createPlayer(u)),
-              ].map(dispatch)
-            )
-          )
-      )
-      .catch(loginFail)
-  );
+            Promise.all([
+              loginSucc(u),
+              setCurrent(createPlayer(u)),
+              addPlayer(createPlayer(u)),
+            ].map(dispatch))))
+      .catch(loginFail));
 
 export const logout = (user = authPlayer(auth)) => (dispatch, getState) =>
   Promise.resolve(dispatch(logoutPend()))
@@ -79,13 +77,10 @@ export const logout = (user = authPlayer(auth)) => (dispatch, getState) =>
     .then(takeOffline)
     .then(deleteU)
     .then(u =>
-      Promise.all(
-        [
-          logoutSucc(),
-          removePlayer(getState().auth.user),
-          unsetCurrent(),
-          clearGame(),
-        ].map(dispatch)
-      )
-    )
+      Promise.all([
+        logoutSucc(),
+        removePlayer(getState().auth.user),
+        unsetCurrent(),
+        clearGame(),
+      ].map(dispatch)))
     .catch(e => dispatch(logoutFail(e.message)));

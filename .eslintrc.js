@@ -10,7 +10,7 @@ const config = {
     "react-app",
     "airbnb",
     // "plugin:react/recommended",
-    "prettier",
+    // "prettier",
     "prettier/react",
   ],
   parser: "babel-eslint",
@@ -75,7 +75,7 @@ const config = {
     ],
     camelcase: 0,
     "comma-dangle": [
-      1,
+      2,
       {
         arrays: "always-multiline",
         exports: "always-multiline",
@@ -84,7 +84,7 @@ const config = {
         objects: "always-multiline",
       },
     ],
-    curly: 0,
+    curly: [2, "multi-line"],
     eqeqeq: 0,
     "func-call-spacing": [2, "never"],
     "func-names": 0,
@@ -257,9 +257,9 @@ const config = {
           multiline: true,
         },
         ObjectExpression: {
-          consistent: true,
+          consistent: false,
           minProperties: 5,
-          multiline: true,
+          multiline: false,
         },
         ObjectPattern: {
           consistent: true,
@@ -294,6 +294,22 @@ const config = {
         blankLine: "always",
         next: ["const", "export", "let", "var"],
         prev: ["const", "export", "let", "var"],
+      },
+    ],
+    "prefer-destructuring": [
+      2,
+      {
+        VariableDeclarator: {
+          array: false,
+          object: true,
+        },
+        AssignmentExpression: {
+          array: true,
+          object: true,
+        },
+      },
+      {
+        enforceForRenamedProperties: false,
       },
     ],
     "prettier/prettier": [

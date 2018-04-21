@@ -1,5 +1,6 @@
-import { Game } from "connect_four_functional";
+import { Game } from 'connect_four_functional';
 
+import * as Utils from '../../utils';
 import {
   ADD_PLAYER,
   CLAIM_NEXT,
@@ -10,41 +11,36 @@ import {
   SET_NODES,
   START_GAME,
   UPDATE_GAME,
-} from "./constants";
-import { fireUtils } from "../../utils";
-import { unsetCurrent } from "../auth/actions";
+} from './constants';
 
-const { auth, gameRef, onlineRef } = fireUtils;
+// import { unsetCurrent } from '../auth/actions';
+
+const { fireBase } = Utils;
+
+const { auth, gameRef, onlineRef } = fireBase;
 
 const clear = () => Game.setPlayers([])(Game.game());
 
-export const setNodes = nodes => ({
-  type: SET_NODES,
-  curry: Game.setNodes(nodes),
-});
+export const setNodes = nodes => ({ type: SET_NODES,
+                                    curry: Game.setNodes(nodes) });
 
-export const setPlayers = players => ({
-  type: SET_NODES,
-  curry: Game.setPlayers(players),
-});
+export const setPlayers = players => ({ type: SET_NODES,
+                                        curry: Game.setPlayers(players) });
 
 export const addPlayer = p => ({ type: ADD_PLAYER, curry: Game.addPlr(p) });
 
 export const updateGame = g => ({ type: UPDATE_GAME, curry: state => g });
 
-export const removePlayer = player => ({
-  type: REMOVE_PLAYER,
-  curry: Game.rmPlr(player),
-});
+export const removePlayer = player => ({ type: REMOVE_PLAYER,
+                                         curry: Game.rmPlr(player) });
 
-export const setColumn = cID => ({
-  type: SET_COLUMN,
-  curry: Game.setColumn(cID),
-});
+export const setColumn = cID => ({ type: SET_COLUMN,
+                                   curry: Game.setColumn(cID) });
 
 export const resetGame = game => ({ type: RESET_GAME, curry: Game.resetGame });
 
 // export const clearGame2 = game => ({ type: CLEAR_GAME, curry: clear });
+const unset = () => ({ type: `SET_CURRENT_USER`, curry: () => null });
 
 export const clearGame = game => dispatch => {
   Promise.resolve()
@@ -52,7 +48,7 @@ export const clearGame = game => dispatch => {
     .then(u => u && u.delete())
     .then(() => onlineRef.remove())
     .then(() => gameRef.remove())
-    .then(() => unsetCurrent())
+    .then(() => unset())
     .then(dispatch)
     .then(() => ({ type: CLEAR_GAME, curry: clear }))
     .then(dispatch);

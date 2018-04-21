@@ -1,12 +1,13 @@
-import * as firebase from "firebase";
+import * as firebase from 'firebase';
 
-import { GAME_ACTIONS } from "../modules/game/constants";
+// import { Game } from '../../modules';
 
-// export REACT_APP_C4REDUX_FIREBASE_KEY=AIzaSyDip1FeXdolfDIUzmXSubiv7ooUpXIc9tY
+//
+// console.log(`Game`, Game);
+// const { GAME_ACTIONS } = Game.constants;
 
 export const config = {
-  // apiKey: process.env.REACT_APP_C4REDUX_FIREBASE_KEY,
-  apiKey: `AIzaSyDip1FeXdolfDIUzmXSubiv7ooUpXIc9tY`,
+  apiKey: process.env.REACT_APP_C4REDUX_FIREBASE_KEY,
   authDomain: `conn4redux.firebaseapp.com`,
   databaseURL: `https://conn4redux.firebaseio.com`,
   storageBucket: `conn4redux.appspot.com`,
@@ -36,11 +37,12 @@ export const getOnlineRef = id => onlineRef.push(`${id}`);
 export const fireMid = ({ dispatch, getState }) => next => action => {
   const result = next(action);
 
-  if (GAME_ACTIONS.has(action.type)) {
-    if (action.type !== `UPDATE_GAME` && getState().game.players.length) {
-      gameRef.set(getState().game);
-    }
-  }
+  //
+  // if (Game.constants.GAME_ACTIONS.has(action.type)) {
+  //   if (action.type !== `UPDATE_GAME` && getState().game.players.length) {
+  //     gameRef.set(getState().game);
+  //   }
+  // }
 
   return result;
 };

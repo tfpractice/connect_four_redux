@@ -1,5 +1,10 @@
 import * as actions from './actions';
+import * as constants from './constants';
 
-export { default as users } from './reducer';
+export { default as reducer } from './reducer';
 
-export { actions };
+export { constants, actions };
+
+// export { default as users } from "./reducer";
+
+// export const reducer = users;

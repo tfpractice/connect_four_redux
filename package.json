@@ -5,7 +5,11 @@
     "type": "git",
     "url": "git+https://github.com/tfpractice/connect_four_redux.git"
   },
-  "keywords": ["connect-four", "functional-programming", "graph-theory"],
+  "keywords": [
+    "connect-four",
+    "functional-programming",
+    "graph-theory"
+  ],
   "author": "theory f practice <jackson.brebnor@gmail.com>",
   "license": "ISC",
   "homepage": ".",
@@ -82,5 +86,15 @@
     "eject": "react-scripts eject",
     "lint": "eslint -c .eslintrc.js --fix .",
     "format": "prettier-eslint \"src/**/*.js\""
+  },
+  "prettier": {
+    "arrowParens": "avoid",
+    "bracketSpacing": false,
+    "proseWrap": "always",
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "printWidth": 80,
+    "parser": "babylon"
   }
 }

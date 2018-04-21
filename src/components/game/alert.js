@@ -1,17 +1,17 @@
-import Button from "material-ui/Button";
+import Button from 'material-ui/Button';
 import Dialog, {
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-} from "material-ui/Dialog";
-import Grid from "material-ui/Grid";
-import React from "react";
-import { connect } from "react-redux";
-import { Game } from "connect_four_functional";
+} from 'material-ui/Dialog';
+import Grid from 'material-ui/Grid';
+import React from 'react';
+import { connect } from 'react-redux';
+import { Game } from 'connect_four_functional';
 
-import { GameActs } from "../../modules";
-import { withSwitch } from "../wrappers";
+import { Game as GMod } from '../../modules';
+import { withSwitch } from '../wrappers';
 
 const { winner } = Game;
 
@@ -19,15 +19,13 @@ const isOver = game => game.players.length > 1 && winner(game);
 
 const invert = fn => () => fn(x => !x);
 
-const mapState = ({ game }) => ({
-  game,
-  winner: isOver(game),
-  negate: invert,
-  open: !!isOver(game),
-});
+const mapState = ({ game }) => ({ game,
+                                  winner: isOver(game),
+                                  negate: invert,
+                                  open: !!isOver(game) });
 
 const WinnerDialog = ({
-  game, open, toggle, negate, resetGame, clearGame,
+  game, open, toggle, resetGame, clearGame,
 }) => (
   <Grid container>
     <Grid item xs>
@@ -54,4 +52,4 @@ const WinnerDialog = ({
   </Grid>
 );
 
-export default connect(mapState, GameActs)(withSwitch(WinnerDialog));
+export default connect(mapState, GMod.actions)(withSwitch(WinnerDialog));

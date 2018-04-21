@@ -1,7 +1,17 @@
-import { addPlayer, updateGame } from "./modules/game/actions";
-import { auth, connRef, gameRef, onlineRef } from "./utils/firebase";
-import { login, logout } from "./modules/auth/actions";
-import { removeUser } from "./modules/users/actions";
+import * as Modules from '../../modules';
+import { auth, connRef, gameRef, onlineRef } from './middlerware';
+
+console.log(`Modules`, Modules);
+
+const { Auth, Game, Users } = Modules;
+
+const {
+  actions: { addPlayer, updateGame },
+} = Game;
+
+const { login, logout } = Auth.actions;
+
+const { removeUser } = Users.actions;
 
 const loggedIn = () => !!auth.currentUser;
 

@@ -1,25 +1,23 @@
-import Button from "material-ui/Button";
-import Card, { CardActions, CardHeader } from "material-ui/Card";
-import Grid from "material-ui/Grid";
-import React from "react";
-import { connect } from "react-redux";
-import { Game } from "connect_four_functional";
+import Button from 'material-ui/Button';
+import Card, { CardActions, CardHeader } from 'material-ui/Card';
+import Grid from 'material-ui/Grid';
+import React from 'react';
+import { connect } from 'react-redux';
+import { Game } from 'connect_four_functional';
 
-import Alert from "./alert";
-import Board from "./board";
-import Players from "./players";
-import { GameActs } from "../../modules";
-import { pSort } from "../../utils/viz";
+import Alert from './alert';
+import Board from './board';
+import Players from './players';
+import { Game as GMod } from '../../modules';
+import { pSort } from '../../utils/viz';
 
 const { winner, players: getPlrs } = Game;
 
 const isOver = game => game.players.length > 1 && winner(game);
 
-const stateToProps = ({ game }) => ({
-  game,
-  ended: isOver(game),
-  players: pSort(getPlrs(game)),
-});
+const stateToProps = ({ game }) => ({ game,
+                                      ended: isOver(game),
+                                      players: pSort(getPlrs(game)) });
 
 const GameComponent = ({
   start, ended, game, resetGame, clearGame,
@@ -43,4 +41,4 @@ const GameComponent = ({
   </Grid>
 );
 
-export default connect(stateToProps, GameActs)(GameComponent);
+export default connect(stateToProps, GMod.actions)(GameComponent);
