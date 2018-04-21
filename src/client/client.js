@@ -5,11 +5,11 @@ import { Provider } from "react-redux";
 import { render } from "react-dom";
 
 import "./index.css";
+import getStore from "../store";
+import Home from "../components";
+import { fireBase, theme } from "../utils";
 
-// import applyHandlers from "./handlers";
-import getStore from "./store";
-import Home from "./components";
-import { fireBase, theme } from "./utils";
+// import { theme } from "./utils";
 
 const { applyHandlers } = fireBase;
 

@@ -1,7 +1,9 @@
-import { addPlayer, updateGame } from "./modules/game/actions";
-import { auth, connRef, gameRef, onlineRef } from "./utils/firebase";
-import { login, logout } from "./modules/auth/actions";
-import { removeUser } from "./modules/users/actions";
+// import { Auth, Game, Users } from '../../modules';
+
+import { addPlayer, clearGame, updateGame } from '../../modules/game/actions';
+import { auth, connRef, gameRef, onlineRef } from './refs';
+import { login, logout, unsetCurrent } from '../../modules/auth/actions';
+import { removeUser } from '../../modules/users/actions';
 
 const loggedIn = () => !!auth.currentUser;
 
@@ -36,10 +38,24 @@ const curDiscon = snap => isCurrent(snap) && noConn(snap);
 // const altDiscon = snap => isAlt(snap) && noConn(snap);
 
 // const connKey = snap => snap.key === `connections`;
+export const clearAuth = () => dispatch => {
+  Promise.resolve()
+    .then(() => auth.currentUser)
+    .then(u => u && u.delete())
+    .then(() => onlineRef.remove())
+    .then(() => gameRef.remove())
+    .then(unsetCurrent)
+    .then(dispatch)
+    .then(clearGame)
+    .then(dispatch)
+    .catch(console.error);
+};
 
 export const authHandler = store => {
   auth.onAuthStateChanged(user => {
     if (user) {
+      console.log(`user`, user);
+
       // console.log(`AUTH:SIGNEDIN.`, user);
     }
   });

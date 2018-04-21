@@ -1,4 +1,4 @@
-import { Game } from "connect_four_functional";
+import { Game } from 'connect_four_functional';
 
 import {
   ADD_PLAYER,
@@ -10,11 +10,7 @@ import {
   SET_NODES,
   START_GAME,
   UPDATE_GAME,
-} from "./constants";
-import { fireUtils } from "../../utils";
-import { unsetCurrent } from "../auth/actions";
-
-const { auth, gameRef, onlineRef } = fireUtils;
+} from './constants';
 
 const clear = () => Game.setPlayers([])(Game.game());
 
@@ -28,9 +24,15 @@ export const setPlayers = players => ({
   curry: Game.setPlayers(players),
 });
 
-export const addPlayer = p => ({ type: ADD_PLAYER, curry: Game.addPlr(p) });
+export const addPlayer = p => ({
+  type: ADD_PLAYER,
+  curry: Game.addPlr(p),
+});
 
-export const updateGame = g => ({ type: UPDATE_GAME, curry: state => g });
+export const updateGame = g => ({
+  type: UPDATE_GAME,
+  curry: () => g,
+});
 
 export const removePlayer = player => ({
   type: REMOVE_PLAYER,
@@ -42,21 +44,28 @@ export const setColumn = cID => ({
   curry: Game.setColumn(cID),
 });
 
-export const resetGame = game => ({ type: RESET_GAME, curry: Game.resetGame });
+export const resetGame = game => ({
+  type: RESET_GAME,
+  curry: Game.resetGame,
+});
 
-// export const clearGame2 = game => ({ type: CLEAR_GAME, curry: clear });
+export const clearGame = () => ({
+  type: CLEAR_GAME,
+  curry: clear,
+});
 
-export const clearGame = game => dispatch => {
-  Promise.resolve()
-    .then(() => auth.currentUser)
-    .then(u => u && u.delete())
-    .then(() => onlineRef.remove())
-    .then(() => gameRef.remove())
-    .then(() => unsetCurrent())
-    .then(dispatch)
-    .then(() => ({ type: CLEAR_GAME, curry: clear }))
-    .then(dispatch);
-};
+//
+// export const clearGameCIRC = game => dispatch => {
+//   Promise.resolve()
+//     .then(() => auth.currentUser)
+//     .then(u => u && u.delete())
+//     .then(() => onlineRef.remove())
+//     .then(() => gameRef.remove())
+//     .then(() => unset())
+//     .then(dispatch)
+//     .then(clearGame)
+//     .then(dispatch);
+// };
 
 export const start = () => ({ type: START_GAME, curry: Game.start });
 

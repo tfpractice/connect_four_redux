@@ -1,17 +1,17 @@
-import Button from "material-ui/Button";
+import Button from 'material-ui/Button';
 import Dialog, {
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-} from "material-ui/Dialog";
-import Grid from "material-ui/Grid";
-import React from "react";
-import { connect } from "react-redux";
-import { Game } from "connect_four_functional";
+} from 'material-ui/Dialog';
+import Grid from 'material-ui/Grid';
+import React from 'react';
+import { connect } from 'react-redux';
+import { Game } from 'connect_four_functional';
 
-import { GameActs } from "../../modules";
-import { withSwitch } from "../wrappers";
+import { Auth, Game as GMod } from '../../modules';
+import { withSwitch } from '../wrappers';
 
 const { winner } = Game;
 
@@ -27,7 +27,7 @@ const mapState = ({ game }) => ({
 });
 
 const WinnerDialog = ({
-  game, open, toggle, negate, resetGame, clearGame,
+  game, open, toggle, resetGame, clearGameFB,
 }) => (
   <Grid container>
     <Grid item xs>
@@ -44,7 +44,7 @@ const WinnerDialog = ({
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => clearGame() && toggle()}>Clear game</Button>
+          <Button onClick={() => clearGameFB() && toggle()}>Clear game</Button>
           <Button onClick={() => resetGame(game) && toggle()}>
             Reset game
           </Button>
@@ -54,4 +54,4 @@ const WinnerDialog = ({
   </Grid>
 );
 
-export default connect(mapState, GameActs)(withSwitch(WinnerDialog));
+export default connect(mapState, { ...Auth.actions, ...GMod.actions })(withSwitch(WinnerDialog));

@@ -1,9 +1,9 @@
 import { removeSet, spread } from "fenugreek-collections";
 
 import { ADD_USER, REMOVE_USER, SET_USERS } from "./constants";
-import { fireUtils } from "../../utils";
+import { fireBase } from "../../utils";
 
-const { getPresRef, onlineRef } = fireUtils;
+const { getPresRef, onlineRef } = fireBase;
 
 // const hasID = arr => id => new Set(arr.map(n => n.id)).has(id);
 

@@ -1,19 +1,15 @@
-import React from "react";
-import { connect } from "react-redux";
+import React from 'react';
+import { connect } from 'react-redux';
 
-import Node from "./node";
-import { GameActs } from "../../modules";
+import Node from './node';
+import { Game as GMod } from '../../modules';
 
-const stateToProps = ({ game, auth: { user }}, { id }) => ({
-  nodes: game.nodes.filter(({ column }) => column === id),
-});
+const stateToProps = ({ game, auth: { user }}, { id }) => ({ nodes: game.nodes.filter(({ column }) => column === id) });
 
-const mergeProps = (s, { setColumn, ...d }, { id, ...o }) => ({
-  ...s,
-  ...d,
-  ...o,
-  setColumn: () => setColumn(id),
-});
+const mergeProps = (s, { setColumn, ...d }, { id, ...o }) => ({ ...s,
+                                                                ...d,
+                                                                ...o,
+                                                                setColumn: () => setColumn(id) });
 
 const Column = ({ id, nodes, select, setColumn }) => (
   <g id={`col_${id}`} className="colGroup" onMouseOver={setColumn}>
@@ -21,4 +17,4 @@ const Column = ({ id, nodes, select, setColumn }) => (
   </g>
 );
 
-export default connect(stateToProps, GameActs, mergeProps)(Column);
+export default connect(stateToProps, GMod.actions, mergeProps)(Column);

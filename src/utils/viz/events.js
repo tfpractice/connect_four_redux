@@ -1,4 +1,4 @@
-import * as d3 from 'd3';
+import * as d3 from "d3";
 
 import {
   linkSelect,
@@ -8,8 +8,8 @@ import {
   updateSim,
   updateSimLinks,
   updateSimNodes,
-} from './selections';
-import { setContainer } from './scales';
+} from "./selections";
+import { setContainer } from "./scales";
 
 export const dragStarted = sim => d => {
   if (!d3.event.active) sim.alphaTarget(0.03);
