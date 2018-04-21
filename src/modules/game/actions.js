@@ -54,19 +54,6 @@ export const clearGame = () => ({
   curry: clear,
 });
 
-//
-// export const clearGameCIRC = game => dispatch => {
-//   Promise.resolve()
-//     .then(() => auth.currentUser)
-//     .then(u => u && u.delete())
-//     .then(() => onlineRef.remove())
-//     .then(() => gameRef.remove())
-//     .then(() => unset())
-//     .then(dispatch)
-//     .then(clearGame)
-//     .then(dispatch);
-// };
-
 export const start = () => ({ type: START_GAME, curry: Game.start });
 
 export const claimNext = () => ({ type: CLAIM_NEXT, curry: Game.claimNext });
