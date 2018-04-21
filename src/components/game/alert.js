@@ -10,7 +10,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Game } from 'connect_four_functional';
 
-import { Game as GMod } from '../../modules';
+import { Auth, Game as GMod } from '../../modules';
 import { withSwitch } from '../wrappers';
 
 const { winner } = Game;
@@ -19,13 +19,15 @@ const isOver = game => game.players.length > 1 && winner(game);
 
 const invert = fn => () => fn(x => !x);
 
-const mapState = ({ game }) => ({ game,
-                                  winner: isOver(game),
-                                  negate: invert,
-                                  open: !!isOver(game) });
+const mapState = ({ game }) => ({
+  game,
+  winner: isOver(game),
+  negate: invert,
+  open: !!isOver(game),
+});
 
 const WinnerDialog = ({
-  game, open, toggle, resetGame, clearGame,
+  game, open, toggle, resetGame, clearGameFB,
 }) => (
   <Grid container>
     <Grid item xs>
@@ -42,7 +44,7 @@ const WinnerDialog = ({
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => clearGame() && toggle()}>Clear game</Button>
+          <Button onClick={() => clearGameFB() && toggle()}>Clear game</Button>
           <Button onClick={() => resetGame(game) && toggle()}>
             Reset game
           </Button>
@@ -52,4 +54,4 @@ const WinnerDialog = ({
   </Grid>
 );
 
-export default connect(mapState, GMod.actions)(withSwitch(WinnerDialog));
+export default connect(mapState, { ...Auth.actions, ...GMod.actions })(withSwitch(WinnerDialog));

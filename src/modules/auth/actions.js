@@ -6,11 +6,9 @@ import { addPlayer, clearGame, removePlayer } from '../game/actions';
 import { fireBase, rqUtils } from '../../utils';
 import { LOGIN, LOGOUT, SET_CURRENT_USER } from './constants';
 
-// const { addPlayer, clearGame, removePlayer } = gameActions;
-
-// const { addOnline } = UserActs;
-
-const { auth, onlineRef } = fireBase;
+const {
+  Refs: { auth, gameRef, onlineRef },
+} = fireBase;
 
 const { rqActions } = rqUtils;
 
@@ -18,19 +16,15 @@ const { setID, setName } = Player;
 
 const set = user => () => user || null;
 
-// const unset = () => () => null;
+const unset = () => () => null;
 
-const loginPend = rqActions(LOGIN).pending;
+const { pending: loginPend, failure: loginFail, success: loginSucc } = rqActions(LOGIN);
 
-const loginFail = rqActions(LOGIN).failure;
-
-const loginSucc = rqActions(LOGIN).success;
-
-const logoutPend = rqActions(LOGOUT).pending;
-
-const logoutFail = rqActions(LOGOUT).failure;
-
-const logoutSucc = rqActions(LOGOUT).success;
+const {
+  pending: logoutPend,
+  failure: logoutFail,
+  success: logoutSucc,
+} = rqActions(LOGOUT);
 
 export const createPlayer = u =>
   u.uid ? setName(u.displayName || u.uid)(setID(u.uid)(u)) : u;
@@ -71,7 +65,19 @@ export const login = ({ displayName } = { displayName: `` }) => dispatch =>
             ].map(dispatch))))
       .catch(loginFail));
 
-export const logout = (user = authPlayer(auth)) => (dispatch, getState) =>
+export const clearGameFB = () => dispatch => {
+  Promise.resolve()
+    .then(() => fAuth.currentUser)
+    .then(u => u && u.delete())
+    .then(() => onlineRef.remove())
+    .then(() => gameRef.remove())
+    .then(unsetCurrent)
+    .then(dispatch)
+    .then(clearGame)
+    .then(dispatch);
+};
+
+export const logout = (u = authPlayer(auth)) => (dispatch, getState) =>
   Promise.resolve(dispatch(logoutPend()))
     .then(() => auth.currentUser)
     .then(takeOffline)
@@ -81,6 +87,6 @@ export const logout = (user = authPlayer(auth)) => (dispatch, getState) =>
         logoutSucc(),
         removePlayer(getState().auth.user),
         unsetCurrent(),
-        clearGame(),
+        clearGameFB(),
       ].map(dispatch)))
     .catch(e => dispatch(logoutFail(e.message)));
