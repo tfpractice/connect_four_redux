@@ -26,12 +26,16 @@ const {
 } = fireBase;
 
 export const setCurrent = u => dispatch =>
-  Promise.resolve(dispatch(setCurrentUser(u)))
-    .then(arg => dispatch(addOnline(u)))
+  Promise.resolve(setCurrentUser(u))
+    .then(dispatch)
+    .then(() => addOnline(u))
+    .then(dispatch)
     .catch(console.error);
 
 export const unsetCurrent = () => dispatch =>
-  Promise.resolve(dispatch(setCurrentUser(null))).catch(console.error);
+  Promise.resolve(setCurrentUser(null))
+    .then(dispatch)
+    .catch(console.error);
 
 export const takeOffline = u =>
   onlineRef
@@ -44,19 +48,21 @@ export const authPlayer = amod => createPlayer(amod.currentUser);
 export const deleteU = u => u && u.delete().then(() => u);
 
 export const login = ({ displayName } = { displayName: `` }) => dispatch =>
-  Promise.resolve(dispatch(loginPend())).then(() =>
-    fAuth()
-      .signInAnonymously()
-      .then(u =>
-        u
-          .updateProfile({ displayName: displayName || u.uid })
-          .then(() =>
-            Promise.all([
-              loginSucc(u),
-              setCurrent(createPlayer(u)),
-              addPlayer(createPlayer(u)),
-            ].map(dispatch)).catch(loginFail)))
-      .catch(e => dispatch(loginFail)));
+  Promise.resolve(loginPend())
+    .then(dispatch)
+    .then(() =>
+      fAuth()
+        .signInAnonymously()
+        .then(u =>
+          u
+            .updateProfile({ displayName: displayName || u.uid })
+            .then(() =>
+              Promise.all([
+                loginSucc(u),
+                setCurrent(createPlayer(u)),
+                addPlayer(createPlayer(u)),
+              ].map(dispatch))))
+        .catch(e => dispatch(loginFail(e.message))));
 
 export const clearGameFB = () => dispatch => {
   Promise.resolve()
@@ -71,7 +77,8 @@ export const clearGameFB = () => dispatch => {
 };
 
 export const logout = (u = authPlayer(auth)) => (dispatch, getState) =>
-  Promise.resolve(dispatch(logoutPend()))
+  Promise.resolve(logoutPend())
+    .then(dispatch)
     .then(() => auth.currentUser)
     .then(takeOffline)
     .then(deleteU)

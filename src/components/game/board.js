@@ -1,16 +1,16 @@
-import Grid from "material-ui/Grid";
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Filter } from "game_grid";
+import Grid from 'material-ui/Grid';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Filter } from 'game_grid';
 
-import Column from "./column";
-import Link from "./link";
+import Column from './column';
+import Link from './link';
 import {
   applyTicks,
   mountSimulation,
   playerLinks,
   simInit,
-} from "../../utils/viz";
+} from '../../utils/viz';
 
 const { cIDs } = Filter;
 
