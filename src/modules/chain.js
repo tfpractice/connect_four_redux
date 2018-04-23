@@ -1,29 +1,19 @@
 import { auth as fAuth } from 'firebase';
-import { Player } from 'connect_four_functional';
 
-import { actions as AuthActs } from './auth';
-import { fireBase } from '../utils';
-import { actions as GameActs } from './game';
-import { actions as UserActs } from './users';
-
-const {
-  setCurrentUser,
+import { addOnline } from '../utils/firebase/actions';
+import { addPlayer, clearGame, removePlayer } from './game/actions';
+import { auth, gameRef, onlineRef } from '../utils/firebase/refs';
+import {
   createPlayer,
-  logoutPend,
-  logoutSucc,
   loginFail,
-  logoutFail,
   loginPend,
   loginSucc,
-} = AuthActs;
-
-const { addOnline } = UserActs;
-
-const { addPlayer, clearGame, removePlayer } = GameActs;
-
-const {
-  Refs: { auth, gameRef, onlineRef },
-} = fireBase;
+  logoutFail,
+  logoutPend,
+  logoutSucc,
+  setCurrentUser,
+} from './auth/actions';
+import { fireBase } from '../utils';
 
 export const setCurrent = u => dispatch =>
   Promise.resolve(setCurrentUser(u))

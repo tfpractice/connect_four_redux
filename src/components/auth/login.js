@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Field } from 'redux-form';
 
 import LogoutLink from './logoutLink';
-import { Auth } from '../../modules';
+import { Chained } from '../../modules';
 import { ClearForm, renderText } from '../../utils';
 
 const baseLogin = ({ handleSubmit }) => (
@@ -25,4 +25,4 @@ const LoginForm = ({ login, formID }) => (
   <ReduxLogin form={formID} onSubmit={login} />
 );
 
-export default connect(null, Auth.actions)(LoginForm);
+export default connect(null, Chained)(LoginForm);

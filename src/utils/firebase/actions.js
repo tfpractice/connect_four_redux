@@ -1,26 +1,4 @@
-import { removeSet, spread } from 'fenugreek-collections';
-
-import { ADD_USER, REMOVE_USER, SET_USERS } from './constants';
-import { fireBase } from '../../utils';
-
-const {
-  Refs: { getPresRef, onlineRef },
-} = fireBase;
-
-const set = users => () => users;
-
-const add = u => arr => arr.filter(p => p.id !== u.id).concat(u);
-
-const remove = ({ id }) => arr =>
-  spread(removeSet(arr)(arr.find(n => n.id === id)));
-
-export const setUsers = u => ({ type: SET_USERS, curry: set(u) });
-
-export const addUser = u => ({ type: ADD_USER, curry: add(u) });
-
-export const removeUser = u => ({ type: REMOVE_USER, curry: remove(u) });
-
-export const checkConnections = id => getPresRef(id);
+import { onlineRef } from './refs';
 
 export const addDiscon = ref =>
   Promise.resolve(ref.onDisconnect())
@@ -52,14 +30,11 @@ export const catConn = ref =>
 
 const updateRef = u => ref => ref.update(u).then(() => ref);
 
-export const addOnline = u => dispatch => {
-  console.log(`onlineRef`, onlineRef);
-  console.log(`onlineRef.child(u.id)`, onlineRef.child(u.id));
-  return Promise.resolve(onlineRef.child(u.id))
+export const addOnline = u => () =>
+  Promise.resolve(onlineRef.child(u.id))
     .then(updateRef(u))
     .then(catConn)
     .catch(console.error);
-};
 
 export const goOffline = ({ id }) => {
   console.log(`going offline`, onlineRef.child(`${id}`));

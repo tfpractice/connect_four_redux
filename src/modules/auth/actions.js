@@ -18,9 +18,13 @@ const set = user => () => user || null;
 
 const unset = () => () => null;
 
-const { pending: loginPend, failure: loginFail, success: loginSucc } = rqActions(LOGIN);
+export const {
+  pending: loginPend,
+  failure: loginFail,
+  success: loginSucc,
+} = rqActions(LOGIN);
 
-const {
+export const {
   pending: logoutPend,
   failure: logoutFail,
   success: logoutSucc,

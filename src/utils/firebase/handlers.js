@@ -2,7 +2,7 @@
 
 import { addPlayer, clearGame, updateGame } from '../../modules/game/actions';
 import { auth, connRef, gameRef, onlineRef } from './refs';
-import { login, logout, unsetCurrent } from '../../modules/auth/actions';
+import { login, logout, unsetCurrent } from '../../modules/chain';
 import { removeUser } from '../../modules/users/actions';
 
 const loggedIn = () => !!auth.currentUser;
